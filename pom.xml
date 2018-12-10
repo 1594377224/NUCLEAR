@@ -57,9 +57,19 @@
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-
+		<dependency> 
+			  <groupId>net.sf.json-lib</groupId> 
+			  <artifactId>json-lib</artifactId> 
+			  <classifier>jdk15</classifier> 
+			  <version>2.4</version> 
+		 </dependency>
+		 <dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+	     	<version>3.4</version>
+		 </dependency>
 	</dependencies>
-
+	
 	<build>
 		<plugins>
 			<plugin>

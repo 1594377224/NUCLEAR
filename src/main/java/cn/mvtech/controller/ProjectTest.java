@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.mvtech.beans.User;
 import cn.mvtech.service.UserService;
+import cn.mvtech.util.G4Utils;
+import cn.mvtech.util.ResultUtil;
+import net.sf.json.JSONObject;
 
 @RestController
 @RequestMapping("test")
@@ -39,5 +44,30 @@ public class ProjectTest {
 	public List<User> showList(){
 		
 		return userService.findAll();
+	}
+	
+	@RequestMapping(value="addUser",method=RequestMethod.POST)
+	public String addUser(String input){
+		JSONObject inputJson = JSONObject.fromObject(input);
+		JSONObject paramsJson = inputJson.getJSONObject("params");
+		// 参数校验
+		if(paramsJson.isEmpty()){
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		}
+		
+		String id = "";
+		
+		if (paramsJson.containsKey("usrId")) {
+			id = paramsJson.getString("usrId");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(id)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = userService.addUser(paramsJson);
+			return resultStr;
+		}
+		
 	}
 }
