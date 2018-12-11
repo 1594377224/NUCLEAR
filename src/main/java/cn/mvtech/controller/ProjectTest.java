@@ -8,6 +8,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +71,10 @@ public class ProjectTest {
 			String resultStr = userService.addUser(paramsJson);
 			return resultStr;
 		}
-		
+	}
+	@RequestMapping(value="/addUser",method=RequestMethod.POST)
+	public Map<String, Object>  addUser(@RequestBody Map<String, Object> map){
+		logger.info("=========测试日志打印"+map);
+		return null;	
 	}
 }
