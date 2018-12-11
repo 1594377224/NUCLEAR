@@ -49,19 +49,22 @@ public class ProjectTest {
 		return userService.findAll();
 	}
 	
-	@RequestMapping(value="addUser",method=RequestMethod.POST)
-	public String addUser(String input){
-		JSONObject inputJson = JSONObject.fromObject(input);
+	@RequestMapping(value="/upUser",method=RequestMethod.POST)
+	public String  upUser(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultErrMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
 		JSONObject paramsJson = inputJson.getJSONObject("params");
 		// 参数校验
 		if(paramsJson.isEmpty()){
-			return ResultUtil.result("-9999", "接入参数不完整！");
+			resultErrMap.put("resultCode", "-1");
+			resultErrMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultErrMap, null);
 		}
 		
 		String id = "";
 		
-		if (paramsJson.containsKey("usrId")) {
-			id = paramsJson.getString("usrId");
+		if (paramsJson.containsKey("id")) {
+			id = paramsJson.getString("id");
 		}
 		boolean[] sArr = { G4Utils.isNotEmpty(id)};
 		boolean flag = BooleanUtils.and(sArr);
@@ -71,6 +74,7 @@ public class ProjectTest {
 			String resultStr = userService.addUser(paramsJson);
 			return resultStr;
 		}
+		
 	}
 	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public Map<String, Object>  addUser(@RequestBody Map<String, Object> map){
