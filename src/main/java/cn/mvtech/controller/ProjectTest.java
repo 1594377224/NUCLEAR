@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,7 @@ import net.sf.json.JSONObject;
 @RestController
 @RequestMapping("test")
 public class ProjectTest {
-	/*private static Logger LOGGER=(Logger) LoggerFactory.getLogger(ProjectTest.class);*/
+	private static final Logger logger=LogManager.getLogger(ProjectTest.class);
 	
 	@Autowired
 	private UserService userService;
@@ -42,7 +44,7 @@ public class ProjectTest {
 	}
 	@RequestMapping("showList")
 	public List<User> showList(){
-		
+		logger.info("=========测试日志打印");
 		return userService.findAll();
 	}
 	
