@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import net.sf.json.JSONObject;
 
 @Service
 public class UserServiceImpl implements UserService{
+	private static final Logger logger=LogManager.getLogger(UserServiceImpl.class);
 	@Autowired
 	private UserMapper UserMapper;
 	@Override
@@ -44,6 +47,13 @@ public class UserServiceImpl implements UserService{
 		int a=UserMapper.addUserTest(i,j);
 		int c=i/j;
 		return a;
+	}
+	@Override
+	public String findUser(JSONObject paramsJson) {
+		List<Map<String, Object>> list = UserMapper.findUser(paramsJson);
+		logger.info("=========list====="+list.toString());
+		// TODO Auto-generated method stub
+		return list.toString();
 	}
 
 }

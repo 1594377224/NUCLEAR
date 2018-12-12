@@ -13,4 +13,8 @@
 	<insert id="addUserTest">
 	insert into test1(a,b) values(#{i},#{j});
 	</insert>
+	
+	<select id="findUser"  parameterType="Map" resultType = "Map">
+		select * from flowActionTrace
+	</select>
 </mapper>

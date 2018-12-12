@@ -86,4 +86,14 @@ public class ProjectTest {
 		logger.info("=========测试事物开始=====");
 		return userService.addUserTest(a,b);	
 	}
+	
+	@RequestMapping(value="/findUser",method=RequestMethod.POST)
+	public String findUser(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultErrMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		JSONObject paramsJson = inputJson.getJSONObject("params");
+		String resultStr = userService.findUser(paramsJson);
+		return resultStr;
+		
+	}
 }
