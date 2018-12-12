@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.FlowMapper">
-  <resultMap id="BaseResultMap" type="com.snp.hse.model.Flow">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.Flow">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="flowCode" jdbcType="VARCHAR" property="flowcode" />
     <result column="flowName" jdbcType="VARCHAR" property="flowname" />
@@ -22,7 +22,7 @@
     delete from flow
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.snp.hse.model.Flow">
+  <insert id="insert" parameterType="cn.hse.beans.Flow">
     insert into flow (id, flowCode, flowName, 
       flowVersion, params, enableFlag
       )
@@ -30,7 +30,7 @@
       #{flowversion,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{enableflag,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.snp.hse.model.Flow">
+  <insert id="insertSelective" parameterType="cn.hse.beans.Flow">
     insert into flow
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -73,7 +73,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.Flow">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.Flow">
     update flow
     <set>
       <if test="flowcode != null">
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.Flow">
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.Flow">
     update flow
     set flowCode = #{flowcode,jdbcType=VARCHAR},
       flowName = #{flowname,jdbcType=VARCHAR},
@@ -103,7 +103,7 @@
       enableFlag = #{enableflag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="com.snp.hse.model.Flow">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.Flow">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="flowCode" jdbcType="VARCHAR" property="flowcode" />
     <result column="flowName" jdbcType="VARCHAR" property="flowname" />
@@ -124,7 +124,7 @@
     delete from flow
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.snp.hse.model.Flow">
+  <insert id="insert" parameterType="cn.hse.beans.Flow">
     insert into flow (id, flowCode, flowName, 
       flowVersion, params, enableFlag
       )
@@ -132,7 +132,7 @@
       #{flowversion,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{enableflag,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.snp.hse.model.Flow">
+  <insert id="insertSelective" parameterType="cn.hse.beans.Flow">
     insert into flow
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -175,7 +175,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.Flow">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.Flow">
     update flow
     <set>
       <if test="flowcode != null">
@@ -196,7 +196,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.Flow">
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.Flow">
     update flow
     set flowCode = #{flowcode,jdbcType=VARCHAR},
       flowName = #{flowname,jdbcType=VARCHAR},
