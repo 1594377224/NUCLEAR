@@ -12,4 +12,6 @@ public interface UserService {
 		public String addUser(JSONObject paramsJson);
 
 		public int addUserTest(int i, int j);
+		
+		public String findUser(JSONObject paramsJson);
 }

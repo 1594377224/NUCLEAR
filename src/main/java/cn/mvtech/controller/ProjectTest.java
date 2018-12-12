@@ -87,7 +87,7 @@ public class ProjectTest {
 		return userService.addUserTest(a,b);	
 	}
 	
-/*	@RequestMapping(value="/findUser",method=RequestMethod.POST)
+	@RequestMapping(value="/findUser",method=RequestMethod.POST)
 	public String findUser(@RequestBody Map<String, Object> map){
 		Map<String, Object> resultErrMap = new HashMap<String, Object>();
 		JSONObject inputJson = JSONObject.fromObject(map);
@@ -95,5 +95,5 @@ public class ProjectTest {
 		String resultStr = userService.findUser(paramsJson);
 		return resultStr;
 		
-	}*/
+	}
 }

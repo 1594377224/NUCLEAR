@@ -1,6 +1,7 @@
 package cn.mvtech.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -14,4 +15,5 @@ public interface UserMapper {
 	//添加用户
 	public int addUser(JSONObject paramsJson);
 	public int addUserTest(@Param("i")int i,@Param("j")int j);
+	public List<Map<String, Object>> findUser(JSONObject paramsJson);
 }
