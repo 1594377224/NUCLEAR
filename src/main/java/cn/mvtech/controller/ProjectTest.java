@@ -49,7 +49,7 @@ public class ProjectTest {
 		return userService.findAll();
 	}
 	
-	@RequestMapping(value="/upUser",method=RequestMethod.POST)
+	@RequestMapping(value="/addUser",method=RequestMethod.POST)
 	public String  upUser(@RequestBody Map<String, Object> map){
 		Map<String, Object> resultErrMap = new HashMap<String, Object>();
 		JSONObject inputJson = JSONObject.fromObject(map);
@@ -76,7 +76,7 @@ public class ProjectTest {
 		}
 		
 	}
-	@RequestMapping(value="/addUser",method=RequestMethod.POST)
+	@RequestMapping(value="/upUser",method=RequestMethod.POST)
 	public Map<String, Object>  addUser(@RequestBody Map<String, Object> map){
 		logger.info("=========测试日志打印"+map);
 		return null;	

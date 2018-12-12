@@ -4,4 +4,9 @@
 	<select id="findAll" resultType="user">
 		select * from user
 	</select>
+	
+	<insert id="addUser" parameterType="Map">
+		insert into user(id,name,age,sex,address)
+		values(#{id},#{name},#{age},#{sex},#{address})
+	</insert>
 </mapper>
