@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.mvtech.beans.User;
 import cn.mvtech.mapper.UserMapper;
@@ -36,6 +37,13 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return  ResultUtil.result("0", resultErrMap, new ArrayList<Map<String, Object>>());
+	}
+	@Override
+	@Transactional
+	public int addUserTest(int i, int j) {
+		int a=UserMapper.addUserTest(i,j);
+		int c=i/j;
+		return a;
 	}
 
 }

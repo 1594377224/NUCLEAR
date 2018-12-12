@@ -9,4 +9,8 @@
 		insert into user(id,name,age,sex,address)
 		values(#{id},#{name},#{age},#{sex},#{address})
 	</insert>
+	
+	<insert id="addUserTest">
+	insert into test1(a,b) values(#{i},#{j});
+	</insert>
 </mapper>

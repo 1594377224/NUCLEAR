@@ -81,4 +81,9 @@ public class ProjectTest {
 		logger.info("=========测试日志打印"+map);
 		return null;	
 	}
+	@RequestMapping(value="/addUserTest",method=RequestMethod.GET)
+	public int  addUserTest(Integer a,Integer b){		
+		logger.info("=========测试事物开始=====");
+		return userService.addUserTest(a,b);	
+	}
 }
