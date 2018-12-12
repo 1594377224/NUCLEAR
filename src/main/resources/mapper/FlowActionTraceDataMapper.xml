@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.snp.hse.mapper.FlowActionTraceDataMapper">
+<mapper namespace="cn.hse.mapper.FlowActionTraceDataMapper">
   <resultMap id="BaseResultMap" type="com.snp.hse.model.FlowActionTraceData">
     <id column="traceId" jdbcType="INTEGER" property="traceid" />
     <result column="data" jdbcType="VARCHAR" property="data" />
