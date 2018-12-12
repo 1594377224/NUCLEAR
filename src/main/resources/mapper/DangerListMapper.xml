@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.DangerListMapper">
-  <resultMap id="BaseResultMap" type="com.snp.hse.model.DangerList">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.DangerList">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="lineNo" jdbcType="VARCHAR" property="lineno" />
     <result column="noticeNo" jdbcType="VARCHAR" property="noticeno" />
@@ -54,7 +54,7 @@
     delete from dangerList
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.snp.hse.model.DangerList">
+  <insert id="insert" parameterType="cn.hse.beans.DangerList">
     insert into dangerList (id, lineNo, noticeNo, 
       distributDate, unit, area, 
       unitID, hseHiddenLevel, hiddenCategory, 
@@ -80,7 +80,7 @@
       #{corapproveperson,jdbcType=VARCHAR}, #{corapprovedate,jdbcType=TIMESTAMP}, #{ifsitecorrection,jdbcType=VARCHAR}, 
       #{isdel,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.snp.hse.model.DangerList">
+  <insert id="insertSelective" parameterType="cn.hse.beans.DangerList">
     insert into dangerList
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -285,7 +285,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.DangerList">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.DangerList">
     update dangerList
     <set>
       <if test="lineno != null">
@@ -387,7 +387,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.DangerList">
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.DangerList">
     update dangerList
     set lineNo = #{lineno,jdbcType=VARCHAR},
       noticeNo = #{noticeno,jdbcType=VARCHAR},

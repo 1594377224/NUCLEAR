@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.FlowActionMapper">
-  <resultMap id="BaseResultMap" type="com.snp.hse.model.FlowAction">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowAction">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="actionId" jdbcType="VARCHAR" property="actionid" />
     <result column="stepId" jdbcType="VARCHAR" property="stepid" />
@@ -24,7 +24,7 @@
     delete from flowAction
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.snp.hse.model.FlowAction">
+  <insert id="insert" parameterType="cn.hse.beans.FlowAction">
     insert into flowAction (id, actionId, stepId, 
       flowId, actionCode, actionName, 
       params, enableFlag)
@@ -32,7 +32,7 @@
       #{flowid,jdbcType=VARCHAR}, #{actioncode,jdbcType=VARCHAR}, #{actionname,jdbcType=VARCHAR}, 
       #{params,jdbcType=VARCHAR}, #{enableflag,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.snp.hse.model.FlowAction">
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowAction">
     insert into flowAction
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -87,7 +87,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.FlowAction">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowAction">
     update flowAction
     <set>
       <if test="actionid != null">
@@ -114,7 +114,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.FlowAction">
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowAction">
     update flowAction
     set actionId = #{actionid,jdbcType=VARCHAR},
       stepId = #{stepid,jdbcType=VARCHAR},

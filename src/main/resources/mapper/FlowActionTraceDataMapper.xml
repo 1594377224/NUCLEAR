@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.FlowActionTraceDataMapper">
-  <resultMap id="BaseResultMap" type="com.snp.hse.model.FlowActionTraceData">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowActionTraceData">
     <id column="traceId" jdbcType="INTEGER" property="traceid" />
     <result column="data" jdbcType="VARCHAR" property="data" />
   </resultMap>
@@ -18,11 +18,11 @@
     delete from flowActionTraceData
     where traceId = #{traceid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.snp.hse.model.FlowActionTraceData">
+  <insert id="insert" parameterType="cn.hse.beans.FlowActionTraceData">
     insert into flowActionTraceData (traceId, data)
     values (#{traceid,jdbcType=INTEGER}, #{data,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.snp.hse.model.FlowActionTraceData">
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowActionTraceData">
     insert into flowActionTraceData
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="traceid != null">
@@ -41,7 +41,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.FlowActionTraceData">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowActionTraceData">
     update flowActionTraceData
     <set>
       <if test="data != null">
@@ -50,7 +50,7 @@
     </set>
     where traceId = #{traceid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.FlowActionTraceData">
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowActionTraceData">
     update flowActionTraceData
     set data = #{data,jdbcType=VARCHAR}
     where traceId = #{traceid,jdbcType=INTEGER}
