@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snp.hse.mapper.CheckListMapper">
+  <resultMap id="BaseResultMap" type="com.snp.hse.model.CheckList">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="projNo" jdbcType="VARCHAR" property="projno" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="recordNo" jdbcType="VARCHAR" property="recordno" />
+    <result column="checkDate" jdbcType="TIMESTAMP" property="checkdate" />
+    <result column="checkForm" jdbcType="INTEGER" property="checkform" />
+    <result column="recordType" jdbcType="INTEGER" property="recordtype" />
+    <result column="checkContent" jdbcType="VARCHAR" property="checkcontent" />
+    <result column="checkPerson" jdbcType="VARCHAR" property="checkperson" />
+    <result column="draftUnit" jdbcType="VARCHAR" property="draftunit" />
+    <result column="draftDept" jdbcType="VARCHAR" property="draftdept" />
+    <result column="draftPerson" jdbcType="VARCHAR" property="draftperson" />
+    <result column="draftDate" jdbcType="TIMESTAMP" property="draftdate" />
+    <result column="approvePerson" jdbcType="VARCHAR" property="approveperson" />
+    <result column="approveDate" jdbcType="TIMESTAMP" property="approvedate" />
+    <result column="isDel" jdbcType="INTEGER" property="isdel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, projNo, state, recordNo, checkDate, checkForm, recordType, checkContent, checkPerson, 
+    draftUnit, draftDept, draftPerson, draftDate, approvePerson, approveDate, isDel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from checkList
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from checkList
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.snp.hse.model.CheckList">
+    insert into checkList (id, projNo, state, 
+      recordNo, checkDate, checkForm, 
+      recordType, checkContent, checkPerson, 
+      draftUnit, draftDept, draftPerson, 
+      draftDate, approvePerson, approveDate, 
+      isDel)
+    values (#{id,jdbcType=INTEGER}, #{projno,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{recordno,jdbcType=VARCHAR}, #{checkdate,jdbcType=TIMESTAMP}, #{checkform,jdbcType=INTEGER}, 
+      #{recordtype,jdbcType=INTEGER}, #{checkcontent,jdbcType=VARCHAR}, #{checkperson,jdbcType=VARCHAR}, 
+      #{draftunit,jdbcType=VARCHAR}, #{draftdept,jdbcType=VARCHAR}, #{draftperson,jdbcType=VARCHAR}, 
+      #{draftdate,jdbcType=TIMESTAMP}, #{approveperson,jdbcType=VARCHAR}, #{approvedate,jdbcType=TIMESTAMP}, 
+      #{isdel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.snp.hse.model.CheckList">
+    insert into checkList
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="projno != null">
+        projNo,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="recordno != null">
+        recordNo,
+      </if>
+      <if test="checkdate != null">
+        checkDate,
+      </if>
+      <if test="checkform != null">
+        checkForm,
+      </if>
+      <if test="recordtype != null">
+        recordType,
+      </if>
+      <if test="checkcontent != null">
+        checkContent,
+      </if>
+      <if test="checkperson != null">
+        checkPerson,
+      </if>
+      <if test="draftunit != null">
+        draftUnit,
+      </if>
+      <if test="draftdept != null">
+        draftDept,
+      </if>
+      <if test="draftperson != null">
+        draftPerson,
+      </if>
+      <if test="draftdate != null">
+        draftDate,
+      </if>
+      <if test="approveperson != null">
+        approvePerson,
+      </if>
+      <if test="approvedate != null">
+        approveDate,
+      </if>
+      <if test="isdel != null">
+        isDel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projno != null">
+        #{projno,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recordno != null">
+        #{recordno,jdbcType=VARCHAR},
+      </if>
+      <if test="checkdate != null">
+        #{checkdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkform != null">
+        #{checkform,jdbcType=INTEGER},
+      </if>
+      <if test="recordtype != null">
+        #{recordtype,jdbcType=INTEGER},
+      </if>
+      <if test="checkcontent != null">
+        #{checkcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="checkperson != null">
+        #{checkperson,jdbcType=VARCHAR},
+      </if>
+      <if test="draftunit != null">
+        #{draftunit,jdbcType=VARCHAR},
+      </if>
+      <if test="draftdept != null">
+        #{draftdept,jdbcType=VARCHAR},
+      </if>
+      <if test="draftperson != null">
+        #{draftperson,jdbcType=VARCHAR},
+      </if>
+      <if test="draftdate != null">
+        #{draftdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveperson != null">
+        #{approveperson,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedate != null">
+        #{approvedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.CheckList">
+    update checkList
+    <set>
+      <if test="projno != null">
+        projNo = #{projno,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recordno != null">
+        recordNo = #{recordno,jdbcType=VARCHAR},
+      </if>
+      <if test="checkdate != null">
+        checkDate = #{checkdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkform != null">
+        checkForm = #{checkform,jdbcType=INTEGER},
+      </if>
+      <if test="recordtype != null">
+        recordType = #{recordtype,jdbcType=INTEGER},
+      </if>
+      <if test="checkcontent != null">
+        checkContent = #{checkcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="checkperson != null">
+        checkPerson = #{checkperson,jdbcType=VARCHAR},
+      </if>
+      <if test="draftunit != null">
+        draftUnit = #{draftunit,jdbcType=VARCHAR},
+      </if>
+      <if test="draftdept != null">
+        draftDept = #{draftdept,jdbcType=VARCHAR},
+      </if>
+      <if test="draftperson != null">
+        draftPerson = #{draftperson,jdbcType=VARCHAR},
+      </if>
+      <if test="draftdate != null">
+        draftDate = #{draftdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveperson != null">
+        approvePerson = #{approveperson,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedate != null">
+        approveDate = #{approvedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isdel != null">
+        isDel = #{isdel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.CheckList">
+    update checkList
+    set projNo = #{projno,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      recordNo = #{recordno,jdbcType=VARCHAR},
+      checkDate = #{checkdate,jdbcType=TIMESTAMP},
+      checkForm = #{checkform,jdbcType=INTEGER},
+      recordType = #{recordtype,jdbcType=INTEGER},
+      checkContent = #{checkcontent,jdbcType=VARCHAR},
+      checkPerson = #{checkperson,jdbcType=VARCHAR},
+      draftUnit = #{draftunit,jdbcType=VARCHAR},
+      draftDept = #{draftdept,jdbcType=VARCHAR},
+      draftPerson = #{draftperson,jdbcType=VARCHAR},
+      draftDate = #{draftdate,jdbcType=TIMESTAMP},
+      approvePerson = #{approveperson,jdbcType=VARCHAR},
+      approveDate = #{approvedate,jdbcType=TIMESTAMP},
+      isDel = #{isdel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

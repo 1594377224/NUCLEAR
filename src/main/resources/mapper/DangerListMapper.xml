@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snp.hse.mapper.DangerListMapper">
+  <resultMap id="BaseResultMap" type="com.snp.hse.model.DangerList">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="lineNo" jdbcType="VARCHAR" property="lineno" />
+    <result column="noticeNo" jdbcType="VARCHAR" property="noticeno" />
+    <result column="distributDate" jdbcType="TIMESTAMP" property="distributdate" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="unitID" jdbcType="VARCHAR" property="unitid" />
+    <result column="hseHiddenLevel" jdbcType="VARCHAR" property="hsehiddenlevel" />
+    <result column="hiddenCategory" jdbcType="VARCHAR" property="hiddencategory" />
+    <result column="nonconformity" jdbcType="VARCHAR" property="nonconformity" />
+    <result column="hiddenDescription" jdbcType="VARCHAR" property="hiddendescription" />
+    <result column="hiddenDoc" jdbcType="VARCHAR" property="hiddendoc" />
+    <result column="reqCompleteDate" jdbcType="TIMESTAMP" property="reqcompletedate" />
+    <result column="correctiveRequest" jdbcType="VARCHAR" property="correctiverequest" />
+    <result column="rectificationSituation" jdbcType="VARCHAR" property="rectificationsituation" />
+    <result column="returnDoc" jdbcType="VARCHAR" property="returndoc" />
+    <result column="contractonPeople" jdbcType="VARCHAR" property="contractonpeople" />
+    <result column="completeDate" jdbcType="TIMESTAMP" property="completedate" />
+    <result column="responsiblePerson" jdbcType="VARCHAR" property="responsibleperson" />
+    <result column="responsibleDate" jdbcType="TIMESTAMP" property="responsibledate" />
+    <result column="contractorApprove" jdbcType="VARCHAR" property="contractorapprove" />
+    <result column="contractorApproveDate" jdbcType="TIMESTAMP" property="contractorapprovedate" />
+    <result column="comfirmContent" jdbcType="VARCHAR" property="comfirmcontent" />
+    <result column="verifyPerson" jdbcType="VARCHAR" property="verifyperson" />
+    <result column="verifyDate" jdbcType="TIMESTAMP" property="verifydate" />
+    <result column="hsePassContent" jdbcType="VARCHAR" property="hsepasscontent" />
+    <result column="verificationCondition" jdbcType="VARCHAR" property="verificationcondition" />
+    <result column="closePerson" jdbcType="VARCHAR" property="closeperson" />
+    <result column="closeDate" jdbcType="TIMESTAMP" property="closedate" />
+    <result column="corApprovePerson" jdbcType="VARCHAR" property="corapproveperson" />
+    <result column="corApproveDate" jdbcType="TIMESTAMP" property="corapprovedate" />
+    <result column="ifSiteCorrection" jdbcType="VARCHAR" property="ifsitecorrection" />
+    <result column="isDel" jdbcType="INTEGER" property="isdel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, lineNo, noticeNo, distributDate, unit, area, unitID, hseHiddenLevel, hiddenCategory, 
+    nonconformity, hiddenDescription, hiddenDoc, reqCompleteDate, correctiveRequest, 
+    rectificationSituation, returnDoc, contractonPeople, completeDate, responsiblePerson, 
+    responsibleDate, contractorApprove, contractorApproveDate, comfirmContent, verifyPerson, 
+    verifyDate, hsePassContent, verificationCondition, closePerson, closeDate, corApprovePerson, 
+    corApproveDate, ifSiteCorrection, isDel
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dangerList
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dangerList
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.snp.hse.model.DangerList">
+    insert into dangerList (id, lineNo, noticeNo, 
+      distributDate, unit, area, 
+      unitID, hseHiddenLevel, hiddenCategory, 
+      nonconformity, hiddenDescription, hiddenDoc, 
+      reqCompleteDate, correctiveRequest, rectificationSituation, 
+      returnDoc, contractonPeople, completeDate, 
+      responsiblePerson, responsibleDate, contractorApprove, 
+      contractorApproveDate, comfirmContent, 
+      verifyPerson, verifyDate, hsePassContent, 
+      verificationCondition, closePerson, closeDate, 
+      corApprovePerson, corApproveDate, ifSiteCorrection, 
+      isDel)
+    values (#{id,jdbcType=INTEGER}, #{lineno,jdbcType=VARCHAR}, #{noticeno,jdbcType=VARCHAR}, 
+      #{distributdate,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
+      #{nonconformity,jdbcType=VARCHAR}, #{hiddendescription,jdbcType=VARCHAR}, #{hiddendoc,jdbcType=VARCHAR}, 
+      #{reqcompletedate,jdbcType=TIMESTAMP}, #{correctiverequest,jdbcType=VARCHAR}, #{rectificationsituation,jdbcType=VARCHAR}, 
+      #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, 
+      #{responsibleperson,jdbcType=VARCHAR}, #{responsibledate,jdbcType=TIMESTAMP}, #{contractorapprove,jdbcType=VARCHAR}, 
+      #{contractorapprovedate,jdbcType=TIMESTAMP}, #{comfirmcontent,jdbcType=VARCHAR}, 
+      #{verifyperson,jdbcType=VARCHAR}, #{verifydate,jdbcType=TIMESTAMP}, #{hsepasscontent,jdbcType=VARCHAR}, 
+      #{verificationcondition,jdbcType=VARCHAR}, #{closeperson,jdbcType=VARCHAR}, #{closedate,jdbcType=TIMESTAMP}, 
+      #{corapproveperson,jdbcType=VARCHAR}, #{corapprovedate,jdbcType=TIMESTAMP}, #{ifsitecorrection,jdbcType=VARCHAR}, 
+      #{isdel,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.snp.hse.model.DangerList">
+    insert into dangerList
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="lineno != null">
+        lineNo,
+      </if>
+      <if test="noticeno != null">
+        noticeNo,
+      </if>
+      <if test="distributdate != null">
+        distributDate,
+      </if>
+      <if test="unit != null">
+        unit,
+      </if>
+      <if test="area != null">
+        area,
+      </if>
+      <if test="unitid != null">
+        unitID,
+      </if>
+      <if test="hsehiddenlevel != null">
+        hseHiddenLevel,
+      </if>
+      <if test="hiddencategory != null">
+        hiddenCategory,
+      </if>
+      <if test="nonconformity != null">
+        nonconformity,
+      </if>
+      <if test="hiddendescription != null">
+        hiddenDescription,
+      </if>
+      <if test="hiddendoc != null">
+        hiddenDoc,
+      </if>
+      <if test="reqcompletedate != null">
+        reqCompleteDate,
+      </if>
+      <if test="correctiverequest != null">
+        correctiveRequest,
+      </if>
+      <if test="rectificationsituation != null">
+        rectificationSituation,
+      </if>
+      <if test="returndoc != null">
+        returnDoc,
+      </if>
+      <if test="contractonpeople != null">
+        contractonPeople,
+      </if>
+      <if test="completedate != null">
+        completeDate,
+      </if>
+      <if test="responsibleperson != null">
+        responsiblePerson,
+      </if>
+      <if test="responsibledate != null">
+        responsibleDate,
+      </if>
+      <if test="contractorapprove != null">
+        contractorApprove,
+      </if>
+      <if test="contractorapprovedate != null">
+        contractorApproveDate,
+      </if>
+      <if test="comfirmcontent != null">
+        comfirmContent,
+      </if>
+      <if test="verifyperson != null">
+        verifyPerson,
+      </if>
+      <if test="verifydate != null">
+        verifyDate,
+      </if>
+      <if test="hsepasscontent != null">
+        hsePassContent,
+      </if>
+      <if test="verificationcondition != null">
+        verificationCondition,
+      </if>
+      <if test="closeperson != null">
+        closePerson,
+      </if>
+      <if test="closedate != null">
+        closeDate,
+      </if>
+      <if test="corapproveperson != null">
+        corApprovePerson,
+      </if>
+      <if test="corapprovedate != null">
+        corApproveDate,
+      </if>
+      <if test="ifsitecorrection != null">
+        ifSiteCorrection,
+      </if>
+      <if test="isdel != null">
+        isDel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="lineno != null">
+        #{lineno,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeno != null">
+        #{noticeno,jdbcType=VARCHAR},
+      </if>
+      <if test="distributdate != null">
+        #{distributdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="unitid != null">
+        #{unitid,jdbcType=VARCHAR},
+      </if>
+      <if test="hsehiddenlevel != null">
+        #{hsehiddenlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddencategory != null">
+        #{hiddencategory,jdbcType=VARCHAR},
+      </if>
+      <if test="nonconformity != null">
+        #{nonconformity,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddendescription != null">
+        #{hiddendescription,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddendoc != null">
+        #{hiddendoc,jdbcType=VARCHAR},
+      </if>
+      <if test="reqcompletedate != null">
+        #{reqcompletedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="correctiverequest != null">
+        #{correctiverequest,jdbcType=VARCHAR},
+      </if>
+      <if test="rectificationsituation != null">
+        #{rectificationsituation,jdbcType=VARCHAR},
+      </if>
+      <if test="returndoc != null">
+        #{returndoc,jdbcType=VARCHAR},
+      </if>
+      <if test="contractonpeople != null">
+        #{contractonpeople,jdbcType=VARCHAR},
+      </if>
+      <if test="completedate != null">
+        #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responsibleperson != null">
+        #{responsibleperson,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibledate != null">
+        #{responsibledate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contractorapprove != null">
+        #{contractorapprove,jdbcType=VARCHAR},
+      </if>
+      <if test="contractorapprovedate != null">
+        #{contractorapprovedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comfirmcontent != null">
+        #{comfirmcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyperson != null">
+        #{verifyperson,jdbcType=VARCHAR},
+      </if>
+      <if test="verifydate != null">
+        #{verifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hsepasscontent != null">
+        #{hsepasscontent,jdbcType=VARCHAR},
+      </if>
+      <if test="verificationcondition != null">
+        #{verificationcondition,jdbcType=VARCHAR},
+      </if>
+      <if test="closeperson != null">
+        #{closeperson,jdbcType=VARCHAR},
+      </if>
+      <if test="closedate != null">
+        #{closedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="corapproveperson != null">
+        #{corapproveperson,jdbcType=VARCHAR},
+      </if>
+      <if test="corapprovedate != null">
+        #{corapprovedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ifsitecorrection != null">
+        #{ifsitecorrection,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.DangerList">
+    update dangerList
+    <set>
+      <if test="lineno != null">
+        lineNo = #{lineno,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeno != null">
+        noticeNo = #{noticeno,jdbcType=VARCHAR},
+      </if>
+      <if test="distributdate != null">
+        distributDate = #{distributdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unit != null">
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="unitid != null">
+        unitID = #{unitid,jdbcType=VARCHAR},
+      </if>
+      <if test="hsehiddenlevel != null">
+        hseHiddenLevel = #{hsehiddenlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddencategory != null">
+        hiddenCategory = #{hiddencategory,jdbcType=VARCHAR},
+      </if>
+      <if test="nonconformity != null">
+        nonconformity = #{nonconformity,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddendescription != null">
+        hiddenDescription = #{hiddendescription,jdbcType=VARCHAR},
+      </if>
+      <if test="hiddendoc != null">
+        hiddenDoc = #{hiddendoc,jdbcType=VARCHAR},
+      </if>
+      <if test="reqcompletedate != null">
+        reqCompleteDate = #{reqcompletedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="correctiverequest != null">
+        correctiveRequest = #{correctiverequest,jdbcType=VARCHAR},
+      </if>
+      <if test="rectificationsituation != null">
+        rectificationSituation = #{rectificationsituation,jdbcType=VARCHAR},
+      </if>
+      <if test="returndoc != null">
+        returnDoc = #{returndoc,jdbcType=VARCHAR},
+      </if>
+      <if test="contractonpeople != null">
+        contractonPeople = #{contractonpeople,jdbcType=VARCHAR},
+      </if>
+      <if test="completedate != null">
+        completeDate = #{completedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="responsibleperson != null">
+        responsiblePerson = #{responsibleperson,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibledate != null">
+        responsibleDate = #{responsibledate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contractorapprove != null">
+        contractorApprove = #{contractorapprove,jdbcType=VARCHAR},
+      </if>
+      <if test="contractorapprovedate != null">
+        contractorApproveDate = #{contractorapprovedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comfirmcontent != null">
+        comfirmContent = #{comfirmcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyperson != null">
+        verifyPerson = #{verifyperson,jdbcType=VARCHAR},
+      </if>
+      <if test="verifydate != null">
+        verifyDate = #{verifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hsepasscontent != null">
+        hsePassContent = #{hsepasscontent,jdbcType=VARCHAR},
+      </if>
+      <if test="verificationcondition != null">
+        verificationCondition = #{verificationcondition,jdbcType=VARCHAR},
+      </if>
+      <if test="closeperson != null">
+        closePerson = #{closeperson,jdbcType=VARCHAR},
+      </if>
+      <if test="closedate != null">
+        closeDate = #{closedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="corapproveperson != null">
+        corApprovePerson = #{corapproveperson,jdbcType=VARCHAR},
+      </if>
+      <if test="corapprovedate != null">
+        corApproveDate = #{corapprovedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ifsitecorrection != null">
+        ifSiteCorrection = #{ifsitecorrection,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        isDel = #{isdel,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.DangerList">
+    update dangerList
+    set lineNo = #{lineno,jdbcType=VARCHAR},
+      noticeNo = #{noticeno,jdbcType=VARCHAR},
+      distributDate = #{distributdate,jdbcType=TIMESTAMP},
+      unit = #{unit,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      unitID = #{unitid,jdbcType=VARCHAR},
+      hseHiddenLevel = #{hsehiddenlevel,jdbcType=VARCHAR},
+      hiddenCategory = #{hiddencategory,jdbcType=VARCHAR},
+      nonconformity = #{nonconformity,jdbcType=VARCHAR},
+      hiddenDescription = #{hiddendescription,jdbcType=VARCHAR},
+      hiddenDoc = #{hiddendoc,jdbcType=VARCHAR},
+      reqCompleteDate = #{reqcompletedate,jdbcType=TIMESTAMP},
+      correctiveRequest = #{correctiverequest,jdbcType=VARCHAR},
+      rectificationSituation = #{rectificationsituation,jdbcType=VARCHAR},
+      returnDoc = #{returndoc,jdbcType=VARCHAR},
+      contractonPeople = #{contractonpeople,jdbcType=VARCHAR},
+      completeDate = #{completedate,jdbcType=TIMESTAMP},
+      responsiblePerson = #{responsibleperson,jdbcType=VARCHAR},
+      responsibleDate = #{responsibledate,jdbcType=TIMESTAMP},
+      contractorApprove = #{contractorapprove,jdbcType=VARCHAR},
+      contractorApproveDate = #{contractorapprovedate,jdbcType=TIMESTAMP},
+      comfirmContent = #{comfirmcontent,jdbcType=VARCHAR},
+      verifyPerson = #{verifyperson,jdbcType=VARCHAR},
+      verifyDate = #{verifydate,jdbcType=TIMESTAMP},
+      hsePassContent = #{hsepasscontent,jdbcType=VARCHAR},
+      verificationCondition = #{verificationcondition,jdbcType=VARCHAR},
+      closePerson = #{closeperson,jdbcType=VARCHAR},
+      closeDate = #{closedate,jdbcType=TIMESTAMP},
+      corApprovePerson = #{corapproveperson,jdbcType=VARCHAR},
+      corApproveDate = #{corapprovedate,jdbcType=TIMESTAMP},
+      ifSiteCorrection = #{ifsitecorrection,jdbcType=VARCHAR},
+      isDel = #{isdel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

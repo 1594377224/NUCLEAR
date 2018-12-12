@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.snp.hse.mapper.CheckAndDangerMapper">
+  <resultMap id="BaseResultMap" type="com.snp.hse.model.CheckAndDanger">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="checkId" jdbcType="INTEGER" property="checkid" />
+    <result column="dangerId" jdbcType="INTEGER" property="dangerid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, checkId, dangerId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from checkAndDanger
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from checkAndDanger
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.snp.hse.model.CheckAndDanger">
+    insert into checkAndDanger (id, checkId, dangerId
+      )
+    values (#{id,jdbcType=INTEGER}, #{checkid,jdbcType=INTEGER}, #{dangerid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.snp.hse.model.CheckAndDanger">
+    insert into checkAndDanger
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="checkid != null">
+        checkId,
+      </if>
+      <if test="dangerid != null">
+        dangerId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="checkid != null">
+        #{checkid,jdbcType=INTEGER},
+      </if>
+      <if test="dangerid != null">
+        #{dangerid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.snp.hse.model.CheckAndDanger">
+    update checkAndDanger
+    <set>
+      <if test="checkid != null">
+        checkId = #{checkid,jdbcType=INTEGER},
+      </if>
+      <if test="dangerid != null">
+        dangerId = #{dangerid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.snp.hse.model.CheckAndDanger">
+    update checkAndDanger
+    set checkId = #{checkid,jdbcType=INTEGER},
+      dangerId = #{dangerid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
