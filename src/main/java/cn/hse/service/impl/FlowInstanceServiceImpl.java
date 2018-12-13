@@ -2,12 +2,14 @@ package cn.hse.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.hse.beans.FlowInstance;
 import cn.hse.mapper.FlowInstanceMapper;
 import cn.hse.service.FlowInstanceService;
 
 @Service
+@Transactional
 public class FlowInstanceServiceImpl implements FlowInstanceService {
 	@Autowired
 	private FlowInstanceMapper flowInstanceMapper;

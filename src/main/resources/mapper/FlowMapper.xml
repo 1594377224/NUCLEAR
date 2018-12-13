@@ -12,7 +12,7 @@
   <sql id="Base_Column_List">
     id, flowCode, flowName, flowVersion, params, enableFlag
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from flow
@@ -20,7 +20,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from flow
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="cn.hse.beans.Flow">
     insert into flow (id, flowCode, flowName, 
