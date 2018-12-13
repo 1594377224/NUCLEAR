@@ -19,6 +19,12 @@
     from flowStep
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByStepId"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flowStep
+    where stepId = #{stepId,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from flowStep
     where id = #{id,jdbcType=INTEGER}

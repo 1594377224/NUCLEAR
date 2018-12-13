@@ -1,7 +1,10 @@
 package cn.hse.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import cn.hse.beans.FlowInstance;
 
+@Mapper
 public interface FlowInstanceMapper {
     int deleteByPrimaryKey(Integer id);
 

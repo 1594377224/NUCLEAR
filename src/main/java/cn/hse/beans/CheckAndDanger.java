@@ -1,5 +1,8 @@
 package cn.hse.beans;
 
+import org.springframework.context.annotation.ComponentScan;
+
+@ComponentScan
 public class CheckAndDanger {
     private Integer id;
 

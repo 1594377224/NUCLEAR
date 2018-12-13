@@ -14,11 +14,17 @@ import cn.hse.beans.CheckAndDanger;
 import cn.hse.beans.CheckList;
 import cn.hse.beans.DangerList;
 import cn.hse.beans.Flow;
+import cn.hse.beans.FlowAction;
+import cn.hse.beans.FlowActionTrace;
 import cn.hse.beans.FlowInstance;
+import cn.hse.beans.FlowStep;
 import cn.hse.service.CheckAndDangerService;
 import cn.hse.service.CheckListService;
 import cn.hse.service.DangerListServie;
+import cn.hse.service.FlowActionService;
+import cn.hse.service.FlowInstanceService;
 import cn.hse.service.FlowService;
+import cn.hse.service.FlowStepService;
 import cn.hse.util.DateUtil;
 import cn.hse.util.RandomUUID;
 import cn.hse.util.Result;
@@ -34,6 +40,12 @@ public class CheckListController {
 	private CheckAndDangerService checkAndDangerService;
 	@Autowired
 	private FlowService flowService;
+	@Autowired
+	private FlowInstanceService flowInstanceService;
+	@Autowired
+	private FlowActionService flowActionService;
+	@Autowired
+	private FlowStepService flowStepService;
 	/**
 	 * 新建检查单
 	 * @return
@@ -110,7 +122,17 @@ public class CheckListController {
 			flowInstance.setApplyusername(map.get("userName").toString());
 			flowInstance.setApplydatetime(new Date());
 			flowInstance.setStatusid("0");
-			
+			int d=flowInstanceService.insertFlowInstance(flowInstance);
+			logger.info("----"+d);
+			//查询操作表
+			FlowAction flowAction=flowActionService.selectFlowAction(1);
+			//根据stepId来查询步骤表
+			FlowStep flowStep=flowStepService.selectFlowStep(flowAction.getStepid());
+			//插入流转表
+			FlowActionTrace flowActionTrace=new FlowActionTrace();
+			flowActionTrace.setInstanceid(instanceId);
+			flowActionTrace.setFlowid(flow.getId());
+			/*flowAction*/
 		}
 		return result;
 	}

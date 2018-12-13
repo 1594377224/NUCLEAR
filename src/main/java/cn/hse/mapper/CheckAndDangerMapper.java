@@ -1,7 +1,9 @@
 package cn.hse.mapper;
 
-import cn.hse.beans.CheckAndDanger;
+import org.apache.ibatis.annotations.Mapper;
 
+import cn.hse.beans.CheckAndDanger;
+@Mapper
 public interface CheckAndDangerMapper {
     int deleteByPrimaryKey(Integer id);
 

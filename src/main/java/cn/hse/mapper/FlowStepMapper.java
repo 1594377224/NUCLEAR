@@ -1,7 +1,9 @@
 package cn.hse.mapper;
 
-import cn.hse.beans.FlowStep;
+import org.apache.ibatis.annotations.Mapper;
 
+import cn.hse.beans.FlowStep;
+@Mapper
 public interface FlowStepMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface FlowStepMapper {
     int updateByPrimaryKeySelective(FlowStep record);
 
     int updateByPrimaryKey(FlowStep record);
+
+	FlowStep selectByStepId(String stepid);
 }
