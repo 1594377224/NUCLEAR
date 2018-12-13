@@ -9,7 +9,7 @@ public interface FlowMapper {
 
     int insertSelective(Flow record);
 
-    Flow selectByPrimaryKey(Integer id);
+    Flow selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(Flow record);
 

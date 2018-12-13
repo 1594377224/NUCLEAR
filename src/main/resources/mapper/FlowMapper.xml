@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.FlowMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.Flow">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="flowCode" jdbcType="VARCHAR" property="flowcode" />
     <result column="flowName" jdbcType="VARCHAR" property="flowname" />
     <result column="flowVersion" jdbcType="VARCHAR" property="flowversion" />

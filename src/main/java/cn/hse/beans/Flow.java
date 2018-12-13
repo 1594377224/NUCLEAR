@@ -1,7 +1,10 @@
 package cn.hse.beans;
 
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
 public class Flow {
-    private Integer id;
+    private String id;
 
     private String flowcode;
 
@@ -13,11 +16,11 @@ public class Flow {
 
     private Integer enableflag;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
