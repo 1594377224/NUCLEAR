@@ -1,7 +1,9 @@
 package cn.hse.mapper;
 
-import cn.hse.beans.FlowActionTraceData;
+import org.apache.ibatis.annotations.Mapper;
 
+import cn.hse.beans.FlowActionTraceData;
+@Mapper
 public interface FlowActionTraceDataMapper {
     int deleteByPrimaryKey(Integer traceid);
 

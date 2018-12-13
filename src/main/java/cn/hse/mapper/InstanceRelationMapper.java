@@ -1,7 +1,9 @@
 package cn.hse.mapper;
 
-import cn.hse.beans.InstanceRelation;
+import org.apache.ibatis.annotations.Mapper;
 
+import cn.hse.beans.InstanceRelation;
+@Mapper
 public interface InstanceRelationMapper {
     int deleteByPrimaryKey(Integer id);
 
