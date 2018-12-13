@@ -22,9 +22,11 @@ import cn.hse.service.CheckAndDangerService;
 import cn.hse.service.CheckListService;
 import cn.hse.service.DangerListServie;
 import cn.hse.service.FlowActionService;
+import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
 import cn.hse.service.FlowService;
 import cn.hse.service.FlowStepService;
+import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.RandomUUID;
 import cn.hse.util.Result;
@@ -46,6 +48,8 @@ public class CheckListController {
 	private FlowActionService flowActionService;
 	@Autowired
 	private FlowStepService flowStepService;
+	@Autowired
+	private FlowActionTraceService  flowActionTraceService;
 	/**
 	 * 新建检查单
 	 * @return
@@ -132,7 +136,22 @@ public class CheckListController {
 			FlowActionTrace flowActionTrace=new FlowActionTrace();
 			flowActionTrace.setInstanceid(instanceId);
 			flowActionTrace.setFlowid(flow.getId());
-			/*flowAction*/
+			flowActionTrace.setFlowcode(flow.getFlowcode());
+			flowActionTrace.setFlowname(flow.getFlowname());
+			flowActionTrace.setStepid(flowStep.getStepid());
+			flowActionTrace.setStepcode(flowStep.getStepcode());
+			flowActionTrace.setStepname(flowStep.getStepname());
+			flowActionTrace.setActionid(flowAction.getActionid());
+			flowActionTrace.setActioncode(flowAction.getActioncode());
+			flowActionTrace.setActionname(flowAction.getActionname());
+			flowActionTrace.setOwneruserid(map.get("userId").toString());
+			flowActionTrace.setOwnerusername(map.get("userName").toString());
+			flowActionTrace.setOwneruserdesc(Constant.FA_QI_REN);
+			flowActionTrace.setSubmituserid(map.get("userId").toString());
+			flowActionTrace.setSubmitusername(map.get("userName").toString());
+			flowActionTrace.setSubmituserdesc(flowAction.getActionname());
+			flowActionTrace.setArrivetime(new Date());
+			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
 		}
 		return result;
 	}
