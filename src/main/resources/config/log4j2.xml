@@ -3,8 +3,8 @@
 <configuration status="warn">
     <properties>
  
-        <Property name="app_name">SNEOA-web</Property>
-        <Property name="log_path">logs/${app_name}</Property>
+        <Property name="app_name">SNEOA</Property>
+        <Property name="log_path">../logs/${app_name}</Property>
  
     </properties>
     <appenders>
