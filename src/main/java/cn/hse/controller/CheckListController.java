@@ -18,6 +18,7 @@ import cn.hse.beans.FlowAction;
 import cn.hse.beans.FlowActionTrace;
 import cn.hse.beans.FlowInstance;
 import cn.hse.beans.FlowStep;
+import cn.hse.beans.InstanceRelation;
 import cn.hse.service.CheckAndDangerService;
 import cn.hse.service.CheckListService;
 import cn.hse.service.DangerListServie;
@@ -26,6 +27,7 @@ import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
 import cn.hse.service.FlowService;
 import cn.hse.service.FlowStepService;
+import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.RandomUUID;
@@ -50,6 +52,8 @@ public class CheckListController {
 	private FlowStepService flowStepService;
 	@Autowired
 	private FlowActionTraceService  flowActionTraceService;
+	@Autowired
+	private InstanceRelationService instanceRelationService;
 	/**
 	 * 新建检查单
 	 * @return
@@ -111,6 +115,9 @@ public class CheckListController {
 			if (a==0 && b==0 && c==0) {
 				result.setRtnCode("0");
 				result.setRtnMsg("保存成功！");
+			}else {
+				result.setRtnCode("-9999");
+				result.setRtnMsg("提交失败！");
 			}
 		}else {  //等于1就是要提交
 			//查询流程模板   查询模板1
@@ -128,6 +135,11 @@ public class CheckListController {
 			flowInstance.setStatusid("0");
 			int d=flowInstanceService.insertFlowInstance(flowInstance);
 			logger.info("----"+d);
+			//插入实例和检查单关系表
+			InstanceRelation instanceRelation=new InstanceRelation();
+			instanceRelation.setCheckid(checkId);
+			instanceRelation.setInstanceid(instanceId);
+			int f=instanceRelationService.insert(instanceRelation);
 			//查询操作表
 			FlowAction flowAction=flowActionService.selectFlowAction(1);
 			//根据stepId来查询步骤表
@@ -152,6 +164,13 @@ public class CheckListController {
 			flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
+			if (d==0 && f==0 && e==0) {
+				result.setRtnCode("0");
+				result.setRtnMsg("提交成功！");
+			}else {
+				result.setRtnCode("-9999");
+				result.setRtnMsg("提交失败！");
+			}
 		}
 		return result;
 	}
