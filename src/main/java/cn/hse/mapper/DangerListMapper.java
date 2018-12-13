@@ -1,7 +1,10 @@
 package cn.hse.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import cn.hse.beans.DangerList;
 
+@Mapper
 public interface DangerListMapper {
     int deleteByPrimaryKey(Integer id);
 

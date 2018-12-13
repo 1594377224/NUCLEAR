@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.DangerListMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.DangerList">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="lineNo" jdbcType="VARCHAR" property="lineno" />
     <result column="noticeNo" jdbcType="VARCHAR" property="noticeno" />
     <result column="distributDate" jdbcType="TIMESTAMP" property="distributdate" />
@@ -21,6 +21,7 @@
     <result column="contractonPeople" jdbcType="VARCHAR" property="contractonpeople" />
     <result column="completeDate" jdbcType="TIMESTAMP" property="completedate" />
     <result column="responsiblePerson" jdbcType="VARCHAR" property="responsibleperson" />
+     <result column="copyPerson" jdbcType="VARCHAR" property="copyPerson" />
     <result column="responsibleDate" jdbcType="TIMESTAMP" property="responsibledate" />
     <result column="contractorApprove" jdbcType="VARCHAR" property="contractorapprove" />
     <result column="contractorApproveDate" jdbcType="TIMESTAMP" property="contractorapprovedate" />
@@ -39,7 +40,7 @@
   <sql id="Base_Column_List">
     id, lineNo, noticeNo, distributDate, unit, area, unitID, hseHiddenLevel, hiddenCategory, 
     nonconformity, hiddenDescription, hiddenDoc, reqCompleteDate, correctiveRequest, 
-    rectificationSituation, returnDoc, contractonPeople, completeDate, responsiblePerson, 
+    rectificationSituation, returnDoc, contractonPeople, completeDate, responsiblePerson,copyPerson, 
     responsibleDate, contractorApprove, contractorApproveDate, comfirmContent, verifyPerson, 
     verifyDate, hsePassContent, verificationCondition, closePerson, closeDate, corApprovePerson, 
     corApproveDate, ifSiteCorrection, isDel

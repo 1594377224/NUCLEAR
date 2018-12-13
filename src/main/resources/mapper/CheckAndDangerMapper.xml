@@ -3,8 +3,8 @@
 <mapper namespace="cn.hse.mapper.CheckAndDangerMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.CheckAndDanger">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="checkId" jdbcType="INTEGER" property="checkid" />
-    <result column="dangerId" jdbcType="INTEGER" property="dangerid" />
+    <result column="checkId" jdbcType="VARCHAR" property="checkid" />
+    <result column="dangerId" jdbcType="VARCHAR" property="dangerid" />
   </resultMap>
   <sql id="Base_Column_List">
     id, checkId, dangerId

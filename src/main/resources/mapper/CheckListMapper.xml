@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.CheckListMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.CheckList">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="projNo" jdbcType="VARCHAR" property="projno" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="recordNo" jdbcType="VARCHAR" property="recordno" />

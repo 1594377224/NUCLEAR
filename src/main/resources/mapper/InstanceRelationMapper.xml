@@ -3,8 +3,8 @@
 <mapper namespace="cn.hse.mapper.InstanceRelationMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.InstanceRelation">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="instanceId" jdbcType="INTEGER" property="instanceid" />
-    <result column="checkId" jdbcType="INTEGER" property="checkid" />
+    <result column="instanceId" jdbcType="VARCHAR" property="instanceid" />
+    <result column="checkId" jdbcType="VARCHAR" property="checkid" />
   </resultMap>
   <sql id="Base_Column_List">
     id, instanceId, checkId

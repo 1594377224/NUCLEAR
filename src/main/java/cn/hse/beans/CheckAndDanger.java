@@ -3,9 +3,9 @@ package cn.hse.beans;
 public class CheckAndDanger {
     private Integer id;
 
-    private Integer checkid;
+    private String checkid;
 
-    private Integer dangerid;
+    private String dangerid;
 
     public Integer getId() {
         return id;
@@ -15,19 +15,19 @@ public class CheckAndDanger {
         this.id = id;
     }
 
-    public Integer getCheckid() {
+    public String getCheckid() {
         return checkid;
     }
 
-    public void setCheckid(Integer checkid) {
+    public void setCheckid(String checkid) {
         this.checkid = checkid;
     }
 
-    public Integer getDangerid() {
+    public String getDangerid() {
         return dangerid;
     }
 
-    public void setDangerid(Integer dangerid) {
+    public void setDangerid(String dangerid) {
         this.dangerid = dangerid;
     }
 }

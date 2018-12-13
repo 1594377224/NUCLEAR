@@ -3,7 +3,7 @@ package cn.hse.beans;
 import java.util.Date;
 
 public class DangerList {
-    private Integer id;
+    private String id;
 
     private String lineno;
 
@@ -40,7 +40,8 @@ public class DangerList {
     private Date completedate;
 
     private String responsibleperson;
-
+    
+    private String copyPerson;
     private Date responsibledate;
 
     private String contractorapprove;
@@ -69,11 +70,11 @@ public class DangerList {
 
     private Integer isdel;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -332,4 +333,14 @@ public class DangerList {
     public void setIsdel(Integer isdel) {
         this.isdel = isdel;
     }
+
+	public String getCopyPerson() {
+		return copyPerson;
+	}
+
+	public void setCopyPerson(String copyPerson) {
+		this.copyPerson = copyPerson;
+	}
+    
+    
 }
