@@ -1,6 +1,7 @@
 package cn.hse.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -65,11 +66,12 @@ public class CheckListController {
 	public Result insertCheck(@RequestBody Map<String, Object> map){
 		logger.info("=======进入新建检查单========接收参数="+map);
 		Result result=new Result();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//封装检查单对象
 		CheckList checkList=new CheckList();
 		//String checkId=RandomUUID.RandomID();
 		//checkList.setId(checkId);
-		checkList.setUserId("潘金鑫");
+		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno("1");   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
 		checkList.setRecordno("2");  //检查编号
@@ -124,10 +126,16 @@ public class CheckListController {
 			if (a==1&&b==1&&c==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("保存成功！");
+				resultMap.put("resultCode", "0");
+				resultMap.put("resultMsg", "操作成功！");
+				result.setObject(resultMap);
 				logger.info("======保存成功！");
 			}else {
 				result.setRtnCode("-9999");
 				result.setRtnMsg("提交失败！");
+				resultMap.put("resultCode", "-9999");
+				resultMap.put("resultMsg", "操作失败！");
+				result.setObject(resultMap);
 				logger.info("======保存失败");
 			}
 		}else {  //等于1就是要提交
@@ -180,10 +188,16 @@ public class CheckListController {
 			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("提交成功！");
+				resultMap.put("resultCode", "0");
+				resultMap.put("resultMsg", "操作成功！");
+				result.setObject(resultMap);
 				logger.info("----==提交成功");
 			}else {
 				result.setRtnCode("-9999");
 				result.setRtnMsg("提交失败！");
+				resultMap.put("resultCode", "-9999");
+				resultMap.put("resultMsg", "操作失败！");
+				result.setObject(resultMap);
 				logger.info("----==提交失败");
 			}
 		}
