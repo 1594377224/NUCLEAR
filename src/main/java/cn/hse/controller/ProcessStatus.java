@@ -62,4 +62,36 @@ public class ProcessStatus {
 		}
 		
 	}
+	
+	/*
+	 * 流程状态查询个数
+	 */
+	@RequestMapping(value="/findProcessStatusCount",method=RequestMethod.POST)
+	public String findProcessStatusCount(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[流程状态-查询入参]"+inputJson);
+		// 参数校验
+		if(inputJson.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		//登录用户id
+		String id = "" ;
+		if (inputJson.containsKey("id")) {
+			id = inputJson.getString("id");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(id)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = processStatusService.findProcessStatusCount(inputJson);
+			return resultStr;
+		}
+	}
+	
+	
+	
 }

@@ -119,37 +119,33 @@
 	<!-- 查询草稿信息 -->
 	<select id="findDraft"  parameterType="Map" resultType = "Map">
 			SELECT
-				c.checkForm,
-				c.projNo,
-				c.recordNo,
-				c.draftDate,
-				c.draftPerson
+				checkForm,
+				projNo,
+				recordNo,
+				draftDate,
+				draftPerson
 			FROM
-				checkList c
-			WHERE
-			
+				checkList 
 			<where>
-			 	c.userId =  #{ownerUserId}
-				AND c.isDel = '0'
-				AND c.state = '0'
+			 	userId =  #{ownerUserId}
+				AND isDel = '0'
+				AND state = '0'
 			</where>
 			 order by draftDate desc 
 		 <if test="limit!= null and limit!= '' ">
 			limit #{start},#{limit}
 		</if> 
 	</select>
-	<!-- 查询流转信息个数 -->
+	<!-- 查询草稿信息个数 -->
 	<select id="findCountDraft"  parameterType="Map" resultType = "int">
 		select 
 			count(1) 
 		FROM
-			checkList c
-		WHERE
-		
+			checkList 
 		<where>
-		 	c.userId =  #{ownerUserId}
-			AND c.isDel = '0'
-			AND c.state = '0'
+		 	userId =  #{ownerUserId}
+			AND isDel = '0'
+			AND state = '0'
 		</where>
 	</select>
 	

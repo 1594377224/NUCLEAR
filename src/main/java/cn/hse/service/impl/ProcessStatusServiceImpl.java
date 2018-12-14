@@ -67,5 +67,36 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, list);
 	}
+	
+	/*
+	 * 流程状态查询个数
+	 */
+	@Override
+	public String findProcessStatusCount(JSONObject inputJson) {
+		logger.info("[流程状态-查询个数入参]"+inputJson);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String,Object> map = inputJson.fromObject(inputJson);
+		String id = inputJson.getString("id");
+		map.put("ownerUserId", id);
+		//待办个数
+		int toDoNum = processStatusMapper.findCountToDo(map);
+		//已办个数
+		int haveToDoNum = processStatusMapper.findCountHaveToDo(map);
+		//流转个数
+		int circulationNum = processStatusMapper.findCountCirculation(map);
+		//草稿个数
+		int draftNum = processStatusMapper.findCountDraft(map);
+		//待阅个数
+		
+		//已阅个数
+		
+		resultMap.put("toDoNum", toDoNum);
+		resultMap.put("haveToDoNum", haveToDoNum);
+		resultMap.put("circulationNum", circulationNum);
+		resultMap.put("draftNum", draftNum);
+		resultMap.put("resultCode", "0");
+		resultMap.put("resultMsg", "操作成功！");
+		return ResultUtil.result("0", resultMap, null);
+	}
 
 }
