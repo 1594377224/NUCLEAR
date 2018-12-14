@@ -16,5 +16,9 @@ public class DangerListServieImpl implements DangerListServie{
 	public int insertDanger(DangerList dangerList) {
 		return dangerListMapper.insert(dangerList);
 	}
+	@Override
+	public DangerList selectDangerByCheckId(int checkId) {
+		return dangerListMapper.selectDangerByCheckId(checkId);
+	}
 
 }
