@@ -42,7 +42,7 @@ public class CheckListController {
 	@Autowired
 	private CheckListService checkListService;
 	@Autowired
-	private DangerListServie DangerListServie;
+	private DangerListServie dangerListServie;
 	@Autowired
 	private CheckAndDangerService checkAndDangerService;
 	@Autowired
@@ -72,7 +72,7 @@ public class CheckListController {
 		//String checkId=RandomUUID.RandomID();
 		//checkList.setId(checkId);
 		checkList.setUserId(map.get("userId").toString());
-		checkList.setProjno("1");   //项目编号
+		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
 		checkList.setRecordno("2");  //检查编号
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
@@ -113,7 +113,7 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		dangerList.setResponsibleperson(map.get("responsiblePerson").toString());  //整改责任人
 		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
-		int b=DangerListServie.insertDanger(dangerList);
+		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
 		logger.info("====隐患单插入完毕"+dangerId);
 		//生成检查单个隐患单的关系表数据
@@ -200,6 +200,21 @@ public class CheckListController {
 				result.setObject(resultMap);
 				logger.info("----==提交失败");
 			}
+		}
+		return result;
+	}
+	
+	@RequestMapping(value="selectDanger",method=RequestMethod.POST)
+	public Result selectDanger(@RequestBody Map<String, Object> map) {
+		Result result=new Result();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		int checkId=Integer.parseInt(map.get("checkId").toString());
+		DangerList dangerList=dangerListServie.selectDangerByCheckId(checkId);
+		if (dangerList!=null) {
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			resultMap.put("dangerList", dangerList);
+			result.setObject(resultMap);
 		}
 		return result;
 	}

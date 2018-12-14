@@ -17,4 +17,6 @@ public interface DangerListMapper {
     int updateByPrimaryKeySelective(DangerList record);
 
     int updateByPrimaryKey(DangerList record);
+
+	DangerList selectDangerByCheckId(int checkId);
 }

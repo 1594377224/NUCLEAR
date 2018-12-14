@@ -6,4 +6,6 @@ public interface DangerListServie {
 
 	public int insertDanger(DangerList dangerList);
 
+	public DangerList selectDangerByCheckId(int checkId);
+
 }
