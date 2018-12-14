@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.CheckListMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.CheckList">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+     <result column="userId" jdbcType="VARCHAR" property="userId" />
     <result column="projNo" jdbcType="VARCHAR" property="projno" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="recordNo" jdbcType="VARCHAR" property="recordno" />
@@ -20,7 +21,7 @@
     <result column="isDel" jdbcType="INTEGER" property="isdel" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, projNo, state, recordNo, checkDate, checkForm, recordType, checkContent, checkPerson, 
+    id,userId, projNo, state, recordNo, checkDate, checkForm, recordType, checkContent, checkPerson, 
     draftUnit, draftDept, draftPerson, draftDate, approvePerson, approveDate, isDel
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -33,19 +34,22 @@
     delete from checkList
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.hse.beans.CheckList">
-    insert into checkList (id, projNo, state, 
+  <insert id="insert" parameterType="cn.hse.beans.CheckList" keyProperty="id" useGeneratedKeys="true">
+    insert into checkList (id, userId,projNo, state, 
       recordNo, checkDate, checkForm, 
       recordType, checkContent, checkPerson, 
       draftUnit, draftDept, draftPerson, 
       draftDate, approvePerson, approveDate, 
       isDel)
-    values (#{id,jdbcType=INTEGER}, #{projno,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER},#{userId,jdbcType=VARCHAR}, #{projno,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{recordno,jdbcType=VARCHAR}, #{checkdate,jdbcType=TIMESTAMP}, #{checkform,jdbcType=INTEGER}, 
       #{recordtype,jdbcType=INTEGER}, #{checkcontent,jdbcType=VARCHAR}, #{checkperson,jdbcType=VARCHAR}, 
       #{draftunit,jdbcType=VARCHAR}, #{draftdept,jdbcType=VARCHAR}, #{draftperson,jdbcType=VARCHAR}, 
       #{draftdate,jdbcType=TIMESTAMP}, #{approveperson,jdbcType=VARCHAR}, #{approvedate,jdbcType=TIMESTAMP}, 
       #{isdel,jdbcType=INTEGER})
+      <selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
   </insert>
   <insert id="insertSelective" parameterType="cn.hse.beans.CheckList">
     insert into checkList
@@ -203,7 +207,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.hse.beans.CheckList">
     update checkList
-    set projNo = #{projno,jdbcType=VARCHAR},
+    set projNo = #{userId,jdbcType=VARCHAR},
+      projNo = #{projno,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
       recordNo = #{recordno,jdbcType=VARCHAR},
       checkDate = #{checkdate,jdbcType=TIMESTAMP},

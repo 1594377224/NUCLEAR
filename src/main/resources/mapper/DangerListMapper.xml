@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.hse.mapper.DangerListMapper">
   <resultMap id="BaseResultMap" type="cn.hse.beans.DangerList">
-    <id column="id" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="lineNo" jdbcType="VARCHAR" property="lineno" />
     <result column="noticeNo" jdbcType="VARCHAR" property="noticeno" />
     <result column="distributDate" jdbcType="TIMESTAMP" property="distributdate" />
@@ -55,7 +55,7 @@
     delete from dangerList
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.hse.beans.DangerList">
+  <insert id="insert" parameterType="cn.hse.beans.DangerList" keyProperty="id" useGeneratedKeys="true">
     insert into dangerList (id, lineNo, noticeNo, 
       distributDate, unit, area, 
       unitID, hseHiddenLevel, hiddenCategory, 
@@ -80,6 +80,9 @@
       #{verificationcondition,jdbcType=VARCHAR}, #{closeperson,jdbcType=VARCHAR}, #{closedate,jdbcType=TIMESTAMP}, 
       #{corapproveperson,jdbcType=VARCHAR}, #{corapprovedate,jdbcType=TIMESTAMP}, #{ifsitecorrection,jdbcType=VARCHAR}, 
       #{isdel,jdbcType=INTEGER})
+      <selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
   </insert>
   <insert id="insertSelective" parameterType="cn.hse.beans.DangerList">
     insert into dangerList

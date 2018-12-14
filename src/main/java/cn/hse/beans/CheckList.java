@@ -3,8 +3,9 @@ package cn.hse.beans;
 import java.util.Date;
 
 public class CheckList {
-    private String id;
+    private Integer id;
 
+    private String userId;
     private String projno;
 
     private Integer state;
@@ -35,11 +36,11 @@ public class CheckList {
 
     private Integer isdel;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,7 +48,15 @@ public class CheckList {
         return projno;
     }
 
-    public void setProjno(String projno) {
+    public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setProjno(String projno) {
         this.projno = projno;
     }
 

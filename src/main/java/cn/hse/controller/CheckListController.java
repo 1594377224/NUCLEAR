@@ -32,7 +32,6 @@ import cn.hse.service.FlowStepService;
 import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
-import cn.hse.util.RandomUUID;
 import cn.hse.util.Result;
 
 @RequestMapping("/checkList")
@@ -68,8 +67,9 @@ public class CheckListController {
 		Result result=new Result();
 		//封装检查单对象
 		CheckList checkList=new CheckList();
-		String checkId=RandomUUID.RandomID();
-		checkList.setId(checkId);
+		//String checkId=RandomUUID.RandomID();
+		//checkList.setId(checkId);
+		checkList.setUserId("潘金鑫");
 		checkList.setProjno("1");   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
 		checkList.setRecordno("2");  //检查编号
@@ -86,11 +86,13 @@ public class CheckListController {
 		checkList.setApprovedate(DateUtil.string2Date(map.get("approveDate").toString()));  //批准日期
 */		checkList.setIsdel(0);
 		int a=checkListService.insertCheck(checkList);
-		logger.info("====检查单插入完毕");
+		int checkId=checkList.getId();
+		//int checkId=1;
+		logger.info("====检查单插入完毕"+checkId);
 		//封装隐患单对象
 		DangerList dangerList=new DangerList();
-		String dangerId=RandomUUID.RandomID();
-		dangerList.setId(dangerId);
+		//String dangerId=RandomUUID.RandomID();
+		//dangerList.setId(dangerId);
 		dangerList.setLineno("1");   //序号
 		dangerList.setNoticeno("2");//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
@@ -110,7 +112,8 @@ public class CheckListController {
 		dangerList.setResponsibleperson(map.get("responsiblePerson").toString());  //整改责任人
 		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
 		int b=DangerListServie.insertDanger(dangerList);
-		logger.info("====隐患单插入完毕");
+		int dangerId=dangerList.getId();
+		logger.info("====隐患单插入完毕"+dangerId);
 		//生成检查单个隐患单的关系表数据
 		CheckAndDanger checkAndDanger=new CheckAndDanger();
 		checkAndDanger.setCheckid(checkId);
@@ -118,7 +121,7 @@ public class CheckListController {
 		int c=checkAndDangerService.insertCheckAndDanger(checkAndDanger);
 		logger.info("====检查隐患关系表插入完毕");
 		if (map.get("state").toString().equals("0")) {  //0代表是保存；1则是提交
-			if (a==1 && b==1 && c==1) {
+			if (a==1&&b==1&&c==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("保存成功！");
 				logger.info("======保存成功！");
@@ -132,9 +135,9 @@ public class CheckListController {
 			Flow flow=flowService.selectByPrimaryKey("1");
 			//插入实例表
 			FlowInstance flowInstance=new FlowInstance();
-			String instanceId=RandomUUID.RandomID();
-			flowInstance.setId(instanceId);
-			flowInstance.setFlowid(flow.getId());
+			//String instanceId=RandomUUID.RandomID();
+			//flowInstance.setId(instanceId);
+			flowInstance.setFlowid(flow.getId().toString());
 			flowInstance.setFlowname(flow.getFlowname());
 			flowInstance.setUserid(map.get("userId").toString());
 			flowInstance.setUsername(map.get("userName").toString());
@@ -142,6 +145,7 @@ public class CheckListController {
 			flowInstance.setApplydatetime(new Date());
 			flowInstance.setStatusid("0");
 			int d=flowInstanceService.insertFlowInstance(flowInstance);
+			int instanceId=flowInstance.getId();
 			logger.info("----==实例表插入成功");
 			//插入实例和检查单关系表
 			InstanceRelation instanceRelation=new InstanceRelation();
@@ -155,7 +159,7 @@ public class CheckListController {
 			//插入流转表
 			FlowActionTrace flowActionTrace=new FlowActionTrace();
 			flowActionTrace.setInstanceid(instanceId);
-			flowActionTrace.setFlowid(flow.getId());
+			flowActionTrace.setFlowid(flow.getId().toString());
 			flowActionTrace.setFlowcode(flow.getFlowcode());
 			flowActionTrace.setFlowname(flow.getFlowname());
 			flowActionTrace.setStepid(flowStep.getStepid());
@@ -173,7 +177,7 @@ public class CheckListController {
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
 			logger.info("----==流转表插入成功");
-			if (d==1 && f==1 && e==1) {
+			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("提交成功！");
 				logger.info("----==提交成功");

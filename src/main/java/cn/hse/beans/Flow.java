@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public class Flow {
-    private String id;
+    private Integer id;
 
     private String flowcode;
 
@@ -16,11 +16,11 @@ public class Flow {
 
     private Integer enableflag;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -3,7 +3,7 @@ package cn.hse.beans;
 import java.util.Date;
 
 public class FlowInstance {
-    private String id;
+    private Integer id;
 
     private String flowid;
 
@@ -23,11 +23,11 @@ public class FlowInstance {
 
     private String statusid;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

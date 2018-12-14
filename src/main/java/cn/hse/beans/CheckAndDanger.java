@@ -6,9 +6,9 @@ import org.springframework.context.annotation.ComponentScan;
 public class CheckAndDanger {
     private Integer id;
 
-    private String checkid;
+    private Integer checkid;
 
-    private String dangerid;
+    private Integer dangerid;
 
     public Integer getId() {
         return id;
@@ -18,19 +18,19 @@ public class CheckAndDanger {
         this.id = id;
     }
 
-    public String getCheckid() {
+    public Integer getCheckid() {
         return checkid;
     }
 
-    public void setCheckid(String checkid) {
+    public void setCheckid(Integer checkid) {
         this.checkid = checkid;
     }
 
-    public String getDangerid() {
+    public Integer getDangerid() {
         return dangerid;
     }
 
-    public void setDangerid(String dangerid) {
+    public void setDangerid(Integer dangerid) {
         this.dangerid = dangerid;
     }
 }

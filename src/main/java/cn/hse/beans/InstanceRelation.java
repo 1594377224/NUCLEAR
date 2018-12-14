@@ -3,9 +3,9 @@ package cn.hse.beans;
 public class InstanceRelation {
     private Integer id;
 
-    private String instanceid;
+    private Integer instanceid;
 
-    private String checkid;
+    private Integer checkid;
 
     public Integer getId() {
         return id;
@@ -15,19 +15,19 @@ public class InstanceRelation {
         this.id = id;
     }
 
-    public String getInstanceid() {
+    public Integer getInstanceid() {
         return instanceid;
     }
 
-    public void setInstanceid(String instanceid) {
+    public void setInstanceid(Integer instanceid) {
         this.instanceid = instanceid;
     }
 
-    public String getCheckid() {
+    public Integer getCheckid() {
         return checkid;
     }
 
-    public void setCheckid(String checkid) {
+    public void setCheckid(Integer checkid) {
         this.checkid = checkid;
     }
 }

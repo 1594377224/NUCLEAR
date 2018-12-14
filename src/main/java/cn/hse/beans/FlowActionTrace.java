@@ -5,7 +5,7 @@ import java.util.Date;
 public class FlowActionTrace {
     private Integer id;
 
-    private String instanceid;
+    private Integer instanceid;
 
     private String flowid;
 
@@ -47,11 +47,11 @@ public class FlowActionTrace {
         this.id = id;
     }
 
-    public String getInstanceid() {
+    public Integer getInstanceid() {
         return instanceid;
     }
 
-    public void setInstanceid(String instanceid) {
+    public void setInstanceid(Integer instanceid) {
         this.instanceid = instanceid;
     }
 
