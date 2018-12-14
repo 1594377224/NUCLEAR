@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import net.sf.json.JSONObject;
 @Mapper
 public interface ProcessStatusMapper {
 	//待办查询标识（0）
@@ -22,5 +24,7 @@ public interface ProcessStatusMapper {
 	List<Map<String, Object>> findDraft(Map<String, Object> map);
 
 	int findCountDraft(Map<String, Object> map);
+	//流转信息查询
+	List<Map<String, Object>> findTransferInformation(JSONObject inputJson);
 
 }

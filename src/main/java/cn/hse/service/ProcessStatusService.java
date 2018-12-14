@@ -15,5 +15,9 @@ public interface ProcessStatusService {
 	 * 流程状态查询个数
 	 */
 	public String findProcessStatusCount(JSONObject inputJson);
+	/*
+	 * 流转信息查询
+	 */
+	public String findTransferInformation(JSONObject inputJson);
 
 }

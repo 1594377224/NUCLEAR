@@ -99,4 +99,17 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		return ResultUtil.result("0", resultMap, null);
 	}
 
+	/*
+	 * 流转信息查询
+	 */
+	@Override
+	public String findTransferInformation(JSONObject inputJson) {
+		logger.info("[流程状态-流转信息查询入参]"+inputJson);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<Map<String,Object>> list = processStatusMapper.findTransferInformation(inputJson);
+		resultMap.put("resultCode", "0");
+		resultMap.put("resultMsg", "操作成功！");
+		return ResultUtil.result("0", resultMap, list);
+	}
+
 }

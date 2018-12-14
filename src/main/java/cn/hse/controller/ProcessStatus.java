@@ -92,6 +92,33 @@ public class ProcessStatus {
 		}
 	}
 	
-	
+	/*
+	 * 流转信息查询
+	 */
+	@RequestMapping(value="/findTransferInformation",method=RequestMethod.POST)
+	public String findTransferInformation(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[流程状态-流转信息查询入参]"+inputJson);
+		// 参数校验
+		if(inputJson.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		//检查单编码
+		String recordNo = "" ;
+		if (inputJson.containsKey("recordNo")) {
+			recordNo = inputJson.getString("recordNo");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(recordNo)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = processStatusService.findTransferInformation(inputJson);
+			return resultStr;
+		}
+	}
 	
 }
