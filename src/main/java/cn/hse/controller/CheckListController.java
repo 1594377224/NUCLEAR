@@ -210,6 +210,12 @@ public class CheckListController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		int checkId=Integer.parseInt(map.get("checkId").toString());
 		DangerList dangerList=dangerListServie.selectDangerByCheckId(checkId);
-		return null;
+		if (dangerList!=null) {
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			resultMap.put("dangerList", dangerList);
+			result.setObject(resultMap);
+		}
+		return result;
 	}
 }
