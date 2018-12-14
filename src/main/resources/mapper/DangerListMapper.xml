@@ -427,4 +427,47 @@
       isDel = #{isdel,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectDangerByCheckId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  SELECT
+	d.id,
+	lineNo,
+	noticeNo,
+	distributDate,
+	unit,
+	area,
+	unitID,
+	hseHiddenLevel,
+	hiddenCategory,
+	nonconformity,
+	hiddenDescription,
+	hiddenDoc,
+	reqCompleteDate,
+	correctiveRequest,
+	rectificationSituation,
+	returnDoc,
+	contractonPeople,
+	completeDate,
+	responsiblePerson,
+	copyPerson,
+	responsibleDate,
+	contractorApprove,
+	contractorApproveDate,
+	comfirmContent,
+	verifyPerson,
+	verifyDate,
+	hsePassContent,
+	verificationCondition,
+	closePerson,
+	closeDate,
+	corApprovePerson,
+	corApproveDate,
+	ifSiteCorrection,
+	isDel
+FROM
+	checkAndDanger c,
+	dangerList d
+WHERE
+	c.checkId = #{id,jdbcType=INTEGER}
+AND c.dangerId = d.id
+  </select>
 </mapper>
