@@ -470,4 +470,8 @@ WHERE
 	c.checkId = #{id,jdbcType=INTEGER}
 AND c.dangerId = d.id
   </select>
+  
+  <update id="delDangerId">
+  	update dangerList set isDel=1 where id=#{dangerId,jdbcType=INTEGER}
+  </update>
 </mapper>

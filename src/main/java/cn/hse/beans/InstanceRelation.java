@@ -6,8 +6,18 @@ public class InstanceRelation {
     private Integer instanceid;
 
     private Integer checkid;
+    
+    private Integer dangerId;
 
-    public Integer getId() {
+    public Integer getDangerId() {
+		return dangerId;
+	}
+
+	public void setDangerId(Integer dangerId) {
+		this.dangerId = dangerId;
+	}
+
+	public Integer getId() {
         return id;
     }
 

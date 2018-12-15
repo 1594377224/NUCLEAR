@@ -19,6 +19,10 @@
     delete from checkAndDanger
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deldangerIdRela" parameterType="java.lang.Integer">
+    delete from checkAndDanger
+    where dangerId=#{dangerId,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="cn.hse.beans.CheckAndDanger">
     insert into checkAndDanger (id, checkId, dangerId
       )

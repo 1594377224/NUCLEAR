@@ -159,6 +159,7 @@ public class CheckListController {
 			InstanceRelation instanceRelation=new InstanceRelation();
 			instanceRelation.setCheckid(checkId);
 			instanceRelation.setInstanceid(instanceId);
+			instanceRelation.setDangerId(dangerId);
 			int f=instanceRelationService.insert(instanceRelation);
 			//查询操作表
 			FlowAction flowAction=flowActionService.selectFlowAction(1);
@@ -219,6 +220,22 @@ public class CheckListController {
 		return result;
 	}
 	
+	@RequestMapping(value="delCheckAndDanger",method=RequestMethod.POST)
+	public  Result delCheckAndDanger(@RequestBody Map<String, Object> map) {
+		Result result=new Result();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		//前台传隐患单ID
+		int dangerId=Integer.parseInt(map.get("dangerId").toString());
+		int  delResult=dangerListServie.delCheckAndDanger(dangerId);
+		if (delResult!=0) {
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			resultMap.put("delResult", delResult);
+			result.setObject(resultMap);
+		}
+		return result;
+	}
 	
 	
 }

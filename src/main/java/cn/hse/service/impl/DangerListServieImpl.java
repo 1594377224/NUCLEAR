@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cn.hse.beans.DangerList;
+import cn.hse.mapper.CheckAndDangerMapper;
 import cn.hse.mapper.DangerListMapper;
 import cn.hse.service.DangerListServie;
 @Service
@@ -12,6 +13,8 @@ import cn.hse.service.DangerListServie;
 public class DangerListServieImpl implements DangerListServie{
 	@Autowired
 	private DangerListMapper dangerListMapper;
+	@Autowired
+	private CheckAndDangerMapper checkAndDangerMapper;
 	@Override
 	public int insertDanger(DangerList dangerList) {
 		return dangerListMapper.insert(dangerList);
@@ -19,6 +22,12 @@ public class DangerListServieImpl implements DangerListServie{
 	@Override
 	public DangerList selectDangerByCheckId(int checkId) {
 		return dangerListMapper.selectDangerByCheckId(checkId);
+	}
+	@Override
+	public int delCheckAndDanger(int dangerId) {
+		int a=dangerListMapper.delDangerId(dangerId);
+		int b=checkAndDangerMapper.deldangerIdRela(dangerId);
+		return 1;
 	}
 
 }

@@ -205,6 +205,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+ 
   <update id="updateByPrimaryKey" parameterType="cn.hse.beans.CheckList">
     update checkList
     set projNo = #{userId,jdbcType=VARCHAR},

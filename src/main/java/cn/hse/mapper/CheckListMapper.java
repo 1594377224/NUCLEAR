@@ -17,4 +17,5 @@ public interface CheckListMapper {
     int updateByPrimaryKeySelective(CheckList record);
 
     int updateByPrimaryKey(CheckList record);
+
 }

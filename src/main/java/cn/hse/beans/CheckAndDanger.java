@@ -9,8 +9,20 @@ public class CheckAndDanger {
     private Integer checkid;
 
     private Integer dangerid;
+    
+    private Integer delayToApplyForId;   //延期申请
+    
+    
 
-    public Integer getId() {
+    public Integer getDelayToApplyForId() {
+		return delayToApplyForId;
+	}
+
+	public void setDelayToApplyForId(Integer delayToApplyForId) {
+		this.delayToApplyForId = delayToApplyForId;
+	}
+
+	public Integer getId() {
         return id;
     }
 

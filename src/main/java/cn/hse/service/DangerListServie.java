@@ -8,4 +8,6 @@ public interface DangerListServie {
 
 	public DangerList selectDangerByCheckId(int checkId);
 
+	public int delCheckAndDanger(int dangerId);
+
 }

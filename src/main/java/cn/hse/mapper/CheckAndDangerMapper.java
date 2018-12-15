@@ -16,4 +16,6 @@ public interface CheckAndDangerMapper {
     int updateByPrimaryKeySelective(CheckAndDanger record);
 
     int updateByPrimaryKey(CheckAndDanger record);
+
+	int deldangerIdRela(Integer dangerId);
 }

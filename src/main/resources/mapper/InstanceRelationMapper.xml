@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="instanceId" jdbcType="INTEGER" property="instanceid" />
     <result column="checkId" jdbcType="INTEGER" property="checkid" />
+    <result column="dangerId" jdbcType="INTEGER" property="dangerId" />
   </resultMap>
   <sql id="Base_Column_List">
     id, instanceId, checkId
@@ -20,10 +21,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="cn.hse.beans.InstanceRelation">
-    insert into instanceRelation (id, instanceId, checkId
+    insert into instanceRelation (id, instanceId, checkId,dangerId
       )
-    values (#{id,jdbcType=INTEGER}, #{instanceid,jdbcType=INTEGER}, #{checkid,jdbcType=INTEGER}
-      )
+    values (#{id,jdbcType=INTEGER}, #{instanceid,jdbcType=INTEGER}, #{checkid,jdbcType=INTEGER}, #{dangerId,jdbcType=INTEGER}
+   )
   </insert>
   <insert id="insertSelective" parameterType="cn.hse.beans.InstanceRelation">
     insert into instanceRelation
