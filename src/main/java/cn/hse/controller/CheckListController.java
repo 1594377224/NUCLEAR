@@ -188,8 +188,8 @@ public class CheckListController {
 			flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
-			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
-			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,"99999");
+			String responsiblePersonId="99999";   //map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
 			logger.info("----==流转表插入成功"+e1);
 			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
