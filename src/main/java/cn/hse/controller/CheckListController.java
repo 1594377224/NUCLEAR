@@ -111,7 +111,8 @@ public class CheckListController {
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
-		dangerList.setResponsibleperson(map.get("responsiblePerson").toString());  //整改责任人
+		String responsiblePerson=map.get("responsiblePerson").toString();
+		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
 		dangerList.setIsdel(0);
 		int b=dangerListServie.insertDanger(dangerList);
@@ -186,7 +187,9 @@ public class CheckListController {
 			flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
-			logger.info("----==流转表插入成功");
+			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
+			logger.info("----==流转表插入成功"+e1);
 			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("提交成功！");
@@ -245,6 +248,35 @@ public class CheckListController {
 		}
 		return result;
 	}
-	
-	
+	/**
+	 * 整改提交
+	 * @param map
+	 * @return
+	 */
+	@RequestMapping(value="delCheckAndDanger",method=RequestMethod.POST)
+	public String  changeSubmit(@RequestBody Map<String, Object> map) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		//JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[流程状态-查询入参]"+map);
+		String userId=map.get("userId").toString();   //用户ID
+		String checkId=map.get("checkId").toString(); //检查ID
+		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
+		logger.info("==========整改情况更新结果"+userId+"---"+checkId+"---"+dangerId);
+		//整改需要的字段
+		String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
+		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
+		String completeDate=map.get("completeDate").toString();  //整改完成日期
+		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+		DangerList dangerList=new DangerList();
+		dangerList.setId(dangerId);
+		dangerList.setResponsibleperson(responsiblePerson);
+		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
+		dangerList.setRectificationsituation(rectificationSituation);
+		dangerList.setHiddendoc(hiddenDoc);
+		int updateResult=dangerListServie.updateDanger(dangerList);
+		logger.info("==========整改情况更新结果"+updateResult);
+		//更新流转表
+		
+		return null;
+	}
 }

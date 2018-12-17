@@ -10,4 +10,6 @@ public interface DangerListServie {
 
 	public int delCheckAndDanger(int dangerId);
 
+	public int updateDanger(DangerList dangerList);
+
 }

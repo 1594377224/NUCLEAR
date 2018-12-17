@@ -27,7 +27,14 @@ public class DangerListServieImpl implements DangerListServie{
 	public int delCheckAndDanger(int dangerId) {
 		int a=dangerListMapper.delDangerId(dangerId);
 		int b=checkAndDangerMapper.deldangerIdRela(dangerId);
+		if (a==0||b==0) {
+			return 0;
+		}
 		return 1;
+	}
+	@Override
+	public int updateDanger(DangerList dangerList) {
+		return dangerListMapper.updateByPrimaryKeySelective(dangerList);
 	}
 
 }
