@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import cn.hse.beans.FlowActionTrace;
 import cn.hse.beans.FlowInstance;
+import cn.hse.beans.FlowStep;
 import cn.hse.mapper.FlowActionTraceMapper;
 import cn.hse.mapper.FlowInstanceMapper;
+import cn.hse.mapper.FlowStepMapper;
 import cn.hse.service.FlowActionTraceService;
 @Service
 public class FlowActionTraceServiceImpl implements FlowActionTraceService {
@@ -17,12 +19,15 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 	private FlowActionTraceMapper flowActionTraceMapper;
 	@Autowired
 	private FlowInstanceMapper flowInstanceMapper;
+	@Autowired
+	private FlowStepMapper flowStepMapper;
 	@Override
 	public int insertFlowActionTrace(FlowActionTrace flowActionTrace) {
 		return flowActionTraceMapper.insert(flowActionTrace);
 	}
 	@Override
 	public int insertFlowActionTrace(FlowActionTrace flowActionTrace, String responsiblePerson,String responsiblePersonId) {
+		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(2);
 		flowActionTrace.setSubmituserid(null);
 		flowActionTrace.setSubmitusername(null);
 		flowActionTrace.setSubmituserdesc(null);
@@ -31,6 +36,9 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setActionname(null);
 		flowActionTrace.setOwnerusername(responsiblePerson);
 		flowActionTrace.setOwneruserid(responsiblePersonId);
+		flowActionTrace.setStepcode(flowStep.getStepcode());
+		flowActionTrace.setStepid(flowStep.getFlowid());
+		flowActionTrace.setStepname(flowStep.getStepname());
 		int a=flowActionTraceMapper.insertSelective(flowActionTrace);
 		logger.info("添加整改数据=="+a);
 		Integer instanceId=flowActionTrace.getId();   //获取流程实例Id

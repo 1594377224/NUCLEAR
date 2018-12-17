@@ -188,7 +188,7 @@ public class CheckListController {
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
 			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
-			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
+			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,"99999");
 			logger.info("----==流转表插入成功"+e1);
 			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
@@ -259,10 +259,11 @@ public class CheckListController {
 		//JSONObject inputJson = JSONObject.fromObject(map);
 		logger.info("[流程状态-查询入参]"+map);
 		String userId=map.get("userId").toString();   //用户ID
+		String userName=map.get("userName").toString();   //用户ID
 		String checkId=map.get("checkId").toString(); //检查ID
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
-		logger.info("==========整改情况更新结果"+userId+"---"+checkId+"---"+dangerId);
-		//整改需要的字段
+		logger.info("==========整改情况更新结果"+userId+"---"+checkId+"---"+dangerId+"--"+userName);
+		//整改需要的字段，更新隐患表
 		String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
