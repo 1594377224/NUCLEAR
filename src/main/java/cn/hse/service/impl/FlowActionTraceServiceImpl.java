@@ -48,7 +48,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setOwnerusername(responsiblePerson);
 		flowActionTrace.setOwneruserid(responsiblePersonId);
 		flowActionTrace.setStepcode(flowStep.getStepcode());
-		flowActionTrace.setStepid(flowStep.getFlowid());
+		flowActionTrace.setStepid(flowStep.getStepid());
 		flowActionTrace.setStepname(flowStep.getStepname());
 		int a=flowActionTraceMapper.insertSelective(flowActionTrace);
 		logger.info("添加整改数据=="+a);
@@ -83,7 +83,8 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		record.setInstanceid(instanceId);
 		record.setFlowid(flow.getId().toString());
 		record.setFlowcode(flow.getFlowcode());
-		record.setFlowname(flow.getFlowname());		
+		record.setFlowname(flow.getFlowname());	
+		
 		record.setStepid(flowStep.getStepid());
 		record.setStepcode(flowStep.getStepcode());
 		record.setStepname(flowStep.getStepname());
