@@ -79,15 +79,15 @@ public class CheckListController {
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
-	//	checkList.setCheckcontent(map.get("checkContent").toString());   //检查名称
+	    checkList.setCheckcontent("");   //检查名称
 		checkList.setCheckperson(map.get("checkPerson").toString());  //检查人
 		checkList.setDraftunit(map.get("draftUnit").toString());   //编制单位
 		checkList.setDraftdept(map.get("draftDept").toString());  //编制部门
 		checkList.setDraftperson(map.get("draftPerson").toString());   //编制人
 		checkList.setDraftdate(DateUtil.string2Date(map.get("draftDate").toString()));  //编制日期
-		/*checkList.setApproveperson(map.get("approvePerson").toString());  //批准人
-		checkList.setApprovedate(DateUtil.string2Date(map.get("approveDate").toString()));  //批准日期
-*/		checkList.setIsdel(0);
+		checkList.setApproveperson("");  //批准人
+		//checkList.setApprovedate(DateUtil.string2Date(map.get("approveDate").toString()));  //批准日期
+		checkList.setIsdel(0);
 		int a=checkListService.insertCheck(checkList);
 		int checkId=checkList.getId();
 		//int checkId=1;
