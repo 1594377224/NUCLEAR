@@ -8,4 +8,6 @@ public interface FlowInstanceService {
 
 	int updateInstance(Integer instanceId);
 
+	int updateInstanceEnd(Integer instanceId);
+
 }

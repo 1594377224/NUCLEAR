@@ -10,4 +10,6 @@ public interface FlowActionTraceService {
 
 	int updateChangeInfo(FlowActionTrace flowActionTrace,Integer instanceId,String responsiblePersonId,String responsiblePerson);
 
+	int updateChange(FlowActionTrace flowActionTrace,Integer instanceId);
+
 }
