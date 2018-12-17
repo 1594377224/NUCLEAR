@@ -13,4 +13,8 @@ public interface ForwardingServiceMapper {
 
 	int addFlowActionTrace(Map<String, Object> paramMap);
 
+	Map<String, Object> findFefund();
+
+	Map<String, Object> findFefundMap(Map<String, Object> paramMap);
+
 }

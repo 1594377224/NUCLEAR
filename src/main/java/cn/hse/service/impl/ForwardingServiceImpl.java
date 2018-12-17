@@ -91,6 +91,77 @@ public class ForwardingServiceImpl implements ForwardingService{
 	/*
 	 * 整改节点待办-退回 refund
 	 */
+	@Override
+	public String findFefund(JSONObject inputJson) {
+		logger.info("[整改节点待办-退回入参]"+inputJson);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String,Object> paramMap = new HashMap<String, Object>();
+		String userId = inputJson.getString("userId");
+		String userName = inputJson.getString("userName");
+		String actionTraceId = inputJson.getString("actionTraceId");
+		String instanceId = inputJson.getString("instanceId");
+		paramMap.put("userId", userId);
+		paramMap.put("userName", userName);
+		paramMap.put("userDec", "整改回复节点-退回");
+		paramMap.put("actionTraceId", actionTraceId);
+		paramMap.put("instanceId", instanceId);
+		//查询模板信息--退回流程
+		Map<String,Object> flowFefundMap = forwardingServiceMapper.findFefund();
+		if(flowFefundMap.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+		} else {
+			String actionId = flowFefundMap.get("actionId").toString();
+			String actionCode = flowFefundMap.get("actionCode").toString();
+			String actionName = flowFefundMap.get("actionName").toString();
+			paramMap.put("actionId", actionId);
+			paramMap.put("actionCode", actionCode);
+			paramMap.put("actionName", actionName);
+			int upNum = forwardingServiceMapper.upFlowActionTrace(paramMap);
+			if (upNum < 0) {
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "操作失败！");
+			} else {
+				//查询发起人的信息
+				Map<String,Object> flowFefund = forwardingServiceMapper.findFefundMap(paramMap);
+				if(flowFefund.isEmpty()){
+					resultMap.put("resultCode", "-1");
+					resultMap.put("resultMsg", "操作失败！");
+				} else {
+//					(#{instanceId},#{flowId},#{flowName},#{flowCode},
+//							#{stepId},#{stepName},#{stepCode},#{ownerUserId},
+//							#{ownerUserName},#{ownerUserDesc},now())
+					String flowId = flowFefund.get("flowId").toString();
+					String flowName = flowFefund.get("flowName").toString();
+					String flowCode = flowFefund.get("flowCode").toString();
+					String stepId = flowFefund.get("stepId").toString();
+					String stepName = flowFefund.get("stepName").toString();
+					String stepCode = flowFefund.get("stepCode").toString();
+					String ownerUserId = flowFefund.get("ownerUserId").toString();
+					String ownerUserName = flowFefund.get("ownerUserName").toString();
+					paramMap.put("flowId", flowId);
+					paramMap.put("flowName", flowName);
+					paramMap.put("flowCode", flowCode);
+					paramMap.put("stepId", stepId);
+					paramMap.put("stepName", stepName);
+					paramMap.put("stepCode", stepCode);
+					paramMap.put("ownerUserId", ownerUserId);
+					paramMap.put("ownerUserName", ownerUserName);
+					paramMap.put("ownerUserDesc", "整改回复节点-退回-重新发起流程");
+					int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
+					if(addNum < 0 ){
+						resultMap.put("resultCode", "-1");
+						resultMap.put("resultMsg", "操作失败！");
+					} else {
+						resultMap.put("resultCode", "0");
+						resultMap.put("resultMsg", "操作成功！");
+					}
+				}
+			}
+		}
+		return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+	}
+	
 	
 	
 	

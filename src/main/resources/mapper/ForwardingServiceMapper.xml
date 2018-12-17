@@ -41,5 +41,37 @@
 			(#{instanceId},#{flowId},#{flowName},#{flowCode},
 			#{stepId},#{stepName},#{stepCode},#{ownerUserId},
 			#{ownerUserName},#{ownerUserDesc},now())
-		</insert>
+	</insert>
+	
+	<!-- 查询模板-退回流程信息动作 -->
+	<select id="findFefund"  parameterType="Map" resultType = "Map">
+		SELECT
+			actionId,
+			actionCode,
+			actionName
+		FROM
+			flowAction
+		<where>
+			actionId = '202'
+			AND enableFlag = '0'
+		</where>
+	</select>
+	<!-- 查询发起人的信息 -->
+	<select id="findFefundMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			flowId,
+			flowName,
+			flowCode,
+			stepId,
+			stepName,
+			stepCode,
+			ownerUserId,
+			ownerUserName
+		FROM
+			flowActionTrace
+		<where>
+			instanceId = #{instanceId}
+			AND actionId = '101'
+		</where>
+	</select>
 </mapper>

@@ -11,4 +11,6 @@ public interface ForwardingService {
 
 	String findForwarding(JSONObject inputJson);
 
+	String findFefund(JSONObject inputJson);
+
 }

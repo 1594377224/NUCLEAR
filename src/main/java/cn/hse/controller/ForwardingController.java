@@ -114,15 +114,51 @@ public class ForwardingController {
 		} else {
 			String resultStr = forwardingService.findForwarding(inputJson);
 			return resultStr;
-		}
+		} 
 	}
 	
 	/*
 	 * 整改节点待办-退回 refund
 	 */
-	/*@RequestMapping(value="/findForwarding",method=RequestMethod.POST)
+	@RequestMapping(value="/findFefund",method=RequestMethod.POST)
 	public String findFefund(@RequestBody Map<String, Object> map){
-		
-		return "";
-	}*/
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[整改节点待办-退回入参]"+inputJson);
+		// 参数校验
+		if(inputJson.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		//用户登录id
+		String userId = "" ;
+		//用户登录名称
+		String userName = "" ;
+		//ActionTrace表的id
+		String actionTraceId = "" ;
+		//实例id
+		String instanceId =  "" ;
+		if (inputJson.containsKey("userId")) {
+			userId = inputJson.getString("userId");
+		}
+		if (inputJson.containsKey("userName")) {
+			userName = inputJson.getString("userName");
+		}
+		if (inputJson.containsKey("actionTraceId")) {
+			actionTraceId = inputJson.getString("actionTraceId");
+		}
+		if (inputJson.containsKey("instanceId")) {
+			instanceId = inputJson.getString("instanceId");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(actionTraceId),G4Utils.isNotEmpty(instanceId)
+				,G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = forwardingService.findFefund(inputJson);
+			return resultStr;
+		} 
+	}
 }
