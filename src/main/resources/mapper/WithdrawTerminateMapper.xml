@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper    
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.hse.mapper.WithdrawTerminateMapper">
+	<!-- 查询用户创建的发起申请整改流程别人还未办理信息 -->
+	<select id="findWithdrawTerminate"  parameterType="Map" resultType = "Map">
+		SELECT
+			t.id,
+			c.checkPerson,
+			c.userId
+		FROM
+			flowInstance i
+		JOIN instanceRelation cil ON i.id = cil.instanceId
+		JOIN checkList c ON c.id = cil.checkId
+		JOIN flowActionTrace t ON i.id = t.instanceId
+		<where>
+				i.userId = #{userId}
+			AND (
+				t.submitUserId IS NULL
+				AND t.stepId = '200'
+			)
+			AND c.isDel = '0'
+			AND c.id = #{checkId}
+		</where>
+	</select>
+	<!-- 查询模板-撤办终止流程信息 -->
+	<select id="findFlowMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			actionId,
+			actionCode,
+			actionName
+		FROM
+			flowAction
+		<where>
+			actionId = '102'
+			AND enableFlag = '0'
+		</where>
+	</select>
+	<!-- 更新flowActionTrace表 -->
+	<update id = "updateFlowActionTrace" parameterType = "Map">
+		update flowActionTrace
+		<set>
+			submitUserId = #{submitUserId},
+			submitUserName = #{submitUserName},
+			submitUserDesc = #{submitUserDesc},
+			actionId = #{actionId},
+			actionCode = #{actionCode},
+			actionName = #{actionName}
+		</set>
+		where id = #{id}
+	</update>	
+</mapper>

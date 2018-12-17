@@ -8,6 +8,7 @@
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
 			t.stepName,
+			t.stepId,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
@@ -18,7 +19,9 @@
 			c.draftPerson,
 			c.draftDate,
 			c.approvePerson,
-			c.approveDate
+			c.approveDate,
+			c.id,
+			c.recordNo
 		FROM
 			checkList c
 			RIGHT JOIN instanceRelation r ON c.id = r.checkId
@@ -52,6 +55,7 @@
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
 			t.stepName,
+			t.stepId,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
@@ -62,7 +66,9 @@
 			c.draftPerson,
 			c.draftDate,
 			c.approvePerson,
-			c.approveDate
+			c.approveDate,
+			c.id,
+			c.recordNo
 		FROM
 			checkList c
 		RIGHT  JOIN instanceRelation r ON c.id = r.checkId
@@ -95,6 +101,7 @@
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
 				t.stepName,
+				t.stepId,
 				c.projNo,
 				c.checkDate,
 				c.checkForm,
@@ -105,7 +112,9 @@
 				c.draftPerson,
 				c.draftDate,
 				c.approvePerson,
-				c.approveDate
+				c.approveDate,
+				c.id,
+			c.recordNo
 			FROM
 				flowInstance i
 			JOIN instanceRelation cil ON i.id = cil.instanceId
@@ -147,25 +156,30 @@
 	<!-- 查询草稿信息 -->
 	<select id="findDraft"  parameterType="Map" resultType = "Map">
 			SELECT
-				projNo,
-				checkDate,
-				checkForm,
-				checkContent,
-				checkPerson,
-				draftUnit,
-				draftDept,
-				draftPerson,
-				draftDate,
-				approvePerson,
-				approveDate
+				d.id AS dangerId,
+				c.projNo,
+				c.checkDate,
+				c.checkForm,
+				c.checkContent,
+				c.checkPerson,
+				c.draftUnit,
+				c.draftDept,
+				c.draftPerson,
+				c.draftDate,
+				c.approvePerson,
+				c.approveDate,
+				c.id,
+				c.recordNo
 			FROM
-				checkList 
+				checkList c
+			JOIN checkAndDanger cd ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 			<where>
-			 	userId =  #{ownerUserId}
-				AND isDel = '0'
-				AND state = '0'
+			 	c.userId =  #{ownerUserId}
+				AND c.isDel = '0'
+				AND c.state = '0'
 			</where>
-			 order by draftDate desc 
+			 order by c.draftDate desc 
 		 <if test="limit!= null and limit!= '' ">
 			limit #{start},#{limit}
 		</if> 

@@ -23,8 +23,8 @@ import net.sf.json.JSONObject;
  */
 @RestController
 @RequestMapping("processStatus")
-public class ProcessStatus {
-	private static final Logger logger=LogManager.getLogger(ProcessStatus.class);
+public class ProcessStatusController {
+	private static final Logger logger=LogManager.getLogger(ProcessStatusController.class);
 	
 	@Autowired
 	private ProcessStatusService processStatusService;

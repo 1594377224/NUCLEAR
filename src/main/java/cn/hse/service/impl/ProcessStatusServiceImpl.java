@@ -100,7 +100,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 	}
 
 	/*
-	 * 流转信息查询
+	 * 页面详情-流转信息查询
 	 */
 	@Override
 	public String findTransferInformation(JSONObject inputJson) {
