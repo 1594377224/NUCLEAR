@@ -149,7 +149,9 @@ public class ForwardingServiceImpl implements ForwardingService{
 					paramMap.put("ownerUserName", ownerUserName);
 					paramMap.put("ownerUserDesc", "整改回复节点-退回-重新发起流程");
 					int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
-					if(addNum < 0 ){
+					//更新实例表statusId字段
+					int upflowInstance = forwardingServiceMapper.upflowInstance(paramMap);
+					if(addNum < 0 && upflowInstance < 0){
 						resultMap.put("resultCode", "-1");
 						resultMap.put("resultMsg", "操作失败！");
 					} else {

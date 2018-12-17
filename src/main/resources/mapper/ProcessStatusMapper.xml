@@ -8,6 +8,11 @@
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
 			d.id AS dangerId,
+			d.responsiblePerson,
+			d.rectificationSituation,
+			d.completeDate,
+			d.copyPerson,
+			d.hiddenDoc,
 			t.stepName,
 			t.stepId,
 			t.id AS actionTraceId,

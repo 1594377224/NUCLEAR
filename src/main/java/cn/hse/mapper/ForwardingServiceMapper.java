@@ -17,4 +17,6 @@ public interface ForwardingServiceMapper {
 
 	Map<String, Object> findFefundMap(Map<String, Object> paramMap);
 
+	int upflowInstance(Map<String, Object> paramMap);
+
 }
