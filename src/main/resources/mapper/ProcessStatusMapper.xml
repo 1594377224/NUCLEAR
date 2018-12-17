@@ -7,12 +7,21 @@
 	<!-- 查询待办信息 -->
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			d.id AS dangerId,
 			t.stepName,
 			t.stepId,
+			t.id AS actionTraceId,
+			t.instanceId,
+			t.flowId,
+			t.flowName,
+			t.flowCode,
+			t.stepCode,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
 			c.checkContent,
+			c.approvePerson,
+			c.approveDate,
 			c.checkPerson,
 			c.draftUnit,
 			c.draftDept,
@@ -25,6 +34,8 @@
 		FROM
 			checkList c
 			RIGHT JOIN instanceRelation r ON c.id = r.checkId
+			JOIN checkAndDanger cd ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 			RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
 		<where>
 			t.ownerUserId = #{ownerUserId} 
@@ -56,10 +67,13 @@
 		SELECT
 			t.stepName,
 			t.stepId,
+			t.id as actionTraceId,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
 			c.checkContent,
+			c.approvePerson,
+			c.approveDate,
 			c.checkPerson,
 			c.draftUnit,
 			c.draftDept,
@@ -102,10 +116,13 @@
 			SELECT
 				t.stepName,
 				t.stepId,
+				t.id as actionTraceId,
 				c.projNo,
 				c.checkDate,
 				c.checkForm,
 				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
 				c.checkPerson,
 				c.draftUnit,
 				c.draftDept,
@@ -161,6 +178,8 @@
 				c.checkDate,
 				c.checkForm,
 				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
 				c.checkPerson,
 				c.draftUnit,
 				c.draftDept,

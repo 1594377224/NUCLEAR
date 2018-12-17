@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper    
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.hse.mapper.ForwardingServiceMapper">
+	<!-- 更新flowActionTrace表 -->
+	<update id = "upFlowActionTrace" parameterType = "Map">
+		update flowActionTrace
+		<set>
+			submitUserId = #{userId},
+			submitUserName = #{userName},
+			submitUserDesc = #{userDec},
+			actionId = #{actionId},
+			actionCode = #{actionCode},
+			actionName = #{actionName}
+		</set>
+		where id = #{actionTraceId}
+	</update>	
+	<!-- 查询模板-转发流程信息动作 -->
+	<select id="findFlow"  parameterType="Map" resultType = "Map">
+		SELECT
+			actionId,
+			actionCode,
+			actionName
+		FROM
+			flowAction
+		<where>
+			actionId = '203'
+			AND enableFlag = '0'
+		</where>
+	</select>
+	<!-- 添加转发记录 -->
+	<insert id = "addFlowActionTrace" parameterType="Map">
+		INSERT INTO flowActionTrace (
+			instanceId,flowId,flowName,flowCode,
+			stepId,stepName,stepCode,ownerUserId,
+			ownerUserName,ownerUserDesc,arriveTime
+		)
+		VALUES
+			(#{instanceId},#{flowId},#{flowName},#{flowCode},
+			#{stepId},#{stepName},#{stepCode},#{ownerUserId},
+			#{ownerUserName},#{ownerUserDesc},now())
+		</insert>
+</mapper>

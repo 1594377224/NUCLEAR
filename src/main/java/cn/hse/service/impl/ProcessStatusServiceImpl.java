@@ -26,7 +26,7 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 	 * 待办查询标识（0）、已办查询标识（1）、流转查询标识（2）、草稿查询标识（3）、待阅查询标识（4）、已阅查询标识（5）
 	 */
 	@Autowired
-	ProcessStatusMapper processStatusMapper;
+	private ProcessStatusMapper processStatusMapper;
 	@Override
 	public String findToDo(JSONObject inputJson) {
 		logger.info("[流程状态-查询入参]"+inputJson);

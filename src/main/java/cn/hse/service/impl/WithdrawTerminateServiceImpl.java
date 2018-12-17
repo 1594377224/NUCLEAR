@@ -23,7 +23,7 @@ import net.sf.json.JSONObject;
 public class WithdrawTerminateServiceImpl implements WithdrawTerminateService{
 	private static final Logger logger=LogManager.getLogger(WithdrawTerminateServiceImpl.class);
 	@Autowired
-	WithdrawTerminateMapper withdrawTerminateMapper;
+	private WithdrawTerminateMapper withdrawTerminateMapper;
 	@Override
 	public String findWithdrawTerminate(JSONObject inputJson) {
 		logger.info("[撤办终止--入参]"+inputJson);
@@ -42,7 +42,7 @@ public class WithdrawTerminateServiceImpl implements WithdrawTerminateService{
 			resultMap.put("resultMsg", "流程已经办理不能进行撤回！");
 		} else {
 			for (Map<String, Object> withdrawTerminateMap : withdrawTerminateList) {
-				String submitUserId = withdrawTerminateMap.get(userId).toString();
+				String submitUserId = withdrawTerminateMap.get("userId").toString();
 				String submitUserName = withdrawTerminateMap.get("checkPerson").toString();
 				String id = withdrawTerminateMap.get("id").toString();
 				paramMap.put("id", id);
