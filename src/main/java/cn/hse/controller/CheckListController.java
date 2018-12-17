@@ -113,6 +113,7 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		dangerList.setResponsibleperson(map.get("responsiblePerson").toString());  //整改责任人
 		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
+		dangerList.setIsdel(0);
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
 		logger.info("====隐患单插入完毕"+dangerId);
@@ -204,7 +205,11 @@ public class CheckListController {
 		}
 		return result;
 	}
-	
+	/**
+	 * 根据检查单ID查询隐患单信息
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="selectDanger",method=RequestMethod.POST)
 	public Result selectDanger(@RequestBody Map<String, Object> map) {
 		Result result=new Result();
@@ -219,7 +224,11 @@ public class CheckListController {
 		}
 		return result;
 	}
-	
+	/**
+	 * 根据隐患单ID来删除隐患信息
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="delCheckAndDanger",method=RequestMethod.POST)
 	public  Result delCheckAndDanger(@RequestBody Map<String, Object> map) {
 		Result result=new Result();
