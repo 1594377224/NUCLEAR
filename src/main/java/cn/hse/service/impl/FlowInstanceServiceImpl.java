@@ -19,4 +19,12 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
 		return flowInstanceMapper.insert(flowInstance);
 	}
 
+	@Override
+	public int updateInstance(Integer instanceId) {
+		FlowInstance flowInstance=new FlowInstance();
+		flowInstance.setId(instanceId);
+		flowInstance.setStatusid("1");   //整改中
+		return flowInstanceMapper.updateByPrimaryKeySelective(flowInstance);
+	}
+
 }

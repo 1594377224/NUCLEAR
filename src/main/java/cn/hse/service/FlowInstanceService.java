@@ -6,4 +6,6 @@ public interface FlowInstanceService {
 
 	int insertFlowInstance(FlowInstance flowInstance);
 
+	int updateInstance(Integer instanceId);
+
 }

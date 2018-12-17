@@ -4,6 +4,6 @@ import cn.hse.beans.Flow;
 
 public interface FlowService {
 
-	Flow selectByPrimaryKey(String i);
+	Flow selectByPrimaryKey(Integer i);
 
 }

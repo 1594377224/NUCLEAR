@@ -34,6 +34,7 @@ import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.Result;
+import cn.hse.util.ResultUtil;
 
 @RequestMapping("/checkList")
 @RestController
@@ -142,7 +143,7 @@ public class CheckListController {
 			}
 		}else {  //等于1就是要提交
 			//查询流程模板   查询模板1
-			Flow flow=flowService.selectByPrimaryKey("1");
+			Flow flow=flowService.selectByPrimaryKey(1);
 			//插入实例表
 			FlowInstance flowInstance=new FlowInstance();
 			//String instanceId=RandomUUID.RandomID();
@@ -253,18 +254,21 @@ public class CheckListController {
 	 * @param map
 	 * @return
 	 */
-	@RequestMapping(value="delCheckAndDanger",method=RequestMethod.POST)
+	@RequestMapping(value="changeSubmit",method=RequestMethod.POST)
 	public String  changeSubmit(@RequestBody Map<String, Object> map) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//JSONObject inputJson = JSONObject.fromObject(map);
 		logger.info("[流程状态-查询入参]"+map);
+		Integer traceId=Integer.parseInt(map.get("traceId").toString());   //流转表的ID
+		Integer instanceId=Integer.parseInt(map.get("instanceId").toString());  //流转表中的实例ID
 		String userId=map.get("userId").toString();   //用户ID
 		String userName=map.get("userName").toString();   //用户ID
 		String checkId=map.get("checkId").toString(); //检查ID
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
-		logger.info("==========整改情况更新结果"+userId+"---"+checkId+"---"+dangerId+"--"+userName);
+		logger.info("=====流转表"+traceId+"=====整改情况更新结果"+userId+"---"+checkId+"---"+dangerId+"--"+userName);
 		//整改需要的字段，更新隐患表
 		String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
+		String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
 		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
@@ -277,7 +281,22 @@ public class CheckListController {
 		int updateResult=dangerListServie.updateDanger(dangerList);
 		logger.info("==========整改情况更新结果"+updateResult);
 		//更新流转表
-		
-		return null;
+		FlowActionTrace flowActionTrace=new FlowActionTrace();
+		flowActionTrace.setId(traceId);
+		flowActionTrace.setSubmituserid(userId);
+		flowActionTrace.setSubmitusername(userName);
+		flowActionTrace.setSubmituserdesc("整改提交");
+		int c=flowActionTraceService.updateChangeInfo(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
+		logger.info("==========更新流转表结果"+c);
+		//更新实例表
+		int updateInstance=flowInstanceService.updateInstance(instanceId);
+		if (updateInstance==0||updateResult==0) {
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("-9999", resultMap, null);
+		}
+		resultMap.put("resultCode", "0");
+		resultMap.put("resultMsg", "操作成功！");
+		return ResultUtil.result("0", resultMap, null);
 	}
 }

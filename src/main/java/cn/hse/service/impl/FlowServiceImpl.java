@@ -13,7 +13,7 @@ public class FlowServiceImpl implements FlowService {
 	@Autowired
 	private FlowMapper flowMapper;
 	@Override
-	public Flow selectByPrimaryKey(String i) {
+	public Flow selectByPrimaryKey(Integer i) {
 		return flowMapper.selectByPrimaryKey(i);
 	}
 
