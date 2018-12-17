@@ -271,11 +271,13 @@ public class CheckListController {
 		String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
+		String copyPerson=map.get("copyPerson").toString();   //抄送
 		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
 		DangerList dangerList=new DangerList();
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
 		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
+		dangerList.setCopyPerson(copyPerson);
 		dangerList.setRectificationsituation(rectificationSituation);
 		dangerList.setHiddendoc(hiddenDoc);
 		int updateResult=dangerListServie.updateDanger(dangerList);
