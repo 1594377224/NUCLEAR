@@ -238,7 +238,7 @@
 				 i.userId = #{ownerUserId}
 				AND (
 					t.submitUserId IS NULL
-					OR t.stepId = 300
+					OR t.stepId = '100'
 				)
 				AND c.isDel = '0'
 				AND t.flowId = '1'
@@ -294,7 +294,7 @@
 			 i.userId = #{ownerUserId}
 			AND (
 				t.submitUserId IS NULL
-				OR t.stepId = 300
+				OR t.stepId = '100'
 			)
 			AND c.isDel = '0'
 			AND t.flowId = '1'

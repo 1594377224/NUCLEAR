@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.hse.beans.DelayToApplyFor;
 import cn.hse.beans.FlowInstance;
@@ -29,6 +30,7 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 	private DelayToApplyForMapper delayToApplyForMapper;
 	@Autowired
 	private FlowInstanceService flowInstanceService;
+	@Transactional
 	@Override
 	public String findDelayToApplyFor(JSONObject inputJson) {
 		logger.info("[延期申请-入参]"+inputJson);
@@ -44,13 +46,13 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		String reqCompleteDate = inputJson.getString("reqCompleteDate");
 		String delayToApplyForDec = inputJson.getString("delayToApplyForDec");
 		String delayToApplyForDate = inputJson.getString("delayToApplyForDate");
-		String setDelayToApplyForNo = "20181218";
+		String delayToApplyForNo = "20181218";
 		//封装延期申请单对象
 		DelayToApplyFor delayToApplyForList=new DelayToApplyFor();
 		delayToApplyForList.setDelayToApplyForDate(delayToApplyForDate);
 		delayToApplyForList.setDelayToApplyForDec(delayToApplyForDec);
 		delayToApplyForList.setReqCompleteDate(reqCompleteDate);
-		delayToApplyForList.setDelayToApplyForNo(setDelayToApplyForNo);
+		delayToApplyForList.setDelayToApplyForNo(delayToApplyForNo);
 		delayToApplyForList.setUserId(userId);
 		delayToApplyForList.setUserName(userName);
 		//保存延期申请数据入库delayToApplyFor
