@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 public class WebServiceController {
 
 	//用友接口
-	private static final String url="http://10.4.210.85:59080//b2e/HseMobileServerPort?wsdl";
+	private static final String url="http://10.4.210.85:59080/b2e/HseMobileServerPort?wsdl";
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public void test() throws Exception {
