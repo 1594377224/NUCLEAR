@@ -181,4 +181,65 @@ public class DraftsController {
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, null);
 	}
+	
+	  @Transactional
+	  @RequestMapping(value="/checkPass",method=RequestMethod.POST)
+	  public String checkPass(@RequestBody Map<String, Object> map) {
+		logger.info("【延期申请操作】");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		//0通过 1不通过
+		String pass=map.get("pass").toString();
+		String delayToApplyForDate=map.get("delayToApplyForDate").toString();   //延期日期
+		String dangerId=map.get("dangerId").toString();   //隐患id		
+		String traceId=map.get("traceId").toString();   //流转id
+		String userId=map.get("userId").toString();   //用户id
+		String userName=map.get("userName").toString();
+		if ("0".equals(pass)) {   //当延期申请通过
+			//更新隐患表日期
+			DangerList dangerList=new DangerList();
+			dangerList.setId(Integer.parseInt(dangerId));
+			dangerList.setReqcompletedate(DateUtil.string2Date(delayToApplyForDate));
+			int a=dangerListServie.updateDanger(dangerList);
+			//更新流程表
+			FlowAction flowAction=flowActionService.selectFlowAction(10);
+			FlowActionTrace flowActionTrace=new FlowActionTrace();
+			flowActionTrace.setId(Integer.parseInt(traceId));
+			flowActionTrace.setActionid(flowAction.getActionid());
+			flowActionTrace.setActioncode(flowAction.getActioncode());
+			flowActionTrace.setActionname(flowAction.getActionname());
+			flowActionTrace.setSubmituserid(userId);
+			flowActionTrace.setSubmitusername(userName);
+			flowActionTrace.setSubmituserdesc(Constant.QUE_REN_REN);
+			int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);
+			if (a==0 ||b==0) {
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "操作失败！");
+				return ResultUtil.result("-9999", resultMap, null);
+			}
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			return ResultUtil.result("0", resultMap, null);
+		}else {//延期申请不通过
+			//更新流程表
+			FlowAction flowAction=flowActionService.selectFlowAction(11);
+			FlowActionTrace flowActionTrace=new FlowActionTrace();
+			flowActionTrace.setId(Integer.parseInt(traceId));
+			flowActionTrace.setActionid(flowAction.getActionid());
+			flowActionTrace.setActioncode(flowAction.getActioncode());
+			flowActionTrace.setActionname(flowAction.getActionname());
+			flowActionTrace.setSubmituserid(userId);
+			flowActionTrace.setSubmitusername(userName);
+			flowActionTrace.setSubmituserdesc(Constant.QUE_REN_REN);
+			int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);
+			if (b==0) {
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "操作失败！");
+				return ResultUtil.result("-9999", resultMap, null);
+			}
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		  
+	  }
 }

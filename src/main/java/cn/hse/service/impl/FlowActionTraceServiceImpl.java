@@ -179,5 +179,9 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		}
 		return 1;
 	}
+	@Override
+	public int updateFlowActionTrace(FlowActionTrace flowActionTrace) {
+		return flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
+	}
 
 }

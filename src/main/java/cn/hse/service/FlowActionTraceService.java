@@ -14,4 +14,6 @@ public interface FlowActionTraceService {
 
 	int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId);
 
+	int updateFlowActionTrace(FlowActionTrace flowActionTrace);
+
 }
