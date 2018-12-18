@@ -301,4 +301,7 @@ public class CheckListController {
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, null);
 	}
+	
+	
+	
 }
