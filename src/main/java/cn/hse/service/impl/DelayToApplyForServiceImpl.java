@@ -44,12 +44,15 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		String reqCompleteDate = inputJson.getString("reqCompleteDate");
 		String delayToApplyForDec = inputJson.getString("delayToApplyForDec");
 		String delayToApplyForDate = inputJson.getString("delayToApplyForDate");
-		
+		String setDelayToApplyForNo = "20181218";
 		//封装延期申请单对象
 		DelayToApplyFor delayToApplyForList=new DelayToApplyFor();
 		delayToApplyForList.setDelayToApplyForDate(delayToApplyForDate);
 		delayToApplyForList.setDelayToApplyForDec(delayToApplyForDec);
 		delayToApplyForList.setReqCompleteDate(reqCompleteDate);
+		delayToApplyForList.setDelayToApplyForNo(setDelayToApplyForNo);
+		delayToApplyForList.setUserId(userId);
+		delayToApplyForList.setUserName(userName);
 		//保存延期申请数据入库delayToApplyFor
 		int delayToApplyForNum = delayToApplyForMapper.addDelayToApplyFor(delayToApplyForList);
 		int delayToApplyForId=delayToApplyForList.getId();
@@ -106,7 +109,12 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 				flowActionTraceSubmitMap.put("submitUserDesc","发起流程");
 //				flowActionTraceSubmitMap.put("arriveTime",arriveTime);
 				int flowActionTraceSubmitNum = delayToApplyForMapper.addFlowActionTraceSubmit(flowActionTraceSubmitMap);
-				if(flowInstanceNum>0 && flowActionTraceSubmitNum>0){
+				//插入一条实例id与延期申请单id的关系表
+				Map<String,Object> instanceAndDelayMap = new HashMap<String, Object>();
+				instanceAndDelayMap.put("delayToApplyForId", delayToApplyForId);
+				instanceAndDelayMap.put("instanceId", instanceIdNew);
+				int instanceAndDelayNum = delayToApplyForMapper.addInstanceAndDelay(instanceAndDelayMap);
+				if(flowInstanceNum>0 && flowActionTraceSubmitNum>0 && instanceAndDelayNum>0){
 					//查询验证审批人的信息
 					Map<String,Object> flowFefund = delayToApplyForMapper.findFefundMap(paramMap);
 					if(flowFefund.isEmpty()){

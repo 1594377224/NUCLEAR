@@ -7,10 +7,10 @@
 	<!-- 存延期申请数据入库 -->
 	<insert id = "addDelayToApplyFor" parameterType="cn.hse.beans.DelayToApplyFor" keyProperty="id" useGeneratedKeys="true">
 		INSERT INTO delayToApplyFor (
-			reqCompleteDate,delayToApplyForDec,delayToApplyForDate
+			reqCompleteDate,delayToApplyForDec,delayToApplyForDate,addDelayToApplyFor,userId,userName
 		)
 		VALUES
-			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate})
+			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate},#{addDelayToApplyFor},#{userId},#{userName})
 		<selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -110,4 +110,14 @@
 			#{stepId},#{stepName},#{stepCode},#{ownerUserId},
 			#{ownerUserName},#{ownerUserDesc},now())
 	</insert>
+	
+	<!-- 插入instanceAndDelay实例id与延期申请单id的关系表 -->
+	<insert id = "addInstanceAndDelay" parameterType="Map">
+		INSERT INTO instanceAndDelay (
+			instanceId,delayToApplyForId
+		)
+		VALUES
+			(#{instanceId},#{delayToApplyForId})
+	</insert>
+	
 </mapper>

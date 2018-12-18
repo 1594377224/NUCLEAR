@@ -25,4 +25,6 @@ public interface DelayToApplyForMapper {
 
 	int addFlowActionTrace(Map<String, Object> paramMap);
 
+	int addInstanceAndDelay(Map<String, Object> instanceAndDelayMap);
+
 }

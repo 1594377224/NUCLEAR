@@ -32,8 +32,6 @@
 			c.draftDept,
 			c.draftPerson,
 			c.draftDate,
-			c.approvePerson,
-			c.approveDate,
 			c.id,
 			c.recordNo
 		FROM
@@ -50,12 +48,12 @@
 		</where>
 		UNION
 			SELECT
-				NULL AS dangerId,
-				NULL AS responsiblePerson,
-				NULL AS rectificationSituation,
-				NULL AS completeDate,
-				NULL AS copyPerson,
-				NULL AS hiddenDoc,
+				d.id AS dangerId,
+				d.responsiblePerson,
+				d.rectificationSituation,
+				d.completeDate,
+				d.copyPerson,
+				d.hiddenDoc,
 				t.stepName,
 				t.stepId,
 				t.id AS actionTraceId,
@@ -64,23 +62,25 @@
 				t.flowName,
 				t.flowCode,
 				t.stepCode,
-				NULL AS projNo,
-				NULL AS checkDate,
-				NULL AS checkForm,
-				NULL AS checkContent,
-				NULL AS approvePerson,
-				NULL AS approveDate,
-				NULL AS checkPerson,
-				NULL AS draftUnit,
-				NULL AS draftDept,
-				NULL AS draftPerson,
-				NULL AS draftDate,
-				NULL AS approvePerson,
-				NULL AS approveDate,
-				NULL AS id,
-				NULL AS recordNo
+				c.projNo,
+				c.checkDate,
+				c.checkForm,
+				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
+				c.checkPerson,
+				c.draftUnit,
+				c.draftDept,
+				c.draftPerson,
+				c.draftDate,
+				c.id,
+				c.recordNo
 			FROM
 				flowActionTrace t
+			JOIN instanceAndDelay r ON t.instanceId = r.instanceId
+			RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
+			RIGHT JOIN checkList c ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 		<where>
 			t.ownerUserId = #{ownerUserId} 
 			AND t.submitUserId IS NULL
@@ -148,26 +148,30 @@
 			AND t.flowId = '1'
 		</where>
 		UNION
-			SELECT
-				t.stepName,
-				t.stepId,
-				t.id AS actionTraceId,
-				NULL AS projNo,
-				NULL AS checkDate,
-				NULL AS checkForm,
-				NULL AS checkContent,
-				NULL AS approvePerson,
-				NULL AS approveDate,
-				NULL AS checkPerson,
-				NULL AS draftUnit,
-				NULL AS draftDept,
-				NULL AS draftPerson,
-				NULL AS draftDate,
-				NULL AS id,
-				NULL AS recordNo
-			FROM
-				flowInstance i
-			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+		SELECT
+			t.stepName,
+			t.stepId,
+			t.id AS actionTraceId,
+			c.projNo,
+			c.checkDate,
+			c.checkForm,
+			c.checkContent,
+			c.approvePerson,
+			c.approveDate,
+			c.checkPerson,
+			c.draftUnit,
+			c.draftDept,
+			c.draftPerson,
+			c.draftDate,
+			c.id,
+			c.recordNo
+		FROM
+			flowInstance i
+		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+		JOIN instanceAndDelay r ON t.instanceId = r.instanceId
+		RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
+		RIGHT JOIN checkList c ON c.id = cd.checkId
+		JOIN dangerList d ON d.id = cd.dangerId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND t.flowId = '2'
@@ -240,27 +244,31 @@
 				AND t.flowId = '1'
 			</where>
 			UNION
-				SELECT
-					i.userId,
-					t.stepName,
-					t.stepId,
-					t.id AS actionTraceId,
-					NULL AS projNo,
-					NULL AS checkDate,
-					NULL AS checkForm,
-					NULL AS checkContent,
-					NULL AS approvePerson,
-					NULL AS approveDate,
-					NULL AS checkPerson,
-					NULL AS draftUnit,
-					NULL AS draftDept,
-					NULL AS draftPerson,
-					NULL AS draftDate,
-					NULL AS id,
-					NULL AS recordNo
-				FROM
-					flowInstance i
-				RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			SELECT
+				i.userId,
+				t.stepName,
+				t.stepId,
+				t.id AS actionTraceId,
+				c.projNo,
+				c.checkDate,
+				c.checkForm,
+				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
+				c.checkPerson,
+				c.draftUnit,
+				c.draftDept,
+				c.draftPerson,
+				c.draftDate,
+				c.id,
+				c.recordNo
+			FROM
+				flowInstance i
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			JOIN instanceAndDelay r ON t.instanceId = r.instanceId
+			RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
+			RIGHT JOIN checkList c ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 			<where>
 				 i.userId = #{ownerUserId}
 				AND i.flowId = '2'
