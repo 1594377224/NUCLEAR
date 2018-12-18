@@ -38,21 +38,60 @@
 			c.recordNo
 		FROM
 			checkList c
-			RIGHT JOIN instanceRelation r ON c.id = r.checkId
-			JOIN checkAndDanger cd ON c.id = cd.checkId
-			JOIN dangerList d ON d.id = cd.dangerId
-			RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
+		RIGHT JOIN instanceRelation r ON c.id = r.checkId
+		JOIN checkAndDanger cd ON c.id = cd.checkId
+		JOIN dangerList d ON d.id = cd.dangerId
+		RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
+		<where>
+			t.ownerUserId = #{ownerUserId} 
+			AND t.flowId = '1'
+			AND t.submitUserId IS NULL
+			AND c.isDel = '0'
+		</where>
+		UNION
+			SELECT
+				NULL AS dangerId,
+				NULL AS responsiblePerson,
+				NULL AS rectificationSituation,
+				NULL AS completeDate,
+				NULL AS copyPerson,
+				NULL AS hiddenDoc,
+				t.stepName,
+				t.stepId,
+				t.id AS actionTraceId,
+				t.instanceId,
+				t.flowId,
+				t.flowName,
+				t.flowCode,
+				t.stepCode,
+				NULL AS projNo,
+				NULL AS checkDate,
+				NULL AS checkForm,
+				NULL AS checkContent,
+				NULL AS approvePerson,
+				NULL AS approveDate,
+				NULL AS checkPerson,
+				NULL AS draftUnit,
+				NULL AS draftDept,
+				NULL AS draftPerson,
+				NULL AS draftDate,
+				NULL AS approvePerson,
+				NULL AS approveDate,
+				NULL AS id,
+				NULL AS recordNo
+			FROM
+				flowActionTrace t
 		<where>
 			t.ownerUserId = #{ownerUserId} 
 			AND t.submitUserId IS NULL
-			AND c.isDel = '0'
+			AND t.flowId = '2'
 		</where>
 			order by draftDate desc
 		 <if test="limit!= null and limit!= '' ">
 			limit #{start},#{limit}
 		</if> 
 	</select>
-	<!-- 查询待办个数 -->
+	<!-- 查询待办个数-检查 -->
 	<select id="findCountToDo"  parameterType="Map" resultType = "int">
 		select 
 			count(1) 
@@ -64,6 +103,19 @@
 			t.ownerUserId = #{ownerUserId} 
 			AND t.submitUserId IS NULL
 			AND c.isDel = '0'
+			AND t.flowId = '1'
+		</where>
+	</select>
+	<!-- 查询待办个数-延期申请 -->
+	<select id="findCountToDoAnd"  parameterType="Map" resultType = "int">
+			SELECT
+				count(1)
+			FROM
+				flowActionTrace t
+		<where>
+			t.ownerUserId = #{ownerUserId} 
+			AND t.submitUserId IS NULL
+			AND t.flowId = '2'
 		</where>
 	</select>
 	
@@ -72,7 +124,7 @@
 		SELECT
 			t.stepName,
 			t.stepId,
-			t.id as actionTraceId,
+			t.id AS actionTraceId,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
@@ -84,24 +136,48 @@
 			c.draftDept,
 			c.draftPerson,
 			c.draftDate,
-			c.approvePerson,
-			c.approveDate,
 			c.id,
 			c.recordNo
 		FROM
 			checkList c
-		RIGHT  JOIN instanceRelation r ON c.id = r.checkId
-		RIGHT join flowActionTrace t	on t.instanceId=r.instanceId
+		RIGHT JOIN instanceRelation r ON c.id = r.checkId
+		RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND c.isDel = '0'
+			AND t.flowId = '1'
+		</where>
+		UNION
+			SELECT
+				t.stepName,
+				t.stepId,
+				t.id AS actionTraceId,
+				NULL AS projNo,
+				NULL AS checkDate,
+				NULL AS checkForm,
+				NULL AS checkContent,
+				NULL AS approvePerson,
+				NULL AS approveDate,
+				NULL AS checkPerson,
+				NULL AS draftUnit,
+				NULL AS draftDept,
+				NULL AS draftPerson,
+				NULL AS draftDate,
+				NULL AS id,
+				NULL AS recordNo
+			FROM
+				flowInstance i
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+		<where>
+			t.submitUserId = #{ownerUserId} 
+			AND t.flowId = '2'
 		</where>
 			 order by draftDate desc 
 		 <if test="limit!= null and limit!= '' ">
 			limit #{start},#{limit}
 		</if> 
 	</select>
-	<!-- 查询已办个数 -->
+	<!-- 查询已办个数-检查 -->
 	<select id="findCountHaveToDo"  parameterType="Map" resultType = "int">
 		select 
 			count(1) 
@@ -112,16 +188,30 @@
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND c.isDel = '0'
+			AND t.flowId = '1'
 		</where>
 	</select>
-	
+	<!-- 查询已办个数-延期申请 -->
+	<select id="findCountHaveToDoAnd"  parameterType="Map" resultType = "int">
+			select 
+				count(1)
+			FROM
+				flowInstance i
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+				
+		<where>
+			t.submitUserId = #{ownerUserId} 
+			AND t.flowId = '2'
+		</where>
+	</select>
 	
 	<!-- 查询流转信息 -->
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
+				i.userId,
 				t.stepName,
 				t.stepId,
-				t.id as actionTraceId,
+				t.id AS actionTraceId,
 				c.projNo,
 				c.checkDate,
 				c.checkForm,
@@ -133,15 +223,13 @@
 				c.draftDept,
 				c.draftPerson,
 				c.draftDate,
-				c.approvePerson,
-				c.approveDate,
 				c.id,
-			c.recordNo
+				c.recordNo
 			FROM
 				flowInstance i
-			JOIN instanceRelation cil ON i.id = cil.instanceId
-			JOIN checkList c ON c.id = cil.checkId
-			JOIN flowActionTrace t ON i.id = t.instanceId
+			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
+			RIGHT JOIN checkList c ON c.id = cil.checkId
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 			<where>
 				 i.userId = #{ownerUserId}
 				AND (
@@ -149,13 +237,43 @@
 					OR t.stepId = 300
 				)
 				AND c.isDel = '0'
+				AND t.flowId = '1'
+			</where>
+			UNION
+				SELECT
+					i.userId,
+					t.stepName,
+					t.stepId,
+					t.id AS actionTraceId,
+					NULL AS projNo,
+					NULL AS checkDate,
+					NULL AS checkForm,
+					NULL AS checkContent,
+					NULL AS approvePerson,
+					NULL AS approveDate,
+					NULL AS checkPerson,
+					NULL AS draftUnit,
+					NULL AS draftDept,
+					NULL AS draftPerson,
+					NULL AS draftDate,
+					NULL AS id,
+					NULL AS recordNo
+				FROM
+					flowInstance i
+				RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			<where>
+				 i.userId = #{ownerUserId}
+				AND i.flowId = '2'
+				AND (
+								t.submitUserId IS NULL
+								OR t.stepId = 500				)
 			</where>
 			 order by draftDate desc 
 		 <if test="limit!= null and limit!= '' ">
 			limit #{start},#{limit}
 		</if> 
 	</select>
-	<!-- 查询流转信息个数 -->
+	<!-- 查询流转信息个数-检查 -->
 	<select id="findCountCirculation"  parameterType="Map" resultType = "int">
 		select 
 			count(1) 
@@ -164,16 +282,31 @@
 			JOIN instanceRelation cil ON i.id = cil.instanceId
 			JOIN checkList c ON c.id = cil.checkId
 			JOIN flowActionTrace t ON i.id = t.instanceId
+		<where>
+			 i.userId = #{ownerUserId}
+			AND (
+				t.submitUserId IS NULL
+				OR t.stepId = 300
+			)
+			AND c.isDel = '0'
+			AND t.flowId = '1'
+		</where>
+	</select>
+	<!-- 查询流转信息个数-延期申请 -->
+	<select id="findCountCirculationAnd"  parameterType="Map" resultType = "int">
+			SELECT
+				count(1)
+			FROM
+				flowInstance i
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 			<where>
-				 i.userId = #{ownerUserId}
+				i.userId = #{ownerUserId}
+				AND i.flowId = '2'
 				AND (
-					t.submitUserId IS NULL
-					OR t.stepId = 300
-				)
-				AND c.isDel = '0'
+				t.submitUserId IS NULL
+				OR t.stepId = 500		)
 			</where>
 	</select>
-	
 	
 	<!-- 查询草稿信息 -->
 	<select id="findDraft"  parameterType="Map" resultType = "Map">
@@ -190,8 +323,6 @@
 				c.draftDept,
 				c.draftPerson,
 				c.draftDate,
-				c.approvePerson,
-				c.approveDate,
 				c.id,
 				c.recordNo
 			FROM

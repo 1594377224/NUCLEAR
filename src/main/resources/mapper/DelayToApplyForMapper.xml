@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper    
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.hse.mapper.DelayToApplyForMapper">
+	<!-- 存延期申请数据入库 -->
+	<insert id = "addDelayToApplyFor" parameterType="cn.hse.beans.DelayToApplyFor" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO delayToApplyFor (
+			reqCompleteDate,delayToApplyForDec,delayToApplyForDate
+		)
+		VALUES
+			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate})
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
+	</insert>
+	
+	<!-- 更新checkAndDanger关系表 -->
+	<update id = "upCheckAndDanger" parameterType = "Map">
+		update checkAndDanger
+		<set>
+			delayToApplyForId = #{delayToApplyForId}
+		</set>
+		where dangerId = #{dangerId}
+			  and checkId = #{checkId}
+	</update>	
+	
+	<!-- 查询发起人的信息-查询验证审批人的信息 -->
+	<select id="findFefundMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			flowId,
+			flowName,
+			flowCode,
+			stepId,
+			stepName,
+			stepCode,
+			ownerUserId,
+			ownerUserName
+		FROM
+			flowActionTrace
+		<where>
+			instanceId = #{instanceId}
+			AND actionId = '101'
+		</where>
+	</select>
+	<!-- 查询模板-flow模板-查询模板为延期申请发起节点 -->
+	<select id="findFlowMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			f.id,
+			f.flowName,
+			f.flowCode,
+			s.stepId,
+			s.stepCode,
+			s.stepName,
+			a.actionId,
+			a.actionCode,
+			a.actionName
+		FROM
+			flow f
+		RIGHT JOIN flowStep s ON f.id = s.flowId
+		RIGHT JOIN flowAction a ON f.id = a.flowId
+		<where>
+			s.stepId = '400'
+			AND a.actionId = '401'
+			AND s.enableFlag = '0'
+		</where>
+	</select>
+	<!-- 插入flowActionTrace（一条延期申请发起流程） -->
+	<insert id = "addFlowActionTraceSubmit" parameterType="Map">
+		INSERT INTO flowActionTrace (
+			instanceId,flowId,flowName,flowCode,
+			stepId,stepName,stepCode,
+			actionId,actionName,actionCode,
+			ownerUserId,ownerUserName,ownerUserDesc,
+			submitUserId,submitUserName,submitUserDesc,
+			arriveTime
+		)
+		VALUES
+			(#{instanceId},#{flowId},#{flowName},#{flowCode},
+			#{stepId},#{stepName},#{stepCode},
+			#{actionId},#{actionName},#{actionCode},
+			#{ownerUserId},#{ownerUserName},#{ownerUserDesc},
+			#{submitUserId},#{submitUserName},#{submitUserDesc},
+			now())
+	</insert>
+	
+	<!-- 查询模板-flow模板-查询模板为延期申请审批节点 -->
+	<select id="findFlowflowDalayMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			s.stepId,
+			s.stepCode,
+			s.stepName
+		FROM
+		 flowStep s 
+		<where>
+			s.stepId = '500'
+			AND s.enableFlag = '0'
+		</where>
+	</select>
+	<!-- 插入flowActionTrace （一条发送到发起人进行延期申请审批流程） -->
+	<insert id = "addFlowActionTrace" parameterType="Map">
+		INSERT INTO flowActionTrace (
+			instanceId,flowId,flowName,flowCode,
+			stepId,stepName,stepCode,ownerUserId,
+			ownerUserName,ownerUserDesc,arriveTime
+		)
+		VALUES
+			(#{instanceIdNew},#{flowId},#{flowName},#{flowCode},
+			#{stepId},#{stepName},#{stepCode},#{ownerUserId},
+			#{ownerUserName},#{ownerUserDesc},now())
+	</insert>
+</mapper>

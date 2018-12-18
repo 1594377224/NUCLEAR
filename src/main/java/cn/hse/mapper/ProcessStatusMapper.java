@@ -27,4 +27,10 @@ public interface ProcessStatusMapper {
 	//流转信息查询
 	List<Map<String, Object>> findTransferInformation(JSONObject inputJson);
 
+	int findCountHaveToDoAnd(Map<String, Object> map);
+
+	int findCountCirculationAnd(Map<String, Object> map);
+
+	int findCountToDoAnd(Map<String, Object> map);
+
 }

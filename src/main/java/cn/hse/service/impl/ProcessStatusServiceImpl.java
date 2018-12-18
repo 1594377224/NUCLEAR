@@ -79,17 +79,23 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		String id = inputJson.getString("id");
 		map.put("ownerUserId", id);
 		//待办个数
-		int toDoNum = processStatusMapper.findCountToDo(map);
+		int toDoNumA = processStatusMapper.findCountToDo(map);
+		int toDoNumB = processStatusMapper.findCountToDoAnd(map);
 		//已办个数
-		int haveToDoNum = processStatusMapper.findCountHaveToDo(map);
+		int haveToDoNumA = processStatusMapper.findCountHaveToDo(map);
+		//已办个数
+		int haveToDoNumB = processStatusMapper.findCountHaveToDoAnd(map);
 		//流转个数
-		int circulationNum = processStatusMapper.findCountCirculation(map);
+		int circulationNumA = processStatusMapper.findCountCirculation(map);
+		int circulationNumB = processStatusMapper.findCountCirculationAnd(map);
 		//草稿个数
 		int draftNum = processStatusMapper.findCountDraft(map);
 		//待阅个数
 		
 		//已阅个数
-		
+		int toDoNum = toDoNumA+toDoNumB;
+		int haveToDoNum = haveToDoNumA+haveToDoNumB;
+		int circulationNum = circulationNumA+circulationNumB;
 		resultMap.put("toDoNum", toDoNum);
 		resultMap.put("haveToDoNum", haveToDoNum);
 		resultMap.put("circulationNum", circulationNum);
