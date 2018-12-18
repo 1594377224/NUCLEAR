@@ -6,4 +6,6 @@ public interface CheckListService {
 
 	public int insertCheck(CheckList checkList);
 
+	public int updateCheck(CheckList checkList);
+
 }

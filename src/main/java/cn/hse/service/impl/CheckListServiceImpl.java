@@ -16,5 +16,9 @@ public class CheckListServiceImpl implements CheckListService{
 	public int insertCheck(CheckList checkList) {
 		return checkListMapper.insert(checkList);
 	}
+	@Override
+	public int updateCheck(CheckList checkList) {
+		return checkListMapper.updateByPrimaryKeySelective(checkList);
+	}
 }
 
