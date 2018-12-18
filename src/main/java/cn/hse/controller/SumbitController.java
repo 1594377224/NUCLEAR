@@ -86,8 +86,20 @@ public class SumbitController {
 				
 			}else { //不通过
 				//更新流转表
-				
+				FlowActionTrace flowActionTrace=new FlowActionTrace();
+				flowActionTrace.setId(traceId);
+				flowActionTrace.setSubmituserid(userId);
+				flowActionTrace.setSubmitusername(userName);
+				flowActionTrace.setSubmituserdesc(Constant.ZHENG_GAI_REN);
+				int b=flowActionTraceService.updateChangeLast(flowActionTrace,instanceId);
+				if (b!=0) {
+					resultMap.put("resultCode", "0");
+					resultMap.put("resultMsg", "操作成功！");
+					return ResultUtil.result("0", resultMap, null);
+				}
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "操作失败！");
+				return ResultUtil.result("-9999", resultMap, null);
 			}
-			return null;
 		}
 }

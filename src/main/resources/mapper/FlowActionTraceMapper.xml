@@ -245,4 +245,11 @@
       arriveTime = #{arrivetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectByStepIdAndInstanceId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  	  <include refid="Base_Column_List" />
+    from flowActionTrace
+    where instanceId = #{instanceid,jdbcType=INTEGER} AND stepId = #{stepid,jdbcType=VARCHAR},
+  </select>
 </mapper>

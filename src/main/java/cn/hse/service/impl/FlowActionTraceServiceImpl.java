@@ -101,7 +101,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		return 1;
 	}
 	
-	//整改验证
+	//整改验证通过
 	@Override
 	public int updateChange(FlowActionTrace flowActionTrace,Integer instanceId) {
 		//更新流转表
@@ -139,6 +139,45 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		trace.setArrivetime(new Date());
 		int c=flowActionTraceMapper.insertSelective(trace);
 		return c;
+	}
+	//整改验证不通过
+	@Override
+	public int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId) {
+		FlowAction flowAction=flowActionMapper.selectByPrimaryKey(7);  //查询操作步骤
+		flowActionTrace.setActionid(flowAction.getActionid());
+		flowActionTrace.setActionname(flowAction.getActionname());
+		flowActionTrace.setActioncode(flowAction.getActioncode());
+		int updateResult=flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
+		//根据实例ID和节点ID来查询上一节点
+		FlowActionTrace f=flowActionTraceMapper.selectByStepIdAndInstanceId(instanceId,"200");
+		
+		FlowActionTrace trace=new FlowActionTrace();
+		trace.setInstanceid(instanceId);
+		trace.setFlowid(f.getFlowid());
+		trace.setFlowcode(f.getFlowcode());
+		trace.setFlowname(f.getFlowname());	
+		
+		trace.setStepid(f.getStepid());
+		trace.setStepcode(f.getStepcode());
+		trace.setStepname(f.getStepname());
+		
+		/*trace.setActionid(action.getActionid());
+		trace.setActionname(action.getActionname());
+		trace.setActioncode(action.getActioncode());*/
+
+		trace.setOwneruserid(f.getOwneruserid());
+		trace.setOwnerusername(f.getOwnerusername());
+		trace.setOwneruserdesc(f.getOwneruserdesc());
+		
+		/*trace.setSubmituserid(flowActionTrace.getSubmituserid());
+		trace.setSubmitusername(flowActionTrace.getSubmitusername());
+		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());*/
+		trace.setArrivetime(new Date());
+		int c=flowActionTraceMapper.insertSelective(trace);
+		if (updateResult==0||c==0) {
+			return 0;
+		}
+		return 1;
 	}
 
 }

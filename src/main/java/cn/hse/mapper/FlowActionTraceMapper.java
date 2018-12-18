@@ -16,4 +16,6 @@ public interface FlowActionTraceMapper {
     int updateByPrimaryKeySelective(FlowActionTrace record);
 
     int updateByPrimaryKey(FlowActionTrace record);
+
+	FlowActionTrace selectByStepIdAndInstanceId(Integer instanceId, String i);
 }
