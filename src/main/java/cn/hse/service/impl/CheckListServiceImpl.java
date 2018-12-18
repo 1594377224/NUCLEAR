@@ -12,13 +12,9 @@ import cn.hse.service.CheckListService;
 public class CheckListServiceImpl implements CheckListService{
 	@Autowired
 	private CheckListMapper checkListMapper;
-	
-	
 	@Override
 	public int insertCheck(CheckList checkList) {
 		return checkListMapper.insert(checkList);
 	}
-	
-
 }
 
