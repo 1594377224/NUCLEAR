@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 public class WebServiceController {
 
 	//用友接口
-	private static final String url="http://10.4.210.85:59080//b2e/HseMobileServerPort?wsdl";
+	private static final String url="http://10.4.210.85:59080/b2e/HseMobileServerPort?wsdl";
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public void test() throws Exception {
@@ -29,21 +29,27 @@ public class WebServiceController {
 	}
 	
 	@RequestMapping(value = "/getHesUserInif", method = RequestMethod.GET)
-	public void getHesUserInif() throws Exception {
-		Map paramsMap=new HashMap();
-		Map map=new HashMap();
-		map.put("userName", "LIUZHAOJUAN");
-		paramsMap.put("params", map);
-		JSONObject params=JSONObject.fromObject(paramsMap);
-		System.out.println("params==>"+params);
-		JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
-		org.apache.cxf.endpoint.Client client = dcf.createClient(url);
-		// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
-		Object[] objects = client.invoke("getHesUserInif", params);
-		// 输出调用结果
-		for (Object object : objects) {
-			
-			System.out.println("请求接口返回==>" + object.toString());
+	public void getHesUserInif() {
+		try {
+
+			Map paramsMap = new HashMap();
+			Map map = new HashMap();
+			map.put("userName", "LIUZHAOJUAN");
+			paramsMap.put("params", map);
+			JSONObject params = JSONObject.fromObject(paramsMap);
+			System.out.println("params==>" + params.toString());
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
+			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
+			Object[] objects = client.invoke("getHesUserInif", params.toString());
+			// 输出调用结果
+			System.out.println("请求结束");
+			for (Object object : objects) {
+
+				System.out.println("请求接口返回==>" + object.toString());
+			}
+		} catch (Exception e) {
+			System.out.println("接口请求异常error==>"+e.toString());
 		}
 	}
 	
