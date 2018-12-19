@@ -153,4 +153,14 @@
       statusId = #{statusid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 插入信息到抄送人delivery表 -->
+  <insert id="addDelivery" parameterType="Map">
+		 INSERT INTO delivery(userId,userName,CCId,CCName,statusId,checkId,dangerId,traceId) 
+		 VALUES
+	   <foreach collection="deliveryList" item="item" index="index" separator="," >
+   			(#{userId},#{userName},#{item.id},#{item.name},#{statusId},#{checkId},#{dangerId},#{traceId})
+  	   </foreach>
+	</insert>
+  
+  
 </mapper>

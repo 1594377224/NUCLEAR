@@ -58,9 +58,11 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 			list = processStatusMapper.findDraft(map);
 			num = processStatusMapper.findCountDraft(map);
 		} else if (4==logos){//待阅查询标识（4）
-			
+			list = processStatusMapper.findWaitingRead(map);
+			num = processStatusMapper.findCountWaitingRead(map);
 		} else if (5==logos){//已阅查询标识（5）
-			
+			list = processStatusMapper.findHaveRead(map);
+			num = processStatusMapper.findCountHaveRead(map);
 		}
 		resultMap.put("total", num);
 		resultMap.put("resultCode", "0");
@@ -91,8 +93,10 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		//草稿个数
 		int draftNum = processStatusMapper.findCountDraft(map);
 		//待阅个数
-		
+		int waitingReadNum = processStatusMapper.findCountWaitingRead(map);
 		//已阅个数
+		int haveRead = processStatusMapper.findCountHaveRead(map);
+		
 		int toDoNum = toDoNumA+toDoNumB;
 		int haveToDoNum = haveToDoNumA+haveToDoNumB;
 		int circulationNum = circulationNumA+circulationNumB;
@@ -100,6 +104,8 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		resultMap.put("haveToDoNum", haveToDoNum);
 		resultMap.put("circulationNum", circulationNum);
 		resultMap.put("draftNum", draftNum);
+		resultMap.put("waitingReadNum", waitingReadNum);
+		resultMap.put("haveRead", haveRead);
 		resultMap.put("resultCode", "0");
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, null);
@@ -118,4 +124,20 @@ public class ProcessStatusServiceImpl implements ProcessStatusService{
 		return ResultUtil.result("0", resultMap, list);
 	}
 
+	/*
+	 *待阅点击后更新为已阅状态 
+	 */
+	public String findHaveRead(JSONObject inputJson) {
+		logger.info("[待阅点击后更新为已阅状态 -更改入参]"+inputJson);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		int  num = processStatusMapper.updateHaveRead(inputJson);
+		if(num > 0){
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+		} else {
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+		}
+		return ResultUtil.result("0", resultMap, null);
+	}
 }

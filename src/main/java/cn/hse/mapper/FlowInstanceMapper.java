@@ -1,5 +1,7 @@
 package cn.hse.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import cn.hse.beans.FlowInstance;
@@ -17,4 +19,6 @@ public interface FlowInstanceMapper {
     int updateByPrimaryKeySelective(FlowInstance record);
 
     int updateByPrimaryKey(FlowInstance record);
+
+	int addDelivery(Map<String, Object> deliveryMap);
 }

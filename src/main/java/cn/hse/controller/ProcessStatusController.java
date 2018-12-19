@@ -121,4 +121,32 @@ public class ProcessStatusController {
 		}
 	}
 	
+	/*
+	 *待阅点击后更新为已阅状态 
+	 */
+	@RequestMapping(value="/updateHaveRead",method=RequestMethod.POST)
+	public String findHaveRead(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[流程状态-流转信息查询入参]"+inputJson);
+		// 参数校验
+		if(inputJson.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		//抄送人表的id-- deliveryId
+		String deliveryId = "" ;
+		if (inputJson.containsKey("deliveryId")) {
+			deliveryId = inputJson.getString("deliveryId");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(deliveryId)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = processStatusService.findHaveRead(inputJson);
+			return resultStr;
+		}
+	}
 }

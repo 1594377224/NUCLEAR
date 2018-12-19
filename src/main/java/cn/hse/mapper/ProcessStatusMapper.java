@@ -33,4 +33,14 @@ public interface ProcessStatusMapper {
 
 	int findCountToDoAnd(Map<String, Object> map);
 
+	List<Map<String, Object>> findWaitingRead(Map<String, Object> map);
+
+	List<Map<String, Object>> findHaveRead(Map<String, Object> map);
+
+	int findCountWaitingRead(Map<String, Object> map);
+
+	int findCountHaveRead(Map<String, Object> map);
+
+	int updateHaveRead(JSONObject inputJson);
+
 }

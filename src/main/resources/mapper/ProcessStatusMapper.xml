@@ -7,6 +7,8 @@
 	<!-- 查询待办信息 -->
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			null AS delayToApplyForNo,
+			null AS delayToApplyForDate,
 			d.id AS dangerId,
 			d.responsiblePerson,
 			d.rectificationSituation,
@@ -48,6 +50,8 @@
 		</where>
 		UNION
 			SELECT
+				daf.delayToApplyForNo,
+				daf.delayToApplyForDate,
 				d.id AS dangerId,
 				d.responsiblePerson,
 				d.rectificationSituation,
@@ -81,6 +85,7 @@
 			RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
 			RIGHT JOIN checkList c ON c.id = cd.checkId
 			JOIN dangerList d ON d.id = cd.dangerId
+			JOIN delayToApplyFor daf ON daf.id = r.delayToApplyId
 		<where>
 			t.ownerUserId = #{ownerUserId} 
 			AND t.submitUserId IS NULL
@@ -122,6 +127,8 @@
 	<!-- 查询已办信息 -->
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			null AS delayToApplyForNo,
+			null AS delayToApplyForDate,
 			t.stepName,
 			t.stepId,
 			t.id AS actionTraceId,
@@ -149,6 +156,8 @@
 		</where>
 		UNION
 		SELECT
+			daf.delayToApplyForNo,
+			daf.delayToApplyForDate,
 			t.stepName,
 			t.stepId,
 			t.id AS actionTraceId,
@@ -172,6 +181,7 @@
 		RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
 		RIGHT JOIN checkList c ON c.id = cd.checkId
 		JOIN dangerList d ON d.id = cd.dangerId
+		JOIN delayToApplyFor daf ON daf.id = r.delayToApplyId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND t.flowId = '2'
@@ -212,6 +222,8 @@
 	<!-- 查询流转信息 -->
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
+				null AS delayToApplyForNo,
+				null AS delayToApplyForDate,
 				i.userId,
 				t.stepName,
 				t.stepId,
@@ -245,6 +257,8 @@
 			</where>
 			UNION
 			SELECT
+				daf.delayToApplyForNo,
+				daf.delayToApplyForDate,
 				i.userId,
 				t.stepName,
 				t.stepId,
@@ -269,6 +283,7 @@
 			RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
 			RIGHT JOIN checkList c ON c.id = cd.checkId
 			JOIN dangerList d ON d.id = cd.dangerId
+			JOIN delayToApplyFor daf ON daf.id = r.delayToApplyId
 			<where>
 				 i.userId = #{ownerUserId}
 				AND i.flowId = '2'
@@ -375,7 +390,137 @@
 		<where>
 		 	c.recordNo = #{recordNo}
 		</where>
+		UNION
+			SELECT
+				t.ownerUserName,
+				t.stepName,
+				t.arriveTime,
+				t.submitUserId,
+				t.actionName
+			FROM
+				flowInstance i
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			JOIN instanceAndDelay r ON t.instanceId = r.instanceId
+			RIGHT JOIN checkAndDanger cd ON cd.delayToApplyForId = r.delayToApplyId
+			RIGHT JOIN checkList c ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
+			JOIN delayToApplyFor daf ON daf.id = r.delayToApplyId
+			<where>
+			 	daf.delayToApplyForNo = #{recordNo}
+			</where>
 			order by arriveTime desc 
  	</select>
+	
+	<!-- 查询待阅信息 -->
+	<select id="findWaitingRead"  parameterType="Map" resultType = "Map">
+			SSELECT
+				dy.id AS deliveryId,
+				i.userId,
+				t.stepName,
+				t.stepId,
+				t.id AS actionTraceId,
+				c.projNo,
+				c.checkDate,
+				c.checkForm,
+				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
+				c.checkPerson,
+				c.draftUnit,
+				c.draftDept,
+				c.draftPerson,
+				c.draftDate,
+				c.id,
+				c.recordNo
+			FROM
+				flowInstance i
+			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
+			RIGHT JOIN checkList c ON c.id = cil.checkId
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			RIGHT JOIN delivery dy ON c.id = dy.checkId
+			<where>
+			 	dy.statusId = '0'
+				AND dy.CCId = #{ownerUserId}
+				AND t.stepId = '200'
+			</where>
+			order by arriveTime desc 
+ 	</select>
+	<!-- 查询待阅信息个数 -->
+	<select id="findCountWaitingRead"  parameterType="Map" resultType = "int">
+		select 
+			count(1) 
+		FROM
+			flowInstance i
+		RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
+		RIGHT JOIN checkList c ON c.id = cil.checkId
+		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+		RIGHT JOIN delivery dy ON c.id = dy.checkId
+		<where>
+		 	dy.statusId = '0'
+			AND dy.CCId = #{ownerUserId}
+			AND t.stepId = '200'
+		</where>
+	</select>
+	
+	<!-- 查询已阅信息 -->
+	<select id="findHaveRead"  parameterType="Map" resultType = "Map">
+			SSELECT
+			    dy.id AS deliveryId,
+				i.userId,
+				t.stepName,
+				t.stepId,
+				t.id AS actionTraceId,
+				c.projNo,
+				c.checkDate,
+				c.checkForm,
+				c.checkContent,
+				c.approvePerson,
+				c.approveDate,
+				c.checkPerson,
+				c.draftUnit,
+				c.draftDept,
+				c.draftPerson,
+				c.draftDate,
+				c.id,
+				c.recordNo
+			FROM
+				flowInstance i
+			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
+			RIGHT JOIN checkList c ON c.id = cil.checkId
+			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+			RIGHT JOIN delivery dy ON c.id = dy.checkId
+			<where>
+			 	dy.statusId = '1'
+				AND dy.CCId = #{ownerUserId}
+				AND t.stepId = '200'
+			</where>
+			order by arriveTime desc 
+ 	</select>
+	<!-- 查询已阅信息个数 -->
+	<select id="findCountDraft"  parameterType="Map" resultType = "int">
+		select 
+			count(1) 
+		FROM
+			flowInstance i
+		RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
+		RIGHT JOIN checkList c ON c.id = cil.checkId
+		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
+		RIGHT JOIN delivery dy ON c.id = dy.checkId
+		<where>
+		 	dy.statusId = '1'
+			AND dy.CCId = #{ownerUserId}
+			AND t.stepId = '200'
+		</where>
+	</select>
+	
+	
+	<!-- 更新已阅信息 statusId=1 -->
+	<update id = "updateHaveRead" parameterType = "Map">
+		update delivery
+		<set>
+			statusId = '1'
+		</set>
+		where id = #{deliveryId}
+	</update>	
 	
 </mapper>
