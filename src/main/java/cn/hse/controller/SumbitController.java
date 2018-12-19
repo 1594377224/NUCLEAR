@@ -19,7 +19,11 @@ import cn.hse.service.FlowInstanceService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.ResultUtil;
-
+/**
+ * 整改验证通过，不通过
+ * @author T440P
+ *
+ */
 @RequestMapping(value="/sumbit")
 @RestController
 public class SumbitController {

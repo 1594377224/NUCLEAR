@@ -182,6 +182,11 @@ public class DraftsController {
 		return ResultUtil.result("0", resultMap, null);
 	}
 	
+	/**
+	 * 延期申请审批通过，不通过
+	 * @param map
+	 * @return
+	 */
 	  @Transactional
 	  @RequestMapping(value="/checkPass",method=RequestMethod.POST)
 	  public String checkPass(@RequestBody Map<String, Object> map) {
