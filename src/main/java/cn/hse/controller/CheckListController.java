@@ -40,8 +40,6 @@ import cn.hse.util.ResultUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import net.sf.json.JSONObject;
-
 @RequestMapping("/checkList")
 @RestController
 public class CheckListController {
@@ -337,11 +335,11 @@ public class CheckListController {
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
 		paramsMap.put("record_no","");  //检查编号
-		paramsMap.put("check_date", DateUtil.string2Date(map.get("checkDate").toString()));  //检查日期
-		paramsMap.put("check_form", Integer.valueOf(map.get("checkForm").toString()));   //检查形式
+		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
+		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
 		paramsMap.put("check_person", map.get("checkPerson").toString());  //检查人
-		paramsMap.put("draft_date", DateUtil.string2Date(map.get("draftDate").toString()));    //编制日期
+		paramsMap.put("draft_date", map.get("draftDate").toString());    //编制日期
 		paramsMap.put("approve_date", "");  //申请日期
 		paramsMap.put("draft_unit", map.get("draftUnit").toString());  //编制单位
 		paramsMap.put("draft_dept", map.get("draftDept").toString());  //编制部门
@@ -362,7 +360,7 @@ public class CheckListController {
 		resultMap.put("hidden_category",map.get("hiddenCategory").toString());   //隐患属性
 		resultMap.put("nonconformity","");   //隐患类型
 		resultMap.put("hidden_description",map.get("hiddenDescription").toString());  //隐患描述
-		resultMap.put("req_complete_date",DateUtil.string2Date(map.get("reqCompleteDate").toString()));  //要求完成的日期
+		resultMap.put("req_complete_date",map.get("reqCompleteDate").toString());  //要求完成的日期
 		resultMap.put("if_site_correction","");
 		resultMap.put("corrective_request",map.get("correctiveRequest").toString());  //整改措施要求
 		resultMap.put("corrective_content","");
