@@ -50,13 +50,14 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getHesUserInif", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
-			for (Object object : objects) {
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -75,7 +76,7 @@ public class WebServiceController {
 		try {
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			Map<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap.put("userName", map.get("userId"));
+			resultMap.put("userName", map.get("userName"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
 			System.out.println("params==>" + params.toString());
@@ -84,13 +85,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getProjectList", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -118,13 +121,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getAreaList", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -152,13 +157,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getDraftUnitList", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -187,13 +194,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getCopyPerson", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -221,13 +230,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getUnit", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -255,13 +266,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getInspectedUnit", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -290,13 +303,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("getHazardTypeList", params.toString());
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
@@ -310,7 +325,7 @@ public class WebServiceController {
 	 * 入参=projNo
 	 */
 	//@RequestMapping(value = "/createModifyHseSiteRecord", method = RequestMethod.POST)
-	public String createModifyHseSiteRecord(String params) {
+	public String createModifyHseSiteRecord(JSONObject params) {
 		logger.info("createModifyHseSiteRecord入参==="+params);
 		try {
 			/*Map<String, Object> paramsMap = new HashMap<String, Object>();
@@ -326,13 +341,15 @@ public class WebServiceController {
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
 			Object[] objects = client.invoke("createModifyHseSiteRecord", params);
 			// 输出调用结果
-			System.out.println("请求结束");
-			String result=null;
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			/*String result=null;
 			for (Object object : objects) {
 				System.out.println("请求接口返回==>" + object.toString());			
 				logger.info("用户信息返回接口信息="+object.toString());
 				result=object.toString();
-			}
+			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {

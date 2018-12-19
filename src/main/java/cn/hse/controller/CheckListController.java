@@ -367,7 +367,7 @@ public class CheckListController {
 		WebServiceController webServiceController=new WebServiceController();
 		
 		//调用返回的结果
-		String returnResult=webServiceController.createModifyHseSiteRecord(params.toString());
+		String returnResult=webServiceController.createModifyHseSiteRecord(params);
 		Map<String, String> json=JSONObject.fromObject(returnResult);
 		String recordNo=json.get("object");
 		logger.info("[获取到的用友检查单编号]==="+recordNo);
