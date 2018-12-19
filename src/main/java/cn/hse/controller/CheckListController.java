@@ -37,6 +37,8 @@ import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.Result;
 import cn.hse.util.ResultUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import net.sf.json.JSONObject;
 
@@ -320,8 +322,6 @@ public class CheckListController {
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, null);
 	}
-	
-
 	
 	/**
 	 * 对新建数据进行处理	
