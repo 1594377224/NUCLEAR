@@ -46,7 +46,7 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		String reqCompleteDate = inputJson.getString("reqCompleteDate");
 		String delayToApplyForDec = inputJson.getString("delayToApplyForDec");
 		String delayToApplyForDate = inputJson.getString("delayToApplyForDate");
-		String delayToApplyForNo = "20181218";
+		String delayToApplyForNo = String.valueOf((Math.random()*9+1)*100000);
 		//封装延期申请单对象
 		DelayToApplyFor delayToApplyForList=new DelayToApplyFor();
 		delayToApplyForList.setDelayToApplyForDate(delayToApplyForDate);
