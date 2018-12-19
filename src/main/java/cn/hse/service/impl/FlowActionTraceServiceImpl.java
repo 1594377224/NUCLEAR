@@ -78,7 +78,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		//插入新的节点数据
 		//Integer traceId=flowActionTrace.getId();
 		Flow flow=flowMapper.selectByPrimaryKey(1);   //查询流程1
-		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(2);  //查询节点
+		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(3);  //查询节点
 		FlowActionTrace record=new FlowActionTrace();
 		record.setInstanceid(instanceId);
 		record.setFlowid(flow.getId().toString());
