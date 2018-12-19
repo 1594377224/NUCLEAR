@@ -497,7 +497,7 @@
 			order by arriveTime desc 
  	</select>
 	<!-- 查询已阅信息个数 -->
-	<select id="findCountDraft"  parameterType="Map" resultType = "int">
+	<select id="findCountHaveRead"  parameterType="Map" resultType = "int">
 		select 
 			count(1) 
 		FROM
