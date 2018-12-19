@@ -338,8 +338,11 @@ public class WebServiceController {
 			//System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
+			logger.info("===================");
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
-			Object[] objects = client.invoke("createModifyHseSiteRecord", params);
+			Object[] objects = client.invoke("createModifyHseSiteRecord", params.toString());
+			
+			logger.info("===调用用友接口返回的数组="+objects);
 			// 输出调用结果
 			logger.info("===调用用友接口请求结束");
 			String result=objects[0].toString();
