@@ -1,7 +1,9 @@
 package cn.hse.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +37,7 @@ import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.Result;
 import cn.hse.util.ResultUtil;
+import net.sf.json.JSONObject;
 
 @RequestMapping("/checkList")
 @RestController
@@ -66,6 +69,9 @@ public class CheckListController {
 	@RequestMapping(value="/insertCheck",method=RequestMethod.POST)
 	public Result insertCheck(@RequestBody Map<String, Object> map){
 		logger.info("=======进入新建检查单========接收参数="+map);
+		//将检查隐患单数据传入用友数据库
+		String recordNo=dataProcess(map);
+		
 		Result result=new Result();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//封装检查单对象
@@ -75,7 +81,7 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-		checkList.setRecordno("2");  //检查编号
+		checkList.setRecordno(recordNo);  //检查编号
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -302,6 +308,69 @@ public class CheckListController {
 		return ResultUtil.result("0", resultMap, null);
 	}
 	
-	
-	
+	/**
+	 * 对新建数据进行处理	
+	 * @param map
+	 * @return
+	 */
+	public String dataProcess(Map<String, Object> map) {
+		logger.info("[传用友处理新建数据入参]"+map);
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		//检查单信息封装
+		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
+		paramsMap.put("record_no","");  //检查编号
+		paramsMap.put("check_date", DateUtil.string2Date(map.get("checkDate").toString()));  //检查日期
+		paramsMap.put("check_form", Integer.valueOf(map.get("checkForm").toString()));   //检查形式
+		paramsMap.put("check_content", "1");   //检查名称
+		paramsMap.put("check_person", map.get("checkPerson").toString());  //检查人
+		paramsMap.put("draft_date", DateUtil.string2Date(map.get("draftDate").toString()));    //编制日期
+		paramsMap.put("approve_date", "");  //申请日期
+		paramsMap.put("draft_unit", map.get("draftUnit").toString());  //编制单位
+		paramsMap.put("draft_dept", map.get("draftDept").toString());  //编制部门
+		paramsMap.put("draft_person", map.get("draftPerson").toString());  //编制人
+		paramsMap.put("approve_person", "");  //申请人
+		String recordType=Integer.valueOf(map.get("recordType").toString())==0?"Company":"Owner";
+		paramsMap.put("record_type", recordType);  //检查单类型
+		
+		//隐患单信息封装
+		resultMap.put("proj_no",map.get("projNo"));  //项目编号
+		resultMap.put("record_no","");  //检查编号
+		resultMap.put("line_no","");   //序号
+		resultMap.put("distribution_date","");   //分发日期
+		resultMap.put("unit",map.get("unit").toString());  //适用机组
+		resultMap.put("area",map.get("area").toString());  //适用区域
+		resultMap.put("track_people","");
+		resultMap.put("hse_hidden_level",map.get("hseHiddenLevel").toString());  //隐患级别
+		resultMap.put("hidden_category",map.get("hiddenCategory").toString());   //隐患属性
+		resultMap.put("nonconformity","");   //隐患类型
+		resultMap.put("hidden_description",map.get("hiddenDescription").toString());  //隐患描述
+		resultMap.put("req_complete_date",DateUtil.string2Date(map.get("reqCompleteDate").toString()));  //要求完成的日期
+		resultMap.put("if_site_correction","");
+		resultMap.put("corrective_request",map.get("correctiveRequest").toString());  //整改措施要求
+		resultMap.put("corrective_content","");
+		resultMap.put("complete_date","");
+		resultMap.put("contractor_approve","");
+		resultMap.put("contractor_approve_date","");
+		resultMap.put("comfirm_content","");
+		resultMap.put("verify_content","");
+		
+		list.add(resultMap);
+		
+		paramsMap.put("HseHiddenDangers", list);
+		logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
+		
+		JSONObject params = JSONObject.fromObject(paramsMap);
+		
+		WebServiceController webServiceController=new WebServiceController();
+		
+		//调用返回的结果
+		String returnResult=webServiceController.createModifyHseSiteRecord(params.toString());
+		Map<String, String> json=JSONObject.fromObject(returnResult);
+		String projNo=json.get("object");
+		return projNo;
+		
+	}
 }
