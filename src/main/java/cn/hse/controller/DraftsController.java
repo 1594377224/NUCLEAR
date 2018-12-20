@@ -183,8 +183,8 @@ public class DraftsController {
 		//插入信息到抄送人delivery表
 		Map<String, Object> deliveryMap = new HashMap<String, Object>();
 		deliveryMap.put("dangerId", dangerId);
-		Map<String,Object> copyPerson = flowInstanceService.findCopyPerson(deliveryMap);
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPerson.get("copyPerson"));
+//		Map<String,Object> copyPerson = flowInstanceService.findCopyPerson(deliveryMap);
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		if(deliveryList.isEmpty()){
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");

@@ -399,11 +399,13 @@
 		select 
 			count(1) 
 		FROM
-			checkList 
+			checkList c
+			JOIN checkAndDanger cd ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 		<where>
-		 	userId =  #{ownerUserId}
-			AND isDel = '0'
-			AND state = '0'
+		 	c.userId =  #{ownerUserId}
+			AND c.isDel = '0'
+			AND c.state = '0'
 		</where>
 	</select>
 	
