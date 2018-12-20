@@ -122,7 +122,8 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
-		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
+		String copyPerson = map.get("copyPerson").toString();
+		dangerList.setCopyPerson(copyPerson);   //抄送人
 		dangerList.setIsdel(0);
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
@@ -315,15 +316,17 @@ public class CheckListController {
 		//插入信息到抄送人delivery表
 		Map<String, Object> deliveryMap = new HashMap<String, Object>();
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		deliveryMap.put("userId", userId);
-		deliveryMap.put("userName", userName);
-		deliveryMap.put("checkId", checkId);
-		deliveryMap.put("dangerId", dangerId);
-		deliveryMap.put("traceId", traceId);
-		deliveryMap.put("statusId", "0");//0待阅，1已阅
-		deliveryMap.put("deliveryList", deliveryList);
-		int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-		
+		int deliveryNum = 0;
+		if(deliveryList.size()>0){
+			deliveryMap.put("userId", userId);
+			deliveryMap.put("userName", userName);
+			deliveryMap.put("checkId", checkId);
+			deliveryMap.put("dangerId", dangerId);
+			deliveryMap.put("traceId", traceId);
+			deliveryMap.put("statusId", "0");//0待阅，1已阅
+			deliveryMap.put("deliveryList", deliveryList);
+			deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+		}
 		//更新实例表
 		int updateInstance=flowInstanceService.updateInstance(instanceId);
 		if (updateInstance==0||updateResult==0||deliveryNum==0) {
@@ -349,7 +352,7 @@ public class CheckListController {
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		//paramsMap.put("record_no","SNG-HSE-SI-2018-0021");  //检查编号
+		paramsMap.put("record_no","");  //检查编号
 		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
@@ -365,7 +368,7 @@ public class CheckListController {
 		
 		//隐患单信息封装
 		resultMap.put("proj_no",map.get("projNo"));  //项目编号
-		//resultMap.put("record_no","");  //检查编号
+		resultMap.put("record_no","");  //检查编号
 		resultMap.put("line_no","1");   //序号
 		resultMap.put("distribution_date","");   //分发日期
 		resultMap.put("unit",map.get("unit").toString());  //适用机组
