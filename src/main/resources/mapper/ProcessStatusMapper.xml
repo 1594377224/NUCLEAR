@@ -129,9 +129,20 @@
 		SELECT
 			null AS delayToApplyForNo,
 			null AS delayToApplyForDate,
+			d.id AS dangerId,
+			d.responsiblePerson,
+			d.rectificationSituation,
+			d.completeDate,
+			d.copyPerson,
+			d.hiddenDoc,
 			t.stepName,
 			t.stepId,
 			t.id AS actionTraceId,
+			t.instanceId,
+			t.flowId,
+			t.flowName,
+			t.flowCode,
+			t.stepCode,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
@@ -148,6 +159,8 @@
 		FROM
 			checkList c
 		RIGHT JOIN instanceRelation r ON c.id = r.checkId
+		JOIN checkAndDanger cd ON c.id = cd.checkId
+		JOIN dangerList d ON d.id = cd.dangerId
 		RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
 		<where>
 			t.submitUserId = #{ownerUserId} 
@@ -158,9 +171,20 @@
 		SELECT
 			daf.delayToApplyForNo,
 			daf.delayToApplyForDate,
+			d.id AS dangerId,
+			d.responsiblePerson,
+			d.rectificationSituation,
+			d.completeDate,
+			d.copyPerson,
+			d.hiddenDoc,
 			t.stepName,
 			t.stepId,
 			t.id AS actionTraceId,
+			t.instanceId,
+			t.flowId,
+			t.flowName,
+			t.flowCode,
+			t.stepCode,
 			c.projNo,
 			c.checkDate,
 			c.checkForm,
@@ -224,6 +248,12 @@
 			SELECT
 				null AS delayToApplyForNo,
 				null AS delayToApplyForDate,
+				d.id AS dangerId,
+				d.responsiblePerson,
+				d.rectificationSituation,
+				d.completeDate,
+				d.copyPerson,
+				d.hiddenDoc,
 				i.userId,
 				t.stepName,
 				t.stepId,
@@ -245,6 +275,8 @@
 				flowInstance i
 			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
 			RIGHT JOIN checkList c ON c.id = cil.checkId
+			JOIN checkAndDanger cd ON c.id = cd.checkId
+			JOIN dangerList d ON d.id = cd.dangerId
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 			<where>
 				 i.userId = #{ownerUserId}
@@ -259,6 +291,12 @@
 			SELECT
 				daf.delayToApplyForNo,
 				daf.delayToApplyForDate,
+				d.id AS dangerId,
+				d.responsiblePerson,
+				d.rectificationSituation,
+				d.completeDate,
+				d.copyPerson,
+				d.hiddenDoc,
 				i.userId,
 				t.stepName,
 				t.stepId,
@@ -415,6 +453,12 @@
 	<select id="findWaitingRead"  parameterType="Map" resultType = "Map">
 			SELECT
 				dy.id AS deliveryId,
+				d.id AS dangerId,
+				d.responsiblePerson,
+				d.rectificationSituation,
+				d.completeDate,
+				d.copyPerson,
+				d.hiddenDoc,
 				t.stepName,
 				t.stepId,
 				t.id AS actionTraceId,
@@ -435,6 +479,7 @@
 				delivery dy
 			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
 			RIGHT JOIN checkList c ON c.id = dy.checkId
+			JOIN dangerList d ON d.id = dy.dangerId
 			<where>
 			 	dy.statusId = '0'
 				AND dy.CCId = #{ownerUserId}
@@ -468,6 +513,12 @@
 	<select id="findHaveRead"  parameterType="Map" resultType = "Map">
 			SELECT
 				dy.id AS deliveryId,
+				d.id AS dangerId,
+				d.responsiblePerson,
+				d.rectificationSituation,
+				d.completeDate,
+				d.copyPerson,
+				d.hiddenDoc,
 				t.stepName,
 				t.stepId,
 				t.id AS actionTraceId,
@@ -488,8 +539,9 @@
 				delivery dy
 			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
 			RIGHT JOIN checkList c ON c.id = dy.checkId
+			JOIN dangerList d ON d.id = dy.dangerId
 			<where>
-			 	dy.statusId = '0'
+			 	dy.statusId = '1'
 				AND dy.CCId = #{ownerUserId}
 				AND (
 				t.stepId = '200'
