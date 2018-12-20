@@ -36,7 +36,7 @@
     delete from flowActionTrace
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.hse.beans.FlowActionTrace">
+  <insert id="insert" parameterType="cn.hse.beans.FlowActionTrace" keyProperty="id" useGeneratedKeys="true">
     insert into flowActionTrace (id, instanceId, flowId, 
       flowName, flowCode, stepId, 
       stepName, stepCode, actionId, 
@@ -51,6 +51,9 @@
       #{ownerusername,jdbcType=VARCHAR}, #{owneruserdesc,jdbcType=VARCHAR}, #{submituserid,jdbcType=VARCHAR}, 
       #{submitusername,jdbcType=VARCHAR}, #{submituserdesc,jdbcType=VARCHAR}, #{arrivetime,jdbcType=TIMESTAMP}
       )
+      <selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
   </insert>
   <insert id="insertSelective" parameterType="cn.hse.beans.FlowActionTrace">
     insert into flowActionTrace
