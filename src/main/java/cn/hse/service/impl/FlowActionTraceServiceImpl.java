@@ -51,6 +51,8 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setStepid(flowStep.getStepid());
 		flowActionTrace.setStepname(flowStep.getStepname());
 		int a=flowActionTraceMapper.insertSelective(flowActionTrace);
+		//流转表id
+		int traceId = flowActionTrace.getId();
 		logger.info("添加整改数据=="+a);
 		Integer instanceId=flowActionTrace.getId();   //获取流程实例Id
 		//根据流程实例ID来更新实例状态
@@ -60,9 +62,9 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		int b=flowInstanceMapper.updateByPrimaryKeySelective(record);
 		logger.info("更新实例数据状态=="+b);
 		if (a==0||b==0) {
-			return 0;
+			return traceId;
 		}
-		return 1;
+		return traceId;
 	}
 	
 	//整改提交
