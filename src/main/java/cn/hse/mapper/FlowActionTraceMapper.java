@@ -1,6 +1,9 @@
 package cn.hse.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 import cn.hse.beans.FlowActionTrace;
 @Mapper
@@ -17,5 +20,7 @@ public interface FlowActionTraceMapper {
 
     int updateByPrimaryKey(FlowActionTrace record);
 
-	FlowActionTrace selectByStepIdAndInstanceId(Integer instanceId, String i);
+//	FlowActionTrace selectByStepIdAndInstanceId(@Param("instanceId")Integer instanceId, @Param("i")String i);
+
+	FlowActionTrace selectByStepIdAndInstanceId(Map<String, Object> flowActionTraceMap);
 }

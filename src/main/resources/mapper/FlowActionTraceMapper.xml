@@ -249,10 +249,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <select id="selectByStepIdAndInstanceId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByStepIdAndInstanceId" parameterType="Map"  resultMap="BaseResultMap">
   	select
   	  <include refid="Base_Column_List" />
     from flowActionTrace
-    where instanceId = #{instanceid,jdbcType=INTEGER} AND stepId = #{stepid,jdbcType=VARCHAR},
+    where instanceId = #{instanceId} AND stepId = #{stepId}
+    ORDER BY  arriveTime asc LIMIT 1
   </select>
 </mapper>

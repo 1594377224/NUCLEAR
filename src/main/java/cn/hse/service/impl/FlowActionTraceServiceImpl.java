@@ -1,6 +1,8 @@
 package cn.hse.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -150,8 +152,11 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setActionname(flowAction.getActionname());
 		flowActionTrace.setActioncode(flowAction.getActioncode());
 		int updateResult=flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
+		Map<String, Object> flowActionTraceMap = new HashMap<String, Object>();
+		flowActionTraceMap.put("instanceId", instanceId);
+		flowActionTraceMap.put("stepId", "200");
 		//根据实例ID和节点ID来查询上一节点
-		FlowActionTrace f=flowActionTraceMapper.selectByStepIdAndInstanceId(instanceId,"200");
+		FlowActionTrace f=flowActionTraceMapper.selectByStepIdAndInstanceId(flowActionTraceMap);
 		
 		FlowActionTrace trace=new FlowActionTrace();
 		trace.setInstanceid(instanceId);
