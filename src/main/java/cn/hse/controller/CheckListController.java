@@ -106,8 +106,6 @@ public class CheckListController {
 		DangerList dangerList=new DangerList();
 		dangerList.setLineno(array[1]);   //序号
 		dangerList.setNoticeno(array[0]);//整改单编号
-		dangerList.setLineno("1");   //序号
-		dangerList.setNoticeno("2");//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
