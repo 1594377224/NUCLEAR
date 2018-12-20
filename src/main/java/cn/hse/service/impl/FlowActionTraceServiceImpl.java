@@ -114,7 +114,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		int updateResult=flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
 		logger.info("更新结果条数===="+updateResult);
 		//插入闭合数据
-		Flow flow=flowMapper.selectByPrimaryKey(1);   //查询流程1
+		/*Flow flow=flowMapper.selectByPrimaryKey(1);   //查询流程1
 		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(3);  //查询节点
 		FlowAction action=flowActionMapper.selectByPrimaryKey(8);  //查询操作步骤
 		FlowActionTrace trace=new FlowActionTrace();
@@ -139,8 +139,8 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		trace.setSubmitusername(flowActionTrace.getSubmitusername());
 		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());
 		trace.setArrivetime(new Date());
-		int c=flowActionTraceMapper.insertSelective(trace);
-		return c;
+		int c=flowActionTraceMapper.insertSelective(trace);*/
+		return updateResult;
 	}
 	//整改验证不通过
 	@Override
