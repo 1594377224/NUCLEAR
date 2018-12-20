@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +36,7 @@ public class SumbitController {
 		@Autowired
 		private FlowInstanceService flowInstanceService;
 		
-		
+		@Transactional
 		@RequestMapping(value="/verification",method=RequestMethod.POST)
 		public String verification(@RequestBody Map<String, Object> map) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
