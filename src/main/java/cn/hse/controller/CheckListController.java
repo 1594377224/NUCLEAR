@@ -349,7 +349,7 @@ public class CheckListController {
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		paramsMap.put("record_no","");  //检查编号
+		paramsMap.put("record_no","SNG-HSE-SI-2018-0021");  //检查编号
 		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
