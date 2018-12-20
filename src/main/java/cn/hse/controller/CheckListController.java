@@ -71,7 +71,7 @@ public class CheckListController {
 	public Result insertCheck(@RequestBody Map<String, Object> map){
 		logger.info("=======进入新建检查单========接收参数="+map);
 		//将检查隐患单数据传入用友数据库
-//		String recordNo=dataProcess(map);
+		String recordNo=dataProcess(map);
 		
 		Result result=new Result();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -82,8 +82,8 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-//		checkList.setRecordno(recordNo);  //检查编号
-		checkList.setRecordno("12345");
+		checkList.setRecordno(recordNo);  //检查编号
+//		checkList.setRecordno("12345");
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -197,10 +197,10 @@ public class CheckListController {
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
 			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
-			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
-			logger.info("----==流转表插入成功"+e1);
 			//流转表id
-			int traceId = flowActionTrace.getId();
+			int traceId=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
+			logger.info("----==流转表插入成功"+traceId);
+			//流转表id
 			//插入信息到抄送人delivery表
 			Map<String, Object> deliveryMap = new HashMap<String, Object>();
 			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
@@ -349,7 +349,7 @@ public class CheckListController {
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		paramsMap.put("record_no","SNG-HSE-SI-2018-0021");  //检查编号
+		//paramsMap.put("record_no","SNG-HSE-SI-2018-0021");  //检查编号
 		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
@@ -365,12 +365,12 @@ public class CheckListController {
 		
 		//隐患单信息封装
 		resultMap.put("proj_no",map.get("projNo"));  //项目编号
-		resultMap.put("record_no","");  //检查编号
-		resultMap.put("line_no","");   //序号
+		//resultMap.put("record_no","");  //检查编号
+		resultMap.put("line_no","1");   //序号
 		resultMap.put("distribution_date","");   //分发日期
 		resultMap.put("unit",map.get("unit").toString());  //适用机组
 		resultMap.put("area",map.get("area").toString());  //适用区域
-		resultMap.put("track_people","");
+		resultMap.put("track_people","SNG-CM");
 		resultMap.put("hse_hidden_level",map.get("hseHiddenLevel").toString());  //隐患级别
 		resultMap.put("hidden_category",map.get("hiddenCategory").toString());   //隐患属性
 		resultMap.put("nonconformity","");   //隐患类型
@@ -381,6 +381,7 @@ public class CheckListController {
 		resultMap.put("corrective_content","");
 		resultMap.put("complete_date","");
 		resultMap.put("contractor_approve","");
+		resultMap.put("contractor_people","");
 		resultMap.put("contractor_approve_date","");
 		resultMap.put("comfirm_content","");
 		resultMap.put("verify_content","");

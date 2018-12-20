@@ -61,7 +61,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -97,7 +97,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -133,7 +133,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -169,7 +169,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -206,7 +206,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -242,7 +242,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -278,7 +278,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
@@ -315,7 +315,8 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString()
+			);
 		}
 		return null;
 	}
@@ -356,7 +357,7 @@ public class WebServiceController {
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
-			System.out.println("接口请求异常error==>"+e.toString());
+			logger.info("接口请求异常error==>"+e.toString());
 		}
 		return null;
 	}
