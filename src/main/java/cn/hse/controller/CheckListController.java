@@ -104,10 +104,10 @@ public class CheckListController {
 		logger.info("====检查单插入完毕"+checkId);
 		//封装隐患单对象
 		DangerList dangerList=new DangerList();
-		//String dangerId=RandomUUID.RandomID();
-		//dangerList.setId(dangerId);
 		dangerList.setLineno(array[1]);   //序号
 		dangerList.setNoticeno(array[0]);//整改单编号
+		dangerList.setLineno("1");   //序号
+		dangerList.setNoticeno("2");//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -316,7 +316,7 @@ public class CheckListController {
 		int c=flowActionTraceService.updateChangeInfo(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
 		logger.info("==========更新流转表结果"+c);
 		//插入信息到抄送人delivery表
-		Map<String, Object> deliveryMap = new HashMap<String, Object>();
+		/*Map<String, Object> deliveryMap = new HashMap<String, Object>();
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		int deliveryNum = 0;
 		if(deliveryList.size()>0){
@@ -328,10 +328,10 @@ public class CheckListController {
 			deliveryMap.put("statusId", "0");//0待阅，1已阅
 			deliveryMap.put("deliveryList", deliveryList);
 			deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-		}
+		}*/
 		//更新实例表
 		int updateInstance=flowInstanceService.updateInstance(instanceId);
-		if (updateInstance==0||updateResult==0||deliveryNum==0) {
+		if (updateInstance==0||updateResult==0) {
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");
 			return ResultUtil.result("-9999", resultMap, null);
