@@ -71,6 +71,7 @@ public class CheckListController {
 	public Result insertCheck(@RequestBody Map<String, Object> map){
 		logger.info("=======进入新建检查单========接收参数="+map);
 		//将检查隐患单数据传入用友数据库
+
 		String array[]=dataProcess(map);
 		
 		Result result=new Result();
@@ -82,8 +83,9 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
+
 		checkList.setRecordno(array[0]);  //检查编号
-//		checkList.setRecordno("12345");
+		
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -122,8 +124,8 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
-		String copyPerson = map.get("copyPerson").toString();
-		dangerList.setCopyPerson(copyPerson);   //抄送人
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		dangerList.setIsdel(0);
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
@@ -204,7 +206,7 @@ public class CheckListController {
 			//流转表id
 			//插入信息到抄送人delivery表
 			Map<String, Object> deliveryMap = new HashMap<String, Object>();
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+//			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 			deliveryMap.put("userId", map.get("userId").toString());
 			deliveryMap.put("userName", map.get("userName").toString());
 			deliveryMap.put("checkId", checkId);
