@@ -382,12 +382,14 @@
 				c.recordNo
 			FROM
 				checkList c
+			left JOIN instanceRelation ir ON c.id = ir.checkId 
 			JOIN checkAndDanger cd ON c.id = cd.checkId
 			JOIN dangerList d ON d.id = cd.dangerId
 			<where>
 			 	c.userId =  #{ownerUserId}
 				AND c.isDel = '0'
 				AND c.state = '0'
+				and ir.checkId is null
 			</where>
 			 order by c.draftDate desc 
 		 <if test="limit!= null and limit!= '' ">
@@ -400,12 +402,14 @@
 			count(1) 
 		FROM
 			checkList c
+			left JOIN instanceRelation ir ON c.id = ir.checkId 
 			JOIN checkAndDanger cd ON c.id = cd.checkId
 			JOIN dangerList d ON d.id = cd.dangerId
 		<where>
 		 	c.userId =  #{ownerUserId}
 			AND c.isDel = '0'
 			AND c.state = '0'
+			and ir.checkId is null
 		</where>
 	</select>
 	
