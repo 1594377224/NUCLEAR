@@ -400,8 +400,10 @@ public class CheckListController {
 		
 		//调用返回的结果
 		String returnResult=webServiceController.createModifyHseSiteRecord(params);
-		Map<String, String> json=JSONObject.fromObject(returnResult);
-		String recordNo=json.get("object");
+		JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
+		
+		String recordNo=json.get("record_no").toString();
+		
 		logger.info("[获取到的用友检查单编号]==="+recordNo);
 		return recordNo;
 		
