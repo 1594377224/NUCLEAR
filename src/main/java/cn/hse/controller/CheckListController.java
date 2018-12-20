@@ -195,10 +195,24 @@ public class CheckListController {
 			flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
-			String responsiblePersonId="99999";   //map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
 			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
 			logger.info("----==流转表插入成功"+e1);
-			if (d==1&&f==1 && e==1) {
+			//流转表id
+			int traceId = flowActionTrace.getId();
+			//插入信息到抄送人delivery表
+			Map<String, Object> deliveryMap = new HashMap<String, Object>();
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+			deliveryMap.put("userId", map.get("userId").toString());
+			deliveryMap.put("userName", map.get("userName").toString());
+			deliveryMap.put("checkId", checkId);
+			deliveryMap.put("dangerId", dangerId);
+			deliveryMap.put("traceId", traceId);
+			deliveryMap.put("statusId", "0");//0待阅，1已阅
+			deliveryMap.put("deliveryList", deliveryList);
+			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+			
+			if (d==1&&f==1 && e==1 && deliveryNum>0) {
 				result.setRtnCode("0");
 				result.setRtnMsg("提交成功！");
 				resultMap.put("resultCode", "0");
@@ -334,7 +348,7 @@ public class CheckListController {
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		paramsMap.put("record_no","");  //检查编号
+		paramsMap.put("record_no","SNG-HSE-SI-2018-0021");  //检查编号
 		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
