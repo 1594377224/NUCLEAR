@@ -114,7 +114,7 @@ public class CheckListController {
 		dangerList.setHiddencategory(map.get("hiddenCategory").toString());  //隐患属性
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
-		//dangerList.setArea(map.get("hiddenDoc").toString());   //隐患附件
+		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
 		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述

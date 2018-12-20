@@ -67,7 +67,7 @@
       verifyPerson, verifyDate, hsePassContent, 
       verificationCondition, closePerson, closeDate, 
       corApprovePerson, corApproveDate, ifSiteCorrection, 
-      isDel)
+      isDel,copyPerson)
     values (#{id,jdbcType=INTEGER}, #{lineno,jdbcType=VARCHAR}, #{noticeno,jdbcType=VARCHAR}, 
       #{distributdate,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
       #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
@@ -79,7 +79,7 @@
       #{verifyperson,jdbcType=VARCHAR}, #{verifydate,jdbcType=TIMESTAMP}, #{hsepasscontent,jdbcType=VARCHAR}, 
       #{verificationcondition,jdbcType=VARCHAR}, #{closeperson,jdbcType=VARCHAR}, #{closedate,jdbcType=TIMESTAMP}, 
       #{corapproveperson,jdbcType=VARCHAR}, #{corapprovedate,jdbcType=TIMESTAMP}, #{ifsitecorrection,jdbcType=VARCHAR}, 
-      #{isdel,jdbcType=INTEGER})
+      #{isdel,jdbcType=INTEGER},#{copyPerson,jdbcType=VARCHAR})
       <selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
