@@ -61,6 +61,10 @@ public class DraftsController {
 	@RequestMapping(value="/draftsSave",method=RequestMethod.POST)
 	public String draftsSave(@RequestBody Map<String, Object> map) {
 		logger.info("【草稿箱保存操作】");
+		logger.info("【草稿箱保存操作====开始调用用友接口保存】");
+		CheckListController checkListController=new CheckListController();
+		String array[]=checkListController.dataProcess(map);
+		logger.info("【草稿箱保存操作====调用用友接口保存结束】");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//封装检查单对象
 	    CheckList checkList=new CheckList();
@@ -68,7 +72,7 @@ public class DraftsController {
 	    checkList.setUserId(map.get("userId").toString());
 	    checkList.setProjno(map.get("projNo").toString());   //项目编号
 	    checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-	    checkList.setRecordno("2");  //检查编号
+	    checkList.setRecordno(array[0]);  //检查编号
 	    checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 	    checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 	    checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -87,8 +91,8 @@ public class DraftsController {
 	    DangerList dangerList=new DangerList();
 		//String dangerId=RandomUUID.RandomID();
 		dangerList.setId(Integer.parseInt(map.get("dangerId").toString()));
-		dangerList.setLineno("1");   //序号
-		dangerList.setNoticeno("2");//整改单编号
+		dangerList.setLineno(array[1]);   //序号
+		dangerList.setNoticeno(array[0]);//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域

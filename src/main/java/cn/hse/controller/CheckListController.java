@@ -71,7 +71,7 @@ public class CheckListController {
 	public Result insertCheck(@RequestBody Map<String, Object> map){
 		logger.info("=======进入新建检查单========接收参数="+map);
 		//将检查隐患单数据传入用友数据库
-		String recordNo=dataProcess(map);
+		String array[]=dataProcess(map);
 		
 		Result result=new Result();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -82,7 +82,7 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-		checkList.setRecordno(recordNo);  //检查编号
+		checkList.setRecordno(array[0]);  //检查编号
 //		checkList.setRecordno("12345");
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
@@ -104,8 +104,8 @@ public class CheckListController {
 		DangerList dangerList=new DangerList();
 		//String dangerId=RandomUUID.RandomID();
 		//dangerList.setId(dangerId);
-		dangerList.setLineno("1");   //序号
-		dangerList.setNoticeno("2");//整改单编号
+		dangerList.setLineno(array[1]);   //序号
+		dangerList.setNoticeno(array[0]);//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -344,7 +344,7 @@ public class CheckListController {
 	 * @param map
 	 * @return
 	 */
-	public String dataProcess(Map<String, Object> map) {
+	public String[] dataProcess(Map<String, Object> map) {
 		logger.info("[传用友处理新建数据入参]"+map);
 		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
@@ -354,7 +354,17 @@ public class CheckListController {
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
 		paramsMap.put("record_no","");  //检查编号
 		paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
-		paramsMap.put("check_form", map.get("checkForm").toString());   //检查形式
+		//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
+		int check=Integer.valueOf(map.get("checkForm").toString());
+		String checkForm="";
+		if (check==0) {
+			checkForm="DAILY";   //日常检查
+		}else if (check==1) {
+			checkForm="CONPLEX";  //专项检查
+		}else {
+			checkForm="SPECIALLY";  //专项检查
+		}
+		paramsMap.put("check_form", checkForm);   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
 		paramsMap.put("check_person", map.get("checkPerson").toString());  //检查人
 		paramsMap.put("draft_date", map.get("draftDate").toString());    //编制日期
@@ -369,13 +379,27 @@ public class CheckListController {
 		//隐患单信息封装
 		resultMap.put("proj_no",map.get("projNo"));  //项目编号
 		resultMap.put("record_no","");  //检查编号
-		resultMap.put("line_no","1");   //序号
+		resultMap.put("line_no","");   //序号
 		resultMap.put("distribution_date","");   //分发日期
 		resultMap.put("unit",map.get("unit").toString());  //适用机组
 		resultMap.put("area",map.get("area").toString());  //适用区域
 		resultMap.put("track_people","SNG-CM");
-		resultMap.put("hse_hidden_level",map.get("hseHiddenLevel").toString());  //隐患级别
-		resultMap.put("hidden_category",map.get("hiddenCategory").toString());   //隐患属性
+		//隐患级别
+		String hseHiddenLevel=Integer.valueOf(map.get("hseHiddenLevel").toString())==0?"GENERAL":"IMPORTANT";
+		resultMap.put("hse_hidden_level",hseHiddenLevel);  //隐患级别
+		//隐患属性
+		int category=Integer.valueOf(map.get("hiddenCategory").toString());
+		String hidden_category="";
+		if (category==0) {   //0管理缺陷
+			hidden_category="MANAGEMENTFLAW";
+		}else if (category==1) {  //1人的不安全行为
+			hidden_category="UNSAFEACT";
+		}else if (category==2) {  //2物的不安全状态
+			hidden_category="UNSAFECONDITION";
+		}else {  //环境的不安全因素
+			hidden_category="ENVIRONMENTFACTOR";
+		}
+		resultMap.put("hidden_category",hidden_category);   //隐患属性
 		resultMap.put("nonconformity","");   //隐患类型
 		resultMap.put("hidden_description",map.get("hiddenDescription").toString());  //隐患描述
 		resultMap.put("req_complete_date",map.get("reqCompleteDate").toString());  //要求完成的日期
@@ -403,9 +427,12 @@ public class CheckListController {
 		JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
 		
 		String recordNo=json.get("record_no").toString();
-		
+		String lineNo=json.get("line_no0").toString();
 		logger.info("[获取到的用友检查单编号]==="+recordNo);
-		return recordNo;
+		logger.info("[获取到的用友隐患单序号]==="+lineNo);
+		String  array[]= {recordNo,lineNo};
+		
+		return array;
 		
 	}
 }
