@@ -197,10 +197,10 @@ public class CheckListController {
 			flowActionTrace.setArrivetime(new Date());
 			int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
 			String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
-			int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
-			logger.info("----==流转表插入成功"+e1);
 			//流转表id
-			int traceId = flowActionTrace.getId();
+			int traceId=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
+			logger.info("----==流转表插入成功"+traceId);
+			//流转表id
 			//插入信息到抄送人delivery表
 			Map<String, Object> deliveryMap = new HashMap<String, Object>();
 			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));

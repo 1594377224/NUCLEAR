@@ -413,9 +413,8 @@
 	
 	<!-- 查询待阅信息 -->
 	<select id="findWaitingRead"  parameterType="Map" resultType = "Map">
-			SSELECT
+			SELECT
 				dy.id AS deliveryId,
-				i.userId,
 				t.stepName,
 				t.stepId,
 				t.id AS actionTraceId,
@@ -433,40 +432,42 @@
 				c.id,
 				c.recordNo
 			FROM
-				flowInstance i
-			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
-			RIGHT JOIN checkList c ON c.id = cil.checkId
-			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
-			RIGHT JOIN delivery dy ON c.id = dy.checkId
+				delivery dy
+			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
+			RIGHT JOIN checkList c ON c.id = dy.checkId
 			<where>
 			 	dy.statusId = '0'
 				AND dy.CCId = #{ownerUserId}
-				AND t.stepId = '200'
+				AND (
+				t.stepId = '200'
+				OR t.stepId = '100'	)
 			</where>
-			order by arriveTime desc 
+			order by c.draftDate desc 
+			<if test="limit!= null and limit!= '' ">
+				limit #{start},#{limit}
+			</if> 
  	</select>
 	<!-- 查询待阅信息个数 -->
 	<select id="findCountWaitingRead"  parameterType="Map" resultType = "int">
-		select 
-			count(1) 
+		SELECT
+			count(1)
 		FROM
-			flowInstance i
-		RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
-		RIGHT JOIN checkList c ON c.id = cil.checkId
-		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
-		RIGHT JOIN delivery dy ON c.id = dy.checkId
+			delivery dy
+		RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
+		RIGHT JOIN checkList c ON c.id = dy.checkId
 		<where>
 		 	dy.statusId = '0'
 			AND dy.CCId = #{ownerUserId}
-			AND t.stepId = '200'
+			AND (
+				t.stepId = '200'
+				OR t.stepId = '100'	)
 		</where>
 	</select>
 	
 	<!-- 查询已阅信息 -->
 	<select id="findHaveRead"  parameterType="Map" resultType = "Map">
-			SSELECT
-			    dy.id AS deliveryId,
-				i.userId,
+			SELECT
+				dy.id AS deliveryId,
 				t.stepName,
 				t.stepId,
 				t.id AS actionTraceId,
@@ -484,32 +485,35 @@
 				c.id,
 				c.recordNo
 			FROM
-				flowInstance i
-			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
-			RIGHT JOIN checkList c ON c.id = cil.checkId
-			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
-			RIGHT JOIN delivery dy ON c.id = dy.checkId
+				delivery dy
+			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
+			RIGHT JOIN checkList c ON c.id = dy.checkId
 			<where>
-			 	dy.statusId = '1'
+			 	dy.statusId = '0'
 				AND dy.CCId = #{ownerUserId}
-				AND t.stepId = '200'
+				AND (
+				t.stepId = '200'
+				OR t.stepId = '100'	)
 			</where>
-			order by arriveTime desc 
+			order by c.draftDate desc 
+			<if test="limit!= null and limit!= '' ">
+				limit #{start},#{limit}
+			</if> 
  	</select>
 	<!-- 查询已阅信息个数 -->
 	<select id="findCountHaveRead"  parameterType="Map" resultType = "int">
-		select 
-			count(1) 
+		SELECT
+			count(1)
 		FROM
-			flowInstance i
-		RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
-		RIGHT JOIN checkList c ON c.id = cil.checkId
-		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
-		RIGHT JOIN delivery dy ON c.id = dy.checkId
+			delivery dy
+		RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
+		RIGHT JOIN checkList c ON c.id = dy.checkId
 		<where>
 		 	dy.statusId = '1'
 			AND dy.CCId = #{ownerUserId}
-			AND t.stepId = '200'
+			AND (
+				t.stepId = '200'
+				OR t.stepId = '100'	)
 		</where>
 	</select>
 	
