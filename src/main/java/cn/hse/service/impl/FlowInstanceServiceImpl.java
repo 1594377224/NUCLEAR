@@ -44,4 +44,10 @@ public class FlowInstanceServiceImpl implements FlowInstanceService {
 		return flowInstanceMapper.addDelivery(deliveryMap);
 	}
 
+	@Override
+	public Map<String, Object> findCopyPerson(Map<String, Object> deliveryMap) {
+		// TODO Auto-generated method stub
+		return flowInstanceMapper.findCopyPerson(deliveryMap);
+	}
+
 }

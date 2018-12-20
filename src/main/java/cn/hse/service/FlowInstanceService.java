@@ -14,4 +14,6 @@ public interface FlowInstanceService {
 	//插入信息到抄送人delivery表
 	int addDelivery(Map<String, Object> deliveryMap);
 
+	Map<String, Object> findCopyPerson(Map<String, Object> deliveryMap);
+
 }

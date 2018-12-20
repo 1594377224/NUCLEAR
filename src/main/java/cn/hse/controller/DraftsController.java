@@ -2,6 +2,7 @@ package cn.hse.controller;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.ResultUtil;
+import net.sf.json.JSONArray;
 
 @RestController
 @RequestMapping(value="/drafts")
@@ -61,10 +63,10 @@ public class DraftsController {
 	@RequestMapping(value="/draftsSave",method=RequestMethod.POST)
 	public String draftsSave(@RequestBody Map<String, Object> map) {
 		logger.info("【草稿箱保存操作】");
-		logger.info("【草稿箱保存操作====开始调用用友接口保存】");
+		/*logger.info("【草稿箱保存操作====开始调用用友接口保存】");
 		CheckListController checkListController=new CheckListController();
 		String array[]=checkListController.dataProcess(map);
-		logger.info("【草稿箱保存操作====调用用友接口保存结束】");
+		logger.info("【草稿箱保存操作====调用用友接口保存结束】");*/
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//封装检查单对象
 	    CheckList checkList=new CheckList();
@@ -72,7 +74,7 @@ public class DraftsController {
 	    checkList.setUserId(map.get("userId").toString());
 	    checkList.setProjno(map.get("projNo").toString());   //项目编号
 	    checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-	    checkList.setRecordno(array[0]);  //检查编号
+	    checkList.setRecordno("");  //检查编号
 	    checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 	    checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 	    checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -91,8 +93,8 @@ public class DraftsController {
 	    DangerList dangerList=new DangerList();
 		//String dangerId=RandomUUID.RandomID();
 		dangerList.setId(Integer.parseInt(map.get("dangerId").toString()));
-		dangerList.setLineno(array[1]);   //序号
-		dangerList.setNoticeno(array[0]);//整改单编号
+		dangerList.setLineno("");   //序号
+		dangerList.setNoticeno("");//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -101,7 +103,7 @@ public class DraftsController {
 		dangerList.setHiddencategory(map.get("hiddenCategory").toString());  //隐患属性
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
-		//dangerList.setArea(map.get("hiddenDoc").toString());   //隐患附件
+		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
 		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
@@ -109,7 +111,9 @@ public class DraftsController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
-		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
+//		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		int b=dangerListServie.updateDanger(dangerList);
 		if (a==0 || b==0) {
 			resultMap.put("resultCode", "-1");
@@ -173,13 +177,31 @@ public class DraftsController {
 		flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 		flowActionTrace.setArrivetime(new Date());
 		int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
-		String responsiblePersonId="99999";   //map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
-		int e1=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
-		logger.info("----==流转表插入成功"+e1);
-		if (d==0||e==0||f==0||e1==0) {
+		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+		int traceId =flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
+		logger.info("----==流转表插入成功"+traceId);
+		//插入信息到抄送人delivery表
+		Map<String, Object> deliveryMap = new HashMap<String, Object>();
+		deliveryMap.put("dangerId", dangerId);
+		Map<String,Object> copyPerson = flowInstanceService.findCopyPerson(deliveryMap);
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPerson.get("copyPerson"));
+		if(deliveryList.isEmpty()){
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");
 			return ResultUtil.result("-9999", resultMap, null);
+		} else {
+			deliveryMap.put("userId", map.get("userId").toString());
+			deliveryMap.put("userName", map.get("userName").toString());
+			deliveryMap.put("checkId", checkId);
+			deliveryMap.put("traceId", traceId);
+			deliveryMap.put("statusId", "0");//0待阅，1已阅
+			deliveryMap.put("deliveryList", deliveryList);
+			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+			if(traceId<0 && deliveryNum<0 && d<0 && e<0 && f<0){
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "操作失败！");
+				return ResultUtil.result("-9999", resultMap, null);
+			}
 		}
 		resultMap.put("resultCode", "0");
 		resultMap.put("resultMsg", "操作成功！");

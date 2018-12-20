@@ -161,6 +161,15 @@
    			(#{userId},#{userName},#{item.id},#{item.name},#{statusId},#{checkId},#{dangerId},#{traceId})
   	   </foreach>
 	</insert>
-  
+  	<!-- 查询抄送人的信息 -->
+	<select id="findCopyPerson"  parameterType="Map" resultType = "Map">
+		SELECT
+			copyPerson  
+		FROM
+			dangerList
+		<where>
+			id = #{dangerId}
+		</where>
+	</select>
   
 </mapper>

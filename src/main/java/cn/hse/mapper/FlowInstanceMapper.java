@@ -21,4 +21,6 @@ public interface FlowInstanceMapper {
     int updateByPrimaryKey(FlowInstance record);
 
 	int addDelivery(Map<String, Object> deliveryMap);
+
+	Map<String, Object> findCopyPerson(Map<String, Object> deliveryMap);
 }
