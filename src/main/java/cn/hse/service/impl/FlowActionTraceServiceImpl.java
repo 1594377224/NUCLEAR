@@ -53,6 +53,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setStepcode(flowStep.getStepcode());
 		flowActionTrace.setStepid(flowStep.getStepid());
 		flowActionTrace.setStepname(flowStep.getStepname());
+		flowActionTrace.setArrivetime(new Date());
 		int a=flowActionTraceMapper.insertSelective(flowActionTrace);
 		//流转表id
 		int traceId = flowActionTrace.getId();
@@ -78,6 +79,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setActionid(flowAction.getActionid());
 		flowActionTrace.setActionname(flowAction.getActionname());
 		flowActionTrace.setActioncode(flowAction.getActioncode());
+		flowActionTrace.setArrivetime(new Date());
 		//更新当前节点的数据
 		int updateResult=flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
 		//插入新的节点数据

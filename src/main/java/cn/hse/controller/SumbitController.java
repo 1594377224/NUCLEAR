@@ -1,5 +1,6 @@
 package cn.hse.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,6 +78,7 @@ public class SumbitController {
 				flowActionTrace.setSubmituserid(userId);
 				flowActionTrace.setSubmitusername(userName);
 				flowActionTrace.setSubmituserdesc(Constant.QUE_REN_REN);
+				flowActionTrace.setArrivetime(new Date());
 				int b=flowActionTraceService.updateChange(flowActionTrace,instanceId);
 				//更新实例表
 				int c=flowInstanceService.updateInstanceEnd(instanceId);
