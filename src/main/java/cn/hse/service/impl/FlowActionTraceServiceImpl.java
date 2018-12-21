@@ -47,6 +47,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		flowActionTrace.setActioncode(null);
 		flowActionTrace.setActionid(null);
 		flowActionTrace.setActionname(null);
+		flowActionTrace.setOwneruserdesc(Constant.ZHENG_GAI_REN);
 		flowActionTrace.setOwnerusername(responsiblePerson);
 		flowActionTrace.setOwneruserid(responsiblePersonId);
 		flowActionTrace.setStepcode(flowStep.getStepcode());
@@ -95,7 +96,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 
 		record.setOwneruserid(responsiblePersonId);
 		record.setOwnerusername(responsiblePerson);
-		record.setOwneruserdesc(Constant.ZHENG_GAI_REN);
+		record.setOwneruserdesc(Constant.QUE_REN_REN);
 		record.setArrivetime(new Date());
 		int insertResult=flowActionTraceMapper.insertSelective(record);
 		logger.info("插入数据"+insertResult);
