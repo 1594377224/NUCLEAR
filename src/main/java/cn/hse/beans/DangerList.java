@@ -38,6 +38,8 @@ public class DangerList {
     private String contractonpeople;
 
     private Date completedate;
+    
+    private String responsiblepersonId;
 
     private String responsibleperson;
     
@@ -70,7 +72,15 @@ public class DangerList {
 
     private Integer isdel;
 
-    public Integer getId() {
+    public String getResponsiblepersonId() {
+		return responsiblepersonId;
+	}
+
+	public void setResponsiblepersonId(String responsiblepersonId) {
+		this.responsiblepersonId = responsiblepersonId;
+	}
+
+	public Integer getId() {
         return id;
     }
 

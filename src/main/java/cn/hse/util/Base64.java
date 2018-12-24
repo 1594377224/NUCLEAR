@@ -34,10 +34,6 @@ public class Base64 {
 	        }
 	    }
 	 
-	 /*public static void main(String[] args) {
-		String aString="123dadasfsaffasfasfafaf";
-		System.out.println(encryptBASE64(aString));
-		String bString=encryptBASE64(aString);
-		System.out.println(decryptBASE64(bString));
-	}*/
+	 /*
+*/
 }

@@ -347,24 +347,23 @@ public class WebServiceController {
 	
 	
 	/**
-	 * 登陆接口
+	 * 获取登陆信息
 	 * userType为1的时候为内部用户
 	 * 为0的时候为临时人员
 	 */
-	@RequestMapping(value = "/getUserMsg", method = RequestMethod.POST)
+	@RequestMapping(value="/getUserMsg",method=RequestMethod.POST)
 	public String getUserMsg(@RequestBody Map<String, Object> map) {
 		logger.info("前台入参==="+map);
 		try {
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(uri);
-			logger.info("userId==>" + map.get("userId").toString());
+			logger.info("userId==>"+map.get("userId").toString());
 			// 调用登陆接口
 			Object[] objects = client.invoke("getUserMsg", map.get("userId").toString());
 			// 输出调用结果
 			logger.info("===调用用友接口请求结束");
 			String result=objects[0].toString();
 			logger.info("===调用用友接口请求返回参数="+result);
-			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
 			logger.info("接口请求异常error==>"+e.toString()

@@ -110,6 +110,7 @@ public class DraftsController {
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
+		dangerList.setResponsiblepersonId(map.get("responsiblePersonId").toString());
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 //		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));

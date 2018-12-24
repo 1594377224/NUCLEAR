@@ -98,8 +98,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-        
-        
         <!-- cxf支持 -->
         <dependency>
             <groupId>org.apache.cxf</groupId>

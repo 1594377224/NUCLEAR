@@ -72,7 +72,7 @@ public class CheckListController {
 		logger.info("=======进入新建检查单========接收参数="+map);
 		//将检查隐患单数据传入用友数据库
 
-		String array[]=dataProcess(map);
+		//String array[]=dataProcess(map);
 		
 		Result result=new Result();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -83,8 +83,8 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-		checkList.setRecordno(array[0]);  //检查编号
-		//checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
+		//checkList.setRecordno(array[0]);  //检查编号
+		checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -103,10 +103,10 @@ public class CheckListController {
 		logger.info("====检查单插入完毕"+checkId);
 		//封装隐患单对象
 		DangerList dangerList=new DangerList();
-		dangerList.setLineno(array[1]);   //序号
-		dangerList.setNoticeno(array[0]);//整改单编号
-		//dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
-		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
+		//dangerList.setLineno(array[1]);   //序号
+		//dangerList.setNoticeno(array[0]);//整改单编号
+        dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -123,6 +123,7 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
+		dangerList.setResponsiblepersonId(map.get("responsiblepersonId").toString());
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		dangerList.setIsdel(0);
@@ -350,6 +351,7 @@ public class CheckListController {
 		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
@@ -415,7 +417,9 @@ public class CheckListController {
 		resultMap.put("verify_content","");
 		
 		list.add(resultMap);
-		
+		result.put("imgName", "");
+		result.put("imgAddress", "");
+		paramsMap.put("attachment", result);
 		paramsMap.put("HseHiddenDangers", list);
 		logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
 		
@@ -442,6 +446,7 @@ public class CheckListController {
 		logger.info("reSubmit===再次提交");
 		Integer traceId=Integer.parseInt(map.get("traceId").toString());
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString());
+		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
 		//更新隐患表
 		DangerList dangerList=new DangerList();
 //		dangerList.setLineno(array[1]);   //序号
@@ -462,6 +467,7 @@ public class CheckListController {
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
+		dangerList.setResponsiblepersonId(responsiblePersonId);
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 		int a =dangerListServie.updateDanger(dangerList);
 		//更新流转表
@@ -478,7 +484,6 @@ public class CheckListController {
 		flowActionTrace.setActioncode(flowAction.getActioncode());
 		int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);   //更新再次提交的信息
 		//再次插入一条新的流转信息
-		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
 		int c=flowActionTraceService.insertFlowActionTrace(flowActionTrace, responsiblePerson, responsiblePersonId);
 		int updateInstance=flowInstanceService.updateInstance(instanceId);
 		if (a==0||b==0 || c==0 ||updateInstance==0) {
