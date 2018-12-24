@@ -20,6 +20,7 @@
     <result column="returnDoc" jdbcType="VARCHAR" property="returndoc" />
     <result column="contractonPeople" jdbcType="VARCHAR" property="contractonpeople" />
     <result column="completeDate" jdbcType="TIMESTAMP" property="completedate" />
+    <result column="responsiblePersonId" jdbcType="VARCHAR" property="responsiblepersonid" />
     <result column="responsiblePerson" jdbcType="VARCHAR" property="responsibleperson" />
      <result column="copyPerson" jdbcType="VARCHAR" property="copyPerson" />
     <result column="responsibleDate" jdbcType="TIMESTAMP" property="responsibledate" />
@@ -40,7 +41,7 @@
   <sql id="Base_Column_List">
     id, lineNo, noticeNo, distributDate, unit, area, unitID, hseHiddenLevel, hiddenCategory, 
     nonconformity, hiddenDescription, hiddenDoc, reqCompleteDate, correctiveRequest, 
-    rectificationSituation, returnDoc, contractonPeople, completeDate, responsiblePerson,copyPerson, 
+    rectificationSituation, returnDoc, contractonPeople, completeDate,responsiblePersonId, responsiblePerson,copyPerson, 
     responsibleDate, contractorApprove, contractorApproveDate, comfirmContent, verifyPerson, 
     verifyDate, hsePassContent, verificationCondition, closePerson, closeDate, corApprovePerson, 
     corApproveDate, ifSiteCorrection, isDel
@@ -61,7 +62,7 @@
       unitID, hseHiddenLevel, hiddenCategory, 
       nonconformity, hiddenDescription, hiddenDoc, 
       reqCompleteDate, correctiveRequest, rectificationSituation, 
-      returnDoc, contractonPeople, completeDate, 
+      returnDoc, contractonPeople, completeDate, responsiblePersonId,
       responsiblePerson, responsibleDate, contractorApprove, 
       contractorApproveDate, comfirmContent, 
       verifyPerson, verifyDate, hsePassContent, 
@@ -73,7 +74,7 @@
       #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
       #{nonconformity,jdbcType=VARCHAR}, #{hiddendescription,jdbcType=VARCHAR}, #{hiddendoc,jdbcType=VARCHAR}, 
       #{reqcompletedate,jdbcType=TIMESTAMP}, #{correctiverequest,jdbcType=VARCHAR}, #{rectificationsituation,jdbcType=VARCHAR}, 
-      #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, 
+      #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, #{responsiblePersonId,jdbcType=VARCHAR},
       #{responsibleperson,jdbcType=VARCHAR}, #{responsibledate,jdbcType=TIMESTAMP}, #{contractorapprove,jdbcType=VARCHAR}, 
       #{contractorapprovedate,jdbcType=TIMESTAMP}, #{comfirmcontent,jdbcType=VARCHAR}, 
       #{verifyperson,jdbcType=VARCHAR}, #{verifydate,jdbcType=TIMESTAMP}, #{hsepasscontent,jdbcType=VARCHAR}, 
@@ -140,6 +141,9 @@
       </if>
       <if test="completedate != null">
         completeDate,
+      </if>
+       <if test="responsiblepersonid != null">
+        responsiblePersonId,
       </if>
       <if test="responsibleperson != null">
         responsiblePerson,
@@ -242,6 +246,9 @@
       <if test="completedate != null">
         #{completedate,jdbcType=TIMESTAMP},
       </if>
+      <if test="responsiblepersonid != null">
+        #{responsiblepersonid,jdbcType=VARCHAR},
+      </if>
       <if test="responsibleperson != null">
         #{responsibleperson,jdbcType=VARCHAR},
       </if>
@@ -343,6 +350,9 @@
       <if test="completedate != null">
         completeDate = #{completedate,jdbcType=TIMESTAMP},
       </if>
+      <if test="responsiblepersonid != null">
+        responsiblePersonId = #{responsiblepersonid,jdbcType=VARCHAR},
+      </if>
       <if test="responsibleperson != null">
         responsiblePerson = #{responsibleperson,jdbcType=VARCHAR},
       </if>
@@ -410,6 +420,7 @@
       returnDoc = #{returndoc,jdbcType=VARCHAR},
       contractonPeople = #{contractonpeople,jdbcType=VARCHAR},
       completeDate = #{completedate,jdbcType=TIMESTAMP},
+      responsiblePersonId = #{responsiblepersonid,jdbcType=VARCHAR},
       responsiblePerson = #{responsibleperson,jdbcType=VARCHAR},
       responsibleDate = #{responsibledate,jdbcType=TIMESTAMP},
       contractorApprove = #{contractorapprove,jdbcType=VARCHAR},
@@ -447,6 +458,7 @@
 	returnDoc,
 	contractonPeople,
 	completeDate,
+	responsiblePersonId,
 	responsiblePerson,
 	copyPerson,
 	responsibleDate,
