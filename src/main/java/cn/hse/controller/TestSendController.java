@@ -1,4 +1,4 @@
-package cn.hse.controller;
+/*package cn.hse.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,9 +48,9 @@ public class TestSendController {
 	    }
 	 
 	 
-	 /*
+	 
 	  * 验证是否登录成功，发送短息
-	  */
+	  
 	 @RequestMapping(value="/smsSend",method=RequestMethod.POST)
 	 public String SmsSend(@RequestBody Map<String, Object> map){
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -99,3 +99,4 @@ public class TestSendController {
 		return null;
 	 }
 }
+*/

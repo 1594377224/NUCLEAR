@@ -451,9 +451,9 @@ public class CheckListController {
 		DangerList dangerList=new DangerList();
 //		dangerList.setLineno(array[1]);   //序号
 //		dangerList.setNoticeno(array[0]);//整改单编号
-		/*dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
-*/		dangerList.setDistributdate(new Date());  //分发日期
+		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
