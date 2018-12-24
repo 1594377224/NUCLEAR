@@ -83,9 +83,9 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-
-		checkList.setRecordno(array[0]);  //检查编号
 		
+		checkList.setRecordno(array[0]);  //检查编号
+		//checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -106,6 +106,8 @@ public class CheckListController {
 		DangerList dangerList=new DangerList();
 		dangerList.setLineno(array[1]);   //序号
 		dangerList.setNoticeno(array[0]);//整改单编号
+		//dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -435,4 +437,60 @@ public class CheckListController {
 		return array;
 		
 	}
+	@RequestMapping(value="/reSubmit",method=RequestMethod.POST)
+	public String reSubmit(@RequestBody Map<String, Object> map) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		logger.info("reSubmit===再次提交");
+		Integer traceId=Integer.parseInt(map.get("traceId").toString());
+		Integer dangerId=Integer.parseInt(map.get("dangerId").toString());
+		//更新隐患表
+		DangerList dangerList=new DangerList();
+		//dangerList.setLineno(array[1]);   //序号
+		//dangerList.setNoticeno(array[0]);//整改单编号
+		/*dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
+*/		dangerList.setDistributdate(new Date());  //分发日期
+		dangerList.setUnit(map.get("unit").toString());  //适用机组
+		dangerList.setArea(map.get("area").toString());  //区域
+		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
+		dangerList.setHsehiddenlevel(map.get("hseHiddenLevel").toString());  //隐患级别
+		dangerList.setHiddencategory(map.get("hiddenCategory").toString());  //隐患属性
+		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
+		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
+		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
+		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
+		dangerList.setResponsibledate(new Date());  //接收日期
+		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
+		String responsiblePerson=map.get("responsiblePerson").toString();
+		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
+		int a =dangerListServie.updateDanger(dangerList);
+		//更新流转表
+		Integer instanceId=Integer.parseInt(map.get("instanceId").toString());
+		String userId=map.get("userId").toString();
+		String userName=map.get("userName").toString();
+		FlowActionTrace flowActionTrace=new FlowActionTrace();
+		flowActionTrace.setId(traceId);
+		flowActionTrace.setSubmituserid(userId);
+		flowActionTrace.setSubmitusername(userName);
+		FlowAction flowAction=flowActionService.selectFlowAction(1);  //查询操作1的信息
+		flowActionTrace.setActionid(flowAction.getActionid());
+		flowActionTrace.setActionname(flowAction.getActionname());
+		flowActionTrace.setActioncode(flowAction.getActioncode());
+		int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);   //更新再次提交的信息
+		//再次插入一条新的流转信息
+		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+		int c=flowActionTraceService.insertFlowActionTrace(flowActionTrace, responsiblePerson, responsiblePersonId);
+		int updateInstance=flowInstanceService.updateInstance(instanceId);
+		if (a==0||b==0 || c==0 ||updateInstance==0) {
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("-9999", resultMap, null);
+		}
+		resultMap.put("resultCode", "0");
+		resultMap.put("resultMsg", "操作成功！");
+		return ResultUtil.result("0", resultMap, null);
+		
+	}
+	
 }
