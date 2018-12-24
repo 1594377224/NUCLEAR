@@ -193,5 +193,4 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 	public int updateFlowActionTrace(FlowActionTrace flowActionTrace) {
 		return flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
 	}
-
 }

@@ -19,6 +19,8 @@ public class WebServiceController {
 	private static final Logger logger=LogManager.getLogger(CheckListController.class);
 	//用友接口
 	private static final String url="http://10.4.210.85:59080/b2e/HseMobileServerPort?wsdl";
+	//登陆接口
+	private static final String uri="http://10.4.200.77/snpec_portal/services/userGet.service?wsdl";
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public void test() throws Exception {
@@ -44,7 +46,6 @@ public class WebServiceController {
 			resultMap.put("userName", map.get("userName"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -79,7 +80,6 @@ public class WebServiceController {
 			resultMap.put("userName", map.get("userName"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -115,7 +115,6 @@ public class WebServiceController {
 			resultMap.put("projNo", map.get("projNo"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -151,7 +150,6 @@ public class WebServiceController {
 			resultMap.put("projNo", map.get("projNo"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -188,7 +186,6 @@ public class WebServiceController {
 			resultMap.put("userName", map.get("userName"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -224,7 +221,6 @@ public class WebServiceController {
 			resultMap.put("projNo", map.get("projNo"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -260,7 +256,6 @@ public class WebServiceController {
 			resultMap.put("projNo", map.get("projNo"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -297,7 +292,6 @@ public class WebServiceController {
 			resultMap.put("projNo", map.get("projNo"));
 			paramsMap.put("params", resultMap);
 			JSONObject params = JSONObject.fromObject(paramsMap);
-			System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
@@ -329,14 +323,6 @@ public class WebServiceController {
 	public String createModifyHseSiteRecord(JSONObject params) {
 		logger.info("createModifyHseSiteRecord入参==="+params);
 		try {
-			/*Map<String, Object> paramsMap = new HashMap<String, Object>();
-			Map<String, Object> resultMap = new HashMap<String, Object>();
-			List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
-			
-			
-			paramsMap.put("params", resultMap);
-			JSONObject params = JSONObject.fromObject(paramsMap);*/
-			//System.out.println("params==>" + params.toString());
 			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
 			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
 			logger.info("===================");
@@ -348,16 +334,41 @@ public class WebServiceController {
 			logger.info("===调用用友接口请求结束");
 			String result=objects[0].toString();
 			logger.info("===调用用友接口请求返回参数="+result);
-			/*String result=null;
-			for (Object object : objects) {
-				System.out.println("请求接口返回==>" + object.toString());			
-				logger.info("用户信息返回接口信息="+object.toString());
-				result=object.toString();
-			}*/
 			logger.info("用户信息返回前台信息="+result);
 			return result;
 		} catch (Exception e) {
 			logger.info("接口请求异常error==>"+e.toString());
+		}
+		return null;
+	}
+	
+	
+	//检查单批准接口
+	
+	
+	/**
+	 * 登陆接口
+	 * userType为1的时候为内部用户
+	 * 为0的时候为临时人员
+	 */
+	@RequestMapping(value = "/getUserMsg", method = RequestMethod.POST)
+	public String getUserMsg(@RequestBody Map<String, Object> map) {
+		logger.info("前台入参==="+map);
+		try {
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			org.apache.cxf.endpoint.Client client = dcf.createClient(uri);
+			logger.info("userId==>" + map.get("userId").toString());
+			// 调用登陆接口
+			Object[] objects = client.invoke("getUserMsg", map.get("userId").toString());
+			// 输出调用结果
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			logger.info("用户信息返回前台信息="+result);
+			return result;
+		} catch (Exception e) {
+			logger.info("接口请求异常error==>"+e.toString()
+			);
 		}
 		return null;
 	}

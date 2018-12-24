@@ -83,7 +83,6 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-		
 		checkList.setRecordno(array[0]);  //检查编号
 		//checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
@@ -445,8 +444,8 @@ public class CheckListController {
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString());
 		//更新隐患表
 		DangerList dangerList=new DangerList();
-		//dangerList.setLineno(array[1]);   //序号
-		//dangerList.setNoticeno(array[0]);//整改单编号
+//		dangerList.setLineno(array[1]);   //序号
+//		dangerList.setNoticeno(array[0]);//整改单编号
 		/*dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
 */		dangerList.setDistributdate(new Date());  //分发日期
