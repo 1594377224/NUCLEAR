@@ -1,24 +1,24 @@
-/*package cn.hse.controller;
+package cn.hse.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.mascloud.sdkclient.Client;
-
-import cn.hse.util.RandomUUID;
+import cn.hse.util.HttpClientUtil;
+import cn.hse.util.MD5Utils;
+import cn.hse.util.ResultUtil;
 import cn.hse.util.SendUtil;
 import net.sf.json.JSONObject;
-@Controller
+@RestController
 @RequestMapping("/send")
 public class TestSendController {
 	private static final Logger logger=LogManager.getLogger(TestSendController.class);
@@ -49,54 +49,84 @@ public class TestSendController {
 	 
 	 
 	 
-	  * 验证是否登录成功，发送短息
-	  
+	  /* 
+	   * 流程节点变动，发送短息通知
+	   */
+	 @ResponseBody
 	 @RequestMapping(value="/smsSend",method=RequestMethod.POST)
 	 public String SmsSend(@RequestBody Map<String, Object> map){
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		 Map<String, Object> paramMap = new HashMap<String, Object>();
 		 JSONObject inputJson = JSONObject.fromObject(map);
 		 logger.info("[验证是否登录成功，发送短息--入参]"+inputJson);
-		 //身份认证地址
-		 String url = "http://112.35.4.197:15000";
-		 //用户登录帐号 caoxinglin
-		 String userAccount = inputJson.get("userAccount").toString();
-		 //用户登录密码 super1234
-		 String password = inputJson.get("password").toString();
-		 //用户企业名称
-		 String ecname = inputJson.get("ecname").toString();
+		 //发送短信地址
+		 String url = "http://112.35.1.155:1992/sms/norsubmit";
 		 
+		 //集团客户名称
+		 String ecName = inputJson.get("ecName").toString();
+		 //用户名
+		 String apId = inputJson.get("apId").toString();
+		 //密码
+		 String secretKey = inputJson.get("secretKey").toString();
 		 //手机号码数组，允许群发信息
-//		 String mobiles = "";
+		 String mobiles =  inputJson.get("mobiles").toString();
+//		 String[] mobiles = { "1761012021","13233879200" };
 		 //发送短信内容
-		 String smsContent = "";
-		 //扩展码
-		 String addSerial = "";
-		 //短信优先级，取值1-5
-		 String smsPriority = "";
+		 String content = inputJson.get("content").toString();
 		 //网关签名编码，必填
-		 String Sign = "";
-		 //发送数据批次号，32位世界上唯一编码，由字母和数字组成
-		 String msgGroup = RandomUUID.RandomID();
-		 //是否需要上行，True代表需要；false代表不需要
-		 String IsMo = "";
+		 String sign = inputJson.get("sign").toString();
 		 
-		 Client client = Client.getInstance( );
-		 boolean isLoggedin = client.login( url, userAccount, password, ecname );
-		 if( isLoggedin ) {
-			System.out.println( "Login successed" );
-		 } else {
-			System.out.println( "Login failed" );
-		 }
-		 String[] mobiles = { "1761012021" };
-		 int sendResult = client.sendDSMS( mobiles, "你好", "", 1, "NPHB12", "2004563256421", true );
-		 if( sendResult == mobiles.length ) {
-			System.out.println( "Successfully send " + mobiles.length + " SMS(s)" );
-		 } else {
-			System.out.println( "Failed to send " + mobiles.length + " SMS(s)" );
-		}
+		 //扩展码
+		 String addSerial = inputJson.get("addSerial").toString();
+		 //macAPI输入参数签名结果，签名算法：将ecName，apId，secretKey，mobiles，content ，sign，addSerial
+		 //按照顺序拼接，然后通过md5(32位小写)计算后得出的值
+//		 String mac = "";
 		 
+		 paramMap.put("ecName", ecName);
+		 paramMap.put("apId", apId);
+		 paramMap.put("secretKey", secretKey);
+		 paramMap.put("mobiles", mobiles);
+		 paramMap.put("content", content);
+		 paramMap.put("sign", sign);
+		 paramMap.put("addSerial", addSerial);
 		 
-		return null;
+		 StringBuffer stringBuffer = new StringBuffer();
+		 stringBuffer.append(ecName);
+		 stringBuffer.append(apId);
+		 stringBuffer.append(secretKey);
+		 stringBuffer.append(mobiles);
+		 stringBuffer.append(content);
+		 stringBuffer.append(sign);
+		 stringBuffer.append(addSerial);
+		 paramMap.put("mac", MD5Utils.encode(stringBuffer.toString()));
+		 
+		 String  param = JSONObject.fromObject(paramMap).toString();
+		 
+		 String base64String = Base64.encodeBase64String(param.getBytes());
+		 logger.info("[用base64加密后的参数]"+base64String);
+		 String httpPost = HttpClientUtil.httpPost(url, base64String);
+		 JSONObject object = JSONObject.fromObject(httpPost);
+		 logger.info("[调用短息发送接口的返回值--]"+object);
+		 //true,false
+		 Boolean success = (Boolean) object.get("success");
+		 //用于验证短信提交报告和状态报告的一致性（取值msgGroup）注:如果数据验证不通过msgGroup为空
+//		 String msgGroup = object.get("msgGroup").toString();
+		 //响应码  
+		 //IllegalMac	无效mac
+		 //InvalidMessage	非法消息
+		 //InvalidUsrOrPwd	非法用户名或密码
+		 //NoSignId	未找到签名
+		 //IllegalSignId	无效的签名
+		 //success	成功
+		 //TooManyMobiles	手机号超出最大上限（5000）
+		 String rspcod = object.get("rspcod").toString();
+		 if(success){
+				resultMap.put("resultCode", "0");
+				resultMap.put("resultMsg", rspcod);
+			} else {
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", rspcod);
+			}
+		return ResultUtil.result("0", resultMap, null);
 	 }
 }
-*/
