@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hse.mapper.FlowActionTraceDataMapper">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowActionTraceData">
+    <id column="traceId" jdbcType="INTEGER" property="traceid" />
+    <result column="data" jdbcType="VARCHAR" property="data" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    traceId, data
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flowActionTraceData
+    where traceId = #{traceid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flowActionTraceData
+    where traceId = #{traceid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.hse.beans.FlowActionTraceData">
+    insert into flowActionTraceData (traceId, data)
+    values (#{traceid,jdbcType=INTEGER}, #{data,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowActionTraceData">
+    insert into flowActionTraceData
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="traceid != null">
+        traceId,
+      </if>
+      <if test="data != null">
+        data,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="traceid != null">
+        #{traceid,jdbcType=INTEGER},
+      </if>
+      <if test="data != null">
+        #{data,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowActionTraceData">
+    update flowActionTraceData
+    <set>
+      <if test="data != null">
+        data = #{data,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where traceId = #{traceid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowActionTraceData">
+    update flowActionTraceData
+    set data = #{data,jdbcType=VARCHAR}
+    where traceId = #{traceid,jdbcType=INTEGER}
+  </update>
+</mapper>

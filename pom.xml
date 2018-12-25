@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>cn.mvtech</groupId>
+	<groupId>cn.hse</groupId>
 	<artifactId>SNEOA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
@@ -46,7 +46,11 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
         
-		
+		<dependency>
+    		<groupId>org.json</groupId>
+    		<artifactId>json</artifactId>
+    		<version>20180130</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -56,7 +60,8 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<version>5.1.9</version>
+		<!-- 	<scope>runtime</scope> -->
 		</dependency>
 		<!--引入redis  -->
 		<dependency>
@@ -82,9 +87,28 @@
 		 </dependency>
 		 <dependency>
 		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-	     	<version>3.4</version>
+		    <artifactId>commons-lang3</artifactId>	  
 		 </dependency>
+		 
+		 <dependency>  
+            <groupId>org.apache.httpcomponents</groupId>  
+            <artifactId>httpclient</artifactId>  
+        </dependency> 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <!-- cxf支持 -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>3.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>3.1.6</version>
+        </dependency>
 	</dependencies>
 	
 	<build>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hse.mapper.FlowInstanceMapper">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowInstance">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="flowId" jdbcType="VARCHAR" property="flowid" />
+    <result column="flowName" jdbcType="VARCHAR" property="flowname" />
+    <result column="userId" jdbcType="VARCHAR" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="applyUserName" jdbcType="VARCHAR" property="applyusername" />
+    <result column="applyDateTime" jdbcType="TIMESTAMP" property="applydatetime" />
+    <result column="endUserName" jdbcType="VARCHAR" property="endusername" />
+    <result column="endDateTime" jdbcType="TIMESTAMP" property="enddatetime" />
+    <result column="statusId" jdbcType="VARCHAR" property="statusid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, flowId, flowName, userId, userName, applyUserName, applyDateTime, endUserName, 
+    endDateTime, statusId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flowInstance
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flowInstance
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.hse.beans.FlowInstance" keyProperty="id" useGeneratedKeys="true">
+    insert into flowInstance (id, flowId, flowName, 
+      userId, userName, applyUserName, 
+      applyDateTime, endUserName, endDateTime, 
+      statusId)
+    values (#{id,jdbcType=INTEGER}, #{flowid,jdbcType=VARCHAR}, #{flowname,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{applyusername,jdbcType=VARCHAR}, 
+      #{applydatetime,jdbcType=TIMESTAMP}, #{endusername,jdbcType=VARCHAR}, #{enddatetime,jdbcType=TIMESTAMP}, 
+      #{statusid,jdbcType=VARCHAR})
+       <selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowInstance">
+    insert into flowInstance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="flowname != null">
+        flowName,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="username != null">
+        userName,
+      </if>
+      <if test="applyusername != null">
+        applyUserName,
+      </if>
+      <if test="applydatetime != null">
+        applyDateTime,
+      </if>
+      <if test="endusername != null">
+        endUserName,
+      </if>
+      <if test="enddatetime != null">
+        endDateTime,
+      </if>
+      <if test="statusid != null">
+        statusId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="flowid != null">
+        #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowname != null">
+        #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="applyusername != null">
+        #{applyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="applydatetime != null">
+        #{applydatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endusername != null">
+        #{endusername,jdbcType=VARCHAR},
+      </if>
+      <if test="enddatetime != null">
+        #{enddatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusid != null">
+        #{statusid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowInstance">
+    update flowInstance
+    <set>
+      <if test="flowid != null">
+        flowId = #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowname != null">
+        flowName = #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="applyusername != null">
+        applyUserName = #{applyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="applydatetime != null">
+        applyDateTime = #{applydatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endusername != null">
+        endUserName = #{endusername,jdbcType=VARCHAR},
+      </if>
+      <if test="enddatetime != null">
+        endDateTime = #{enddatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusid != null">
+        statusId = #{statusid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowInstance">
+    update flowInstance
+    set flowId = #{flowid,jdbcType=VARCHAR},
+      flowName = #{flowname,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      applyUserName = #{applyusername,jdbcType=VARCHAR},
+      applyDateTime = #{applydatetime,jdbcType=TIMESTAMP},
+      endUserName = #{endusername,jdbcType=VARCHAR},
+      endDateTime = #{enddatetime,jdbcType=TIMESTAMP},
+      statusId = #{statusid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 插入信息到抄送人delivery表 -->
+  <insert id="addDelivery" parameterType="Map">
+		 INSERT INTO delivery(userId,userName,CCId,CCName,statusId,checkId,dangerId,traceId) 
+		 VALUES
+	   <foreach collection="deliveryList" item="item" index="index" separator="," >
+   			(#{userId},#{userName},#{item.id},#{item.name},#{statusId},#{checkId},#{dangerId},#{traceId})
+  	   </foreach>
+	</insert>
+  	<!-- 查询抄送人的信息 -->
+	<select id="findCopyPerson"  parameterType="Map" resultType = "Map">
+		SELECT
+			copyPerson  
+		FROM
+			dangerList
+		<where>
+			id = #{dangerId}
+		</where>
+	</select>
+  
+</mapper>

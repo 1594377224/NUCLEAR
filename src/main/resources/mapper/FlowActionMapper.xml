@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hse.mapper.FlowActionMapper">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowAction">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="actionId" jdbcType="VARCHAR" property="actionid" />
+    <result column="stepId" jdbcType="VARCHAR" property="stepid" />
+    <result column="flowId" jdbcType="VARCHAR" property="flowid" />
+    <result column="actionCode" jdbcType="VARCHAR" property="actioncode" />
+    <result column="actionName" jdbcType="VARCHAR" property="actionname" />
+    <result column="params" jdbcType="VARCHAR" property="params" />
+    <result column="enableFlag" jdbcType="INTEGER" property="enableflag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, actionId, stepId, flowId, actionCode, actionName, params, enableFlag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flowAction
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flowAction
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.hse.beans.FlowAction">
+    insert into flowAction (id, actionId, stepId, 
+      flowId, actionCode, actionName, 
+      params, enableFlag)
+    values (#{id,jdbcType=INTEGER}, #{actionid,jdbcType=VARCHAR}, #{stepid,jdbcType=VARCHAR}, 
+      #{flowid,jdbcType=VARCHAR}, #{actioncode,jdbcType=VARCHAR}, #{actionname,jdbcType=VARCHAR}, 
+      #{params,jdbcType=VARCHAR}, #{enableflag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowAction">
+    insert into flowAction
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="actionid != null">
+        actionId,
+      </if>
+      <if test="stepid != null">
+        stepId,
+      </if>
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="actioncode != null">
+        actionCode,
+      </if>
+      <if test="actionname != null">
+        actionName,
+      </if>
+      <if test="params != null">
+        params,
+      </if>
+      <if test="enableflag != null">
+        enableFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="actionid != null">
+        #{actionid,jdbcType=VARCHAR},
+      </if>
+      <if test="stepid != null">
+        #{stepid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="actioncode != null">
+        #{actioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="actionname != null">
+        #{actionname,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="enableflag != null">
+        #{enableflag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowAction">
+    update flowAction
+    <set>
+      <if test="actionid != null">
+        actionId = #{actionid,jdbcType=VARCHAR},
+      </if>
+      <if test="stepid != null">
+        stepId = #{stepid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        flowId = #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="actioncode != null">
+        actionCode = #{actioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="actionname != null">
+        actionName = #{actionname,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="enableflag != null">
+        enableFlag = #{enableflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowAction">
+    update flowAction
+    set actionId = #{actionid,jdbcType=VARCHAR},
+      stepId = #{stepid,jdbcType=VARCHAR},
+      flowId = #{flowid,jdbcType=VARCHAR},
+      actionCode = #{actioncode,jdbcType=VARCHAR},
+      actionName = #{actionname,jdbcType=VARCHAR},
+      params = #{params,jdbcType=VARCHAR},
+      enableFlag = #{enableflag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hse.mapper.FlowActionTraceMapper">
+  <resultMap id="BaseResultMap" type="cn.hse.beans.FlowActionTrace">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="instanceId" jdbcType="INTEGER" property="instanceid" />
+    <result column="flowId" jdbcType="VARCHAR" property="flowid" />
+    <result column="flowName" jdbcType="VARCHAR" property="flowname" />
+    <result column="flowCode" jdbcType="VARCHAR" property="flowcode" />
+    <result column="stepId" jdbcType="VARCHAR" property="stepid" />
+    <result column="stepName" jdbcType="VARCHAR" property="stepname" />
+    <result column="stepCode" jdbcType="VARCHAR" property="stepcode" />
+    <result column="actionId" jdbcType="VARCHAR" property="actionid" />
+    <result column="actionName" jdbcType="VARCHAR" property="actionname" />
+    <result column="actionCode" jdbcType="VARCHAR" property="actioncode" />
+    <result column="ownerUserId" jdbcType="VARCHAR" property="owneruserid" />
+    <result column="ownerUserName" jdbcType="VARCHAR" property="ownerusername" />
+    <result column="ownerUserDesc" jdbcType="VARCHAR" property="owneruserdesc" />
+    <result column="submitUserId" jdbcType="VARCHAR" property="submituserid" />
+    <result column="submitUserName" jdbcType="VARCHAR" property="submitusername" />
+    <result column="submitUserDesc" jdbcType="VARCHAR" property="submituserdesc" />
+    <result column="arriveTime" jdbcType="TIMESTAMP" property="arrivetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, instanceId, flowId, flowName, flowCode, stepId, stepName, stepCode, actionId, 
+    actionName, actionCode, ownerUserId, ownerUserName, ownerUserDesc, submitUserId, 
+    submitUserName, submitUserDesc, arriveTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from flowActionTrace
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from flowActionTrace
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.hse.beans.FlowActionTrace">
+    insert into flowActionTrace (id, instanceId, flowId, 
+      flowName, flowCode, stepId, 
+      stepName, stepCode, actionId, 
+      actionName, actionCode, ownerUserId, 
+      ownerUserName, ownerUserDesc, submitUserId, 
+      submitUserName, submitUserDesc, arriveTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{instanceid,jdbcType=VARCHAR}, #{flowid,jdbcType=VARCHAR}, 
+      #{flowname,jdbcType=VARCHAR}, #{flowcode,jdbcType=VARCHAR}, #{stepid,jdbcType=VARCHAR}, 
+      #{stepname,jdbcType=VARCHAR}, #{stepcode,jdbcType=VARCHAR}, #{actionid,jdbcType=VARCHAR}, 
+      #{actionname,jdbcType=VARCHAR}, #{actioncode,jdbcType=VARCHAR}, #{owneruserid,jdbcType=VARCHAR}, 
+      #{ownerusername,jdbcType=VARCHAR}, #{owneruserdesc,jdbcType=VARCHAR}, #{submituserid,jdbcType=VARCHAR}, 
+      #{submitusername,jdbcType=VARCHAR}, #{submituserdesc,jdbcType=VARCHAR}, #{arrivetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.hse.beans.FlowActionTrace" keyProperty="id" useGeneratedKeys="true">
+    insert into flowActionTrace
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="instanceid != null">
+        instanceId,
+      </if>
+      <if test="flowid != null">
+        flowId,
+      </if>
+      <if test="flowname != null">
+        flowName,
+      </if>
+      <if test="flowcode != null">
+        flowCode,
+      </if>
+      <if test="stepid != null">
+        stepId,
+      </if>
+      <if test="stepname != null">
+        stepName,
+      </if>
+      <if test="stepcode != null">
+        stepCode,
+      </if>
+      <if test="actionid != null">
+        actionId,
+      </if>
+      <if test="actionname != null">
+        actionName,
+      </if>
+      <if test="actioncode != null">
+        actionCode,
+      </if>
+      <if test="owneruserid != null">
+        ownerUserId,
+      </if>
+      <if test="ownerusername != null">
+        ownerUserName,
+      </if>
+      <if test="owneruserdesc != null">
+        ownerUserDesc,
+      </if>
+      <if test="submituserid != null">
+        submitUserId,
+      </if>
+      <if test="submitusername != null">
+        submitUserName,
+      </if>
+      <if test="submituserdesc != null">
+        submitUserDesc,
+      </if>
+      <if test="arrivetime != null">
+        arriveTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="instanceid != null">
+        #{instanceid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowname != null">
+        #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="flowcode != null">
+        #{flowcode,jdbcType=VARCHAR},
+      </if>
+      <if test="stepid != null">
+        #{stepid,jdbcType=VARCHAR},
+      </if>
+      <if test="stepname != null">
+        #{stepname,jdbcType=VARCHAR},
+      </if>
+      <if test="stepcode != null">
+        #{stepcode,jdbcType=VARCHAR},
+      </if>
+      <if test="actionid != null">
+        #{actionid,jdbcType=VARCHAR},
+      </if>
+      <if test="actionname != null">
+        #{actionname,jdbcType=VARCHAR},
+      </if>
+      <if test="actioncode != null">
+        #{actioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruserid != null">
+        #{owneruserid,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerusername != null">
+        #{ownerusername,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruserdesc != null">
+        #{owneruserdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="submituserid != null">
+        #{submituserid,jdbcType=VARCHAR},
+      </if>
+      <if test="submitusername != null">
+        #{submitusername,jdbcType=VARCHAR},
+      </if>
+      <if test="submituserdesc != null">
+        #{submituserdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivetime != null">
+        #{arrivetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+     <selectKey resultType="int" keyProperty="id" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.hse.beans.FlowActionTrace">
+    update flowActionTrace
+    <set>
+      <if test="instanceid != null">
+        instanceId = #{instanceid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowid != null">
+        flowId = #{flowid,jdbcType=VARCHAR},
+      </if>
+      <if test="flowname != null">
+        flowName = #{flowname,jdbcType=VARCHAR},
+      </if>
+      <if test="flowcode != null">
+        flowCode = #{flowcode,jdbcType=VARCHAR},
+      </if>
+      <if test="stepid != null">
+        stepId = #{stepid,jdbcType=VARCHAR},
+      </if>
+      <if test="stepname != null">
+        stepName = #{stepname,jdbcType=VARCHAR},
+      </if>
+      <if test="stepcode != null">
+        stepCode = #{stepcode,jdbcType=VARCHAR},
+      </if>
+      <if test="actionid != null">
+        actionId = #{actionid,jdbcType=VARCHAR},
+      </if>
+      <if test="actionname != null">
+        actionName = #{actionname,jdbcType=VARCHAR},
+      </if>
+      <if test="actioncode != null">
+        actionCode = #{actioncode,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruserid != null">
+        ownerUserId = #{owneruserid,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerusername != null">
+        ownerUserName = #{ownerusername,jdbcType=VARCHAR},
+      </if>
+      <if test="owneruserdesc != null">
+        ownerUserDesc = #{owneruserdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="submituserid != null">
+        submitUserId = #{submituserid,jdbcType=VARCHAR},
+      </if>
+      <if test="submitusername != null">
+        submitUserName = #{submitusername,jdbcType=VARCHAR},
+      </if>
+      <if test="submituserdesc != null">
+        submitUserDesc = #{submituserdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="arrivetime != null">
+        arriveTime = #{arrivetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.hse.beans.FlowActionTrace">
+    update flowActionTrace
+    set instanceId = #{instanceid,jdbcType=VARCHAR},
+      flowId = #{flowid,jdbcType=VARCHAR},
+      flowName = #{flowname,jdbcType=VARCHAR},
+      flowCode = #{flowcode,jdbcType=VARCHAR},
+      stepId = #{stepid,jdbcType=VARCHAR},
+      stepName = #{stepname,jdbcType=VARCHAR},
+      stepCode = #{stepcode,jdbcType=VARCHAR},
+      actionId = #{actionid,jdbcType=VARCHAR},
+      actionName = #{actionname,jdbcType=VARCHAR},
+      actionCode = #{actioncode,jdbcType=VARCHAR},
+      ownerUserId = #{owneruserid,jdbcType=VARCHAR},
+      ownerUserName = #{ownerusername,jdbcType=VARCHAR},
+      ownerUserDesc = #{owneruserdesc,jdbcType=VARCHAR},
+      submitUserId = #{submituserid,jdbcType=VARCHAR},
+      submitUserName = #{submitusername,jdbcType=VARCHAR},
+      submitUserDesc = #{submituserdesc,jdbcType=VARCHAR},
+      arriveTime = #{arrivetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByStepIdAndInstanceId" parameterType="Map"  resultMap="BaseResultMap">
+  	select
+  	  <include refid="Base_Column_List" />
+    from flowActionTrace
+    where instanceId = #{instanceId} AND stepId = #{stepId}
+    ORDER BY  arriveTime asc LIMIT 1
+  </select>
+  
+</mapper>
