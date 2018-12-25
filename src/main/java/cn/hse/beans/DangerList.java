@@ -39,7 +39,7 @@ public class DangerList {
 
     private Date completedate;
     
-    private String responsiblepersonId;
+    private String responsiblepersonid;
 
     private String responsibleperson;
     
@@ -72,12 +72,14 @@ public class DangerList {
 
     private Integer isdel;
 
-    public String getResponsiblepersonId() {
-		return responsiblepersonId;
+    
+
+	public String getResponsiblepersonid() {
+		return responsiblepersonid;
 	}
 
-	public void setResponsiblepersonId(String responsiblepersonId) {
-		this.responsiblepersonId = responsiblepersonId;
+	public void setResponsiblepersonid(String responsiblepersonid) {
+		this.responsiblepersonid = responsiblepersonid;
 	}
 
 	public Integer getId() {

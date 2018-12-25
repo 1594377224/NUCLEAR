@@ -123,7 +123,7 @@ public class CheckListController {
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
-		dangerList.setResponsiblepersonId(map.get("responsiblepersonId").toString());
+		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		dangerList.setIsdel(0);
@@ -467,7 +467,7 @@ public class CheckListController {
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
-		dangerList.setResponsiblepersonId(responsiblePersonId);
+		dangerList.setResponsiblepersonid(responsiblePersonId);
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 		int a =dangerListServie.updateDanger(dangerList);
 		//更新流转表

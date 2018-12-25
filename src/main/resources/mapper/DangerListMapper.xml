@@ -74,7 +74,7 @@
       #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
       #{nonconformity,jdbcType=VARCHAR}, #{hiddendescription,jdbcType=VARCHAR}, #{hiddendoc,jdbcType=VARCHAR}, 
       #{reqcompletedate,jdbcType=TIMESTAMP}, #{correctiverequest,jdbcType=VARCHAR}, #{rectificationsituation,jdbcType=VARCHAR}, 
-      #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, #{responsiblePersonId,jdbcType=VARCHAR},
+      #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, #{responsiblepersonid,jdbcType=VARCHAR},
       #{responsibleperson,jdbcType=VARCHAR}, #{responsibledate,jdbcType=TIMESTAMP}, #{contractorapprove,jdbcType=VARCHAR}, 
       #{contractorapprovedate,jdbcType=TIMESTAMP}, #{comfirmcontent,jdbcType=VARCHAR}, 
       #{verifyperson,jdbcType=VARCHAR}, #{verifydate,jdbcType=TIMESTAMP}, #{hsepasscontent,jdbcType=VARCHAR}, 

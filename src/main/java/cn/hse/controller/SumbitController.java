@@ -109,4 +109,53 @@ public class SumbitController {
 				return ResultUtil.result("-9999", resultMap, null);
 			}
 		}
+		
+		
+	    //退回再提交
+		/**
+		 * 退回到发起人再次提交流程操作
+		 * @param map
+		 * @return
+		 */
+		@RequestMapping(value="/retResubmit",method=RequestMethod.POST)
+		public String retResubmit(@RequestBody Map<String, Object> map) {
+			logger.info("[退回再提交]入参="+map);
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			Integer traceId=Integer.parseInt(map.get("traceId").toString());   //流转表的ID
+			Integer instanceId=Integer.parseInt(map.get("instanceId").toString());  //流转表中的实例ID
+			String userId=map.get("userId").toString();   //用户ID
+			String userName=map.get("userName").toString();   //用户ID
+			Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
+			//封装隐患单对象
+			String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
+			String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
+			String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
+			String completeDate=map.get("completeDate").toString();  //整改完成日期
+			String copyPerson=map.get("copyPerson").toString();   //抄送
+			String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+			DangerList dangerList=new DangerList();
+			dangerList.setId(dangerId);
+			dangerList.setResponsibleperson(responsiblePerson);
+			dangerList.setCompletedate(DateUtil.string2Date(completeDate));
+			dangerList.setCopyPerson(copyPerson);
+			dangerList.setRectificationsituation(rectificationSituation);
+			dangerList.setHiddendoc(hiddenDoc);
+			int b=dangerListServie.updateDanger(dangerList);
+			//更新流转表
+			FlowActionTrace flowActionTrace=new FlowActionTrace();
+			flowActionTrace.setId(traceId);
+			flowActionTrace.setSubmituserid(userId);
+			flowActionTrace.setSubmitusername(userName);
+			flowActionTrace.setSubmituserdesc("再次发起流程");
+			int c=flowActionTraceService.updateRetResubmit(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
+			if (b!=0&&c!=0) {
+				resultMap.put("resultCode", "0");
+				resultMap.put("resultMsg", "操作成功！");
+				return ResultUtil.result("0", resultMap, null);
+			}
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("-9999", resultMap, null);
+		}
+		
 }

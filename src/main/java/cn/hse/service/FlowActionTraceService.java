@@ -15,4 +15,7 @@ public interface FlowActionTraceService {
 	int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId);
 
 	int updateFlowActionTrace(FlowActionTrace flowActionTrace);
+
+	int updateRetResubmit(FlowActionTrace flowActionTrace, Integer instanceId, String responsiblePersonId,
+			String responsiblePerson);
 }

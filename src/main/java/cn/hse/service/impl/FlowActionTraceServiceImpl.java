@@ -193,4 +193,44 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 	public int updateFlowActionTrace(FlowActionTrace flowActionTrace) {
 		return flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
 	}
-}
+	
+	//退回再次提交
+	@Override
+	public int updateRetResubmit(FlowActionTrace flowActionTrace, Integer instanceId, String responsiblePersonId,
+			String responsiblePerson) {
+		//查询操作节点
+		FlowAction flowAction=flowActionMapper.selectByPrimaryKey(1);
+		flowActionTrace.setActionid(flowAction.getActionid());
+		flowActionTrace.setActionname(flowAction.getActionname());
+		flowActionTrace.setActioncode(flowAction.getActioncode());
+		flowActionTrace.setArrivetime(new Date());
+		//更新当前节点的数据
+		int updateResult=flowActionTraceMapper.updateByPrimaryKeySelective(flowActionTrace);
+		//插入新的节点数据
+		//Integer traceId=flowActionTrace.getId();
+		Flow flow=flowMapper.selectByPrimaryKey(1);   //查询流程1
+		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(1);  //查询节点
+		FlowActionTrace record=new FlowActionTrace();
+		record.setInstanceid(instanceId);
+		record.setFlowid(flow.getId().toString());
+		record.setFlowcode(flow.getFlowcode());
+		record.setFlowname(flow.getFlowname());	
+		
+		record.setStepid(flowStep.getStepid());
+		record.setStepcode(flowStep.getStepcode());
+		record.setStepname(flowStep.getStepname());
+
+		record.setOwneruserid(responsiblePersonId);
+		record.setOwnerusername(responsiblePerson);
+		record.setOwneruserdesc(Constant.FA_QI_REN);
+		record.setArrivetime(new Date());
+		int insertResult=flowActionTraceMapper.insertSelective(record);
+		logger.info("插入数据"+insertResult);
+		if (insertResult==0||updateResult==0) {
+			return 0;
+		}
+		return 1;
+	}
+
+}   
+    

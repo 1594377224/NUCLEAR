@@ -110,7 +110,7 @@ public class DraftsController {
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
-		dangerList.setResponsiblepersonId(map.get("responsiblePersonId").toString());
+		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 //		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
@@ -131,6 +131,24 @@ public class DraftsController {
 	public String draftsSubmit(@RequestBody Map<String, Object> map) {
 		logger.info("【草稿箱提交操作】");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		//更新隐患表
+		//整改需要的字段，更新隐患表
+		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
+		String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
+		String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
+		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
+		String completeDate=map.get("completeDate").toString();  //整改完成日期
+		String copyPerson=map.get("copyPerson").toString();   //抄送
+		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+		DangerList dangerList=new DangerList();
+		dangerList.setId(dangerId);
+		dangerList.setResponsibleperson(responsiblePerson);
+		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
+		dangerList.setCopyPerson(copyPerson);
+		dangerList.setRectificationsituation(rectificationSituation);
+		dangerList.setHiddendoc(hiddenDoc);
+		int updateResult=dangerListServie.updateDanger(dangerList);
+		
 		//查询流程模板   查询模板1
 		Flow flow=flowService.selectByPrimaryKey(1);
 		//插入实例表	
@@ -145,10 +163,10 @@ public class DraftsController {
 		int d=flowInstanceService.insertFlowInstance(flowInstance);
 		int instanceId=flowInstance.getId();
 		logger.info("----==实例表插入成功");
-		String responsiblePerson=map.get("responsiblePerson").toString();
+		//String responsiblePerson=map.get("responsiblePerson").toString();
 		//插入实例表和检查单关系表
 		Integer checkId=Integer.parseInt(map.get("checkId").toString());  //检查单id
-		Integer dangerId=Integer.parseInt(map.get("dangerId").toString());  //隐患id
+		//Integer dangerId=Integer.parseInt(map.get("dangerId").toString());  //隐患id
 		InstanceRelation instanceRelation=new InstanceRelation();
 		instanceRelation.setCheckid(checkId);
 		instanceRelation.setInstanceid(instanceId);
@@ -178,7 +196,7 @@ public class DraftsController {
 		flowActionTrace.setSubmituserdesc(flowAction.getActionname());
 		flowActionTrace.setArrivetime(new Date());
 		int e=flowActionTraceService.insertFlowActionTrace(flowActionTrace);
-		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
+		//String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
 		int traceId =flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
 		logger.info("----==流转表插入成功"+traceId);
 		//插入信息到抄送人delivery表
