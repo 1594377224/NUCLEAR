@@ -340,6 +340,7 @@ public class CheckListController {
 		flowActionTrace.setSubmituserid(userId);
 		flowActionTrace.setSubmitusername(userName);
 		flowActionTrace.setSubmituserdesc("整改提交");
+		flowActionTrace.setArrivetime(new Date());
 		int c=flowActionTraceService.updateChangeInfo(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
 		logger.info("==========更新流转表结果"+c);
 		
@@ -546,6 +547,7 @@ public class CheckListController {
 		flowActionTrace.setActionid(flowAction.getActionid());
 		flowActionTrace.setActionname(flowAction.getActionname());
 		flowActionTrace.setActioncode(flowAction.getActioncode());
+		flowActionTrace.setArrivetime(new Date());
 		int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);   //更新再次提交的信息
 		//再次插入一条新的流转信息
 		int c=flowActionTraceService.insertFlowActionTrace(flowActionTrace, responsiblePerson, responsiblePersonId);
