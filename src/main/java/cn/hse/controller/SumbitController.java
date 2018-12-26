@@ -165,7 +165,7 @@ public class SumbitController {
 		
 		
 		/**
-		 * 对整改数据进行处理	
+		 * 对整改验证数据进行处理	
 		 * @param map
 		 * @return
 		 */
@@ -197,8 +197,10 @@ public class SumbitController {
 			paramsMap.put("step_id", "200");
 		
 			//隐患单信息封装
-			resultMap.put("corrective_content",map.get("correctiveRequest").toString());  //整改措施要求
-			resultMap.put("complete_date",map.get("completeDate").toString());
+			resultMap.put("hse_pass_content","通过");  //是否验证通过
+			resultMap.put("verify_content",map.get("comfirmContent").toString());  //验证情况
+			resultMap.put("close_person",map.get("closePerson").toString());  //关闭人
+			resultMap.put("close_date",map.get("closeDate").toString());  //关闭日期
 			list.add(resultMap);
 			//上传图片
 			result.put("imgName", map.get("imgName").toString());  //图片名称
@@ -214,14 +216,14 @@ public class SumbitController {
 			
 			//调用返回的结果
 			String returnResult=webServiceController.modifyHseSiteCorrectionLine(params);
-			JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
+			JSONObject json=JSONObject.fromObject(returnResult);
 			String str="";
 			if (json.get("status").equals("0")) {
 				logger.info("[同步用友整改接口返回结果]==="+json.get("status"));
-				str="整改数据同步失败！";
+				str="整改验证数据同步失败！";
 				return str;
 			}
-			str="整改数据同步成功！";
+			str="整改验证数据同步成功！";
 			return str;
 			
 		}
