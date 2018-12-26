@@ -148,6 +148,9 @@
       <if test="responsibleperson != null">
         responsiblePerson,
       </if>
+      <if test="copyPerson != null">
+        copyPerson,
+      </if>
       <if test="responsibledate != null">
         responsibleDate,
       </if>
@@ -252,6 +255,9 @@
       <if test="responsibleperson != null">
         #{responsibleperson,jdbcType=VARCHAR},
       </if>
+      <if test="copyPerson != null">
+        #{copyPerson,jdbcType=VARCHAR},
+      </if>
       <if test="responsibledate != null">
         #{responsibledate,jdbcType=TIMESTAMP},
       </if>
@@ -355,6 +361,10 @@
       </if>
       <if test="responsibleperson != null">
         responsiblePerson = #{responsibleperson,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="copyPerson != null">
+        copyPerson = #{copyPerson,jdbcType=TIMESTAMP},
       </if>
       <if test="responsibledate != null">
         responsibleDate = #{responsibledate,jdbcType=TIMESTAMP},

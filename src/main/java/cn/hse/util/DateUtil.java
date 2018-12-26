@@ -77,7 +77,7 @@ public final class DateUtil {
      * @return
      */
     public static Date string2Date(String date) {
-        SimpleDateFormat format = new SimpleDateFormat(DatePattern.YYYY_MM_DD.getContext());
+        SimpleDateFormat format = new SimpleDateFormat(DatePattern.YYYY_MM_DD_HH_MM_SS.getContext());
         try {
             return format.parse(date);
         } catch (ParseException e) {
