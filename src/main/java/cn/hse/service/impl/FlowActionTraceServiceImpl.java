@@ -209,7 +209,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		//插入新的节点数据
 		//Integer traceId=flowActionTrace.getId();
 		Flow flow=flowMapper.selectByPrimaryKey(1);   //查询流程1
-		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(1);  //查询节点
+		FlowStep flowStep=flowStepMapper.selectByPrimaryKey(2);  //查询节点
 		FlowActionTrace record=new FlowActionTrace();
 		record.setInstanceid(instanceId);
 		record.setFlowid(flow.getId().toString());
@@ -222,7 +222,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 
 		record.setOwneruserid(responsiblePersonId);
 		record.setOwnerusername(responsiblePerson);
-		record.setOwneruserdesc(Constant.FA_QI_REN);
+		record.setOwneruserdesc(Constant.ZHENG_GAI_REN);
 		record.setArrivetime(new Date());
 		int insertResult=flowActionTraceMapper.insertSelective(record);
 		logger.info("插入数据"+insertResult);
