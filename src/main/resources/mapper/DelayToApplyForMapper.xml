@@ -7,10 +7,10 @@
 	<!-- 存延期申请数据入库 -->
 	<insert id = "addDelayToApplyFor" parameterType="cn.hse.beans.DelayToApplyFor" keyProperty="id" useGeneratedKeys="true">
 		INSERT INTO delayToApplyFor (
-			reqCompleteDate,delayToApplyForDec,delayToApplyForDate,delayToApplyForNo,userId,userName
+			reqCompleteDate,delayToApplyForDec,delayToApplyForDate,delayToApplyForNo,userId,userName,delayNum
 		)
 		VALUES
-			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate},#{delayToApplyForNo},#{userId},#{userName})
+			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate},#{delayToApplyForNo},#{userId},#{userName},#{delayNum})
 		<selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -120,4 +120,28 @@
 			(#{instanceId},#{delayToApplyForId})
 	</insert>
 	
+	<!-- findDelayCount 查询是否进行延期申请 -->
+	<select id="findDelayCount"  parameterType="Map" resultType = "int">
+		SELECT
+			count(1)
+		FROM
+			checkAndDanger c
+		RIGHT JOIN delayToApplyFor d ON c.delayToApplyForId = d.id
+		<where>
+			c.checkId = #{checkId}
+			AND c.dangerId = #{dangerId}
+		</where>
+	</select>
+	<!--  findDelayNum 查询延期申请次数-->
+	<select id="findDelayNum"  parameterType="Map" resultType = "Map">
+		SELECT
+			d.delayNum
+		FROM
+			checkAndDanger c
+		RIGHT JOIN delayToApplyFor d ON c.delayToApplyForId = d.id
+		<where>
+			c.checkId = #{checkId}
+			AND c.dangerId = #{dangerId}
+		</where>
+	</select>
 </mapper>

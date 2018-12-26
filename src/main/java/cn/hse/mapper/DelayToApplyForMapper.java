@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import cn.hse.beans.DelayToApplyFor;
+import net.sf.json.JSONObject;
 
 @Mapper
 public interface DelayToApplyForMapper {
@@ -26,5 +27,9 @@ public interface DelayToApplyForMapper {
 	int addFlowActionTrace(Map<String, Object> paramMap);
 
 	int addInstanceAndDelay(Map<String, Object> instanceAndDelayMap);
+
+	Map<String, Object> findDelayNum(JSONObject inputJson);
+
+	int findDelayCount(JSONObject inputJson);
 
 }

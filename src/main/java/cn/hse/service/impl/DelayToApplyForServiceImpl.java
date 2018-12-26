@@ -47,6 +47,9 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		String delayToApplyForDec = inputJson.getString("delayToApplyForDec");
 		String delayToApplyForDate = inputJson.getString("delayToApplyForDate");
 		String delayToApplyForNo = String.valueOf((int)((Math.random()*9+1)*100000));
+		String delayNums = inputJson.getString("delayNum");
+		int delayNumA = Integer.parseInt(delayNums);
+		int delayNum = delayNumA+1;
 		//封装延期申请单对象
 		DelayToApplyFor delayToApplyForList=new DelayToApplyFor();
 		delayToApplyForList.setDelayToApplyForDate(delayToApplyForDate);
@@ -55,6 +58,7 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		delayToApplyForList.setDelayToApplyForNo(delayToApplyForNo);
 		delayToApplyForList.setUserId(userId);
 		delayToApplyForList.setUserName(userName);
+		delayToApplyForList.setDelayNum(delayNum);
 		//保存延期申请数据入库delayToApplyFor
 		int delayToApplyForNum = delayToApplyForMapper.addDelayToApplyFor(delayToApplyForList);
 		int delayToApplyForId=delayToApplyForList.getId();
@@ -154,6 +158,29 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		} else {
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");
+		}
+		return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+	}
+	
+	/*
+	 * 查询延期申请次数
+	 * @see cn.hse.service.DelayToApplyForService#findDelayNum(net.sf.json.JSONObject)
+	 */
+	@Override
+	public String findDelayNum(JSONObject inputJson) {
+		logger.info("[查询延期申请次数-入参]"+inputJson);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		int count = delayToApplyForMapper.findDelayCount(inputJson);
+		if(count>0){
+			Map<String,Object> numMap = delayToApplyForMapper.findDelayNum(inputJson);
+			String num = numMap.get("delayNum").toString();
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			resultMap.put("num", num);
+		} else {
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功");
+			resultMap.put("num", "0");
 		}
 		return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	}

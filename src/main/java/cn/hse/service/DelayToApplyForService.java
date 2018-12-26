@@ -10,4 +10,6 @@ public interface DelayToApplyForService {
 
 	String findDelayToApplyFor(JSONObject inputJson);
 
+	String findDelayNum(JSONObject inputJson);
+
 }

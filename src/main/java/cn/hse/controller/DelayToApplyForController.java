@@ -58,6 +58,8 @@ public class DelayToApplyForController {
 		String delayToApplyForDec = "" ; 
 		//延期时间
 		String delayToApplyForDate = "" ; 
+		//延期申请次数
+		String delayNum = "" ; 
 		if (inputJson.containsKey("userId")) {
 			userId = inputJson.getString("userId");
 		}
@@ -85,9 +87,12 @@ public class DelayToApplyForController {
 		if (inputJson.containsKey("delayToApplyForDate")) {
 			delayToApplyForDate = inputJson.getString("delayToApplyForDate");
 		}
+		if (inputJson.containsKey("delayNum")) {
+			delayNum = inputJson.getString("delayNum");
+		}
 		boolean[] sArr = { G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName),G4Utils.isNotEmpty(actionTraceId),
 				G4Utils.isNotEmpty(instanceId),G4Utils.isNotEmpty(dangerId),G4Utils.isNotEmpty(checkId),
-				G4Utils.isNotEmpty(reqCompleteDate),G4Utils.isNotEmpty(delayToApplyForDec),G4Utils.isNotEmpty(delayToApplyForDate)};
+				G4Utils.isNotEmpty(reqCompleteDate),G4Utils.isNotEmpty(delayToApplyForDec),G4Utils.isNotEmpty(delayToApplyForDate),G4Utils.isNotEmpty(delayNum)};
 		boolean flag = BooleanUtils.and(sArr);
 		if (!flag) {
 			return ResultUtil.result("-9999", "接入参数不完整！");
@@ -97,6 +102,40 @@ public class DelayToApplyForController {
 		}
 	}
 	
-	
-	
+	/**
+	 * 查询延期申请次数
+	 * @author 
+	 *
+	 */
+	@RequestMapping(value="/findDelayNum",method=RequestMethod.POST)
+	public String findDelayNum(@RequestBody Map<String, Object> map){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		JSONObject inputJson = JSONObject.fromObject(map);
+		logger.info("[查询延期申请次数-查询入参]"+inputJson);
+		// 参数校验
+		if(inputJson.isEmpty()){
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "操作失败！");
+			return ResultUtil.result("0", resultMap, null);
+		}
+		//隐患单id
+		String dangerId = "" ;
+		//检查单id
+		String checkId = "" ;
+		if (inputJson.containsKey("dangerId")) {
+			dangerId = inputJson.getString("dangerId");
+		}
+		if (inputJson.containsKey("checkId")) {
+			checkId = inputJson.getString("checkId");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(dangerId),G4Utils.isNotEmpty(checkId)};
+		boolean flag = BooleanUtils.and(sArr);
+		if (!flag) {
+			return ResultUtil.result("-9999", "接入参数不完整！");
+		} else {
+			String resultStr = delayToApplyForService.findDelayNum(inputJson);
+			return resultStr;
+		}
+		
+	}
 }

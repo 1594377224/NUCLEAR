@@ -8,6 +8,13 @@ public class DelayToApplyFor {
 	private String delayToApplyForNo;
 	private String userId;
 	private String userName;
+	private Integer delayNum;
+	public Integer getDelayNum() {
+		return delayNum;
+	}
+	public void setDelayNum(Integer delayNum) {
+		this.delayNum = delayNum;
+	}
 	public String getUserId() {
 		return userId;
 	}
