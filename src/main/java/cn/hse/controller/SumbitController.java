@@ -47,8 +47,8 @@ public class SumbitController {
 		public String verification(@RequestBody Map<String, Object> map) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
 			logger.info("整改验证入参==="+map);
-			String str=dataProcess(map);
-			logger.info("整改验证同步用友接口数据结果==="+str);
+			//String str=dataProcess(map);
+			//logger.info("整改验证同步用友接口数据结果==="+str);
 			//首先判断整改验证是否通过  0通过1不通过
 			String hsePassContent=map.get("isPass").toString(); //是否通过
 			String comfirmContent=map.get("comfirmContent").toString(); //确认情况

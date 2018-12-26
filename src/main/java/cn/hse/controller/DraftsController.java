@@ -136,16 +136,17 @@ public class DraftsController {
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
 		String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
 		String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
-		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
-		String completeDate=map.get("completeDate").toString();  //整改完成日期
-		String copyPerson=map.get("copyPerson").toString();   //抄送
+		//String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
+		//String completeDate=map.get("completeDate").toString();  //整改完成日期
+		//String copyPerson=map.get("copyPerson").toString();   //抄送
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
 		DangerList dangerList=new DangerList();
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
-		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
-		dangerList.setCopyPerson(copyPerson);
-		dangerList.setRectificationsituation(rectificationSituation);
+		//dangerList.setCompletedate(DateUtil.string2Date(completeDate));
+		dangerList.setCopyPerson(deliveryList.toString());
+		//dangerList.setRectificationsituation(rectificationSituation);
 		dangerList.setHiddendoc(hiddenDoc);
 		int updateResult=dangerListServie.updateDanger(dangerList);
 		
@@ -203,7 +204,7 @@ public class DraftsController {
 		Map<String, Object> deliveryMap = new HashMap<String, Object>();
 		deliveryMap.put("dangerId", dangerId);
 //		Map<String,Object> copyPerson = flowInstanceService.findCopyPerson(deliveryMap);
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+		//List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		if(deliveryList.isEmpty()){
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");

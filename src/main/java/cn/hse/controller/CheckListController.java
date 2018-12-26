@@ -115,7 +115,9 @@ public class CheckListController {
 		dangerList.setHiddencategory(map.get("hiddenCategory").toString());  //隐患属性
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
-		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
+		if (!map.get("hiddenDoc").toString().equals("")) {
+			dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
+		}
 		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
@@ -303,8 +305,8 @@ public class CheckListController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//JSONObject inputJson = JSONObject.fromObject(map);
 		logger.info("[流程状态-查询入参]"+map);
-		String str=dataChangeProcess(map);
-		logger.info("整改提交同步用友接口数据结果==="+str);
+		//String str=dataChangeProcess(map);
+		//logger.info("整改提交同步用友接口数据结果==="+str);
 		Integer traceId=Integer.parseInt(map.get("traceId").toString());   //流转表的ID
 		Integer instanceId=Integer.parseInt(map.get("instanceId").toString());  //流转表中的实例ID
 		String userId=map.get("userId").toString();   //用户ID
@@ -317,15 +319,19 @@ public class CheckListController {
 		String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
-		String copyPerson=map.get("copyPerson").toString();   //抄送
-		String returndoc=map.get("returndoc").toString();   //隐患附件
+//		String copyPerson=map.get("copyPerson").toString();   //抄送
+		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+		
 		DangerList dangerList=new DangerList();
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
 		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
-		dangerList.setCopyPerson(copyPerson);
+		dangerList.setCopyPerson(deliveryList.toString());
 		dangerList.setRectificationsituation(rectificationSituation);
-		dangerList.setReturndoc(returndoc);
+		String returndoc=map.get("returndoc").toString();   //整改隐患附件
+		if (!returndoc.equals("") && returndoc !=null) {
+			dangerList.setReturndoc(returndoc);
+		}	
 		int updateResult=dangerListServie.updateDanger(dangerList);
 		logger.info("==========整改情况更新结果"+updateResult);
 		//更新流转表
@@ -356,22 +362,18 @@ public class CheckListController {
 		logger.info("[调用用友接口同步节点数据]="+aString);*/
 		
 		//插入信息到抄送人delivery表
-		/*Map<String, Object> deliveryMap = new HashMap<String, Object>();
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		int deliveryNum = 0;
-		if(deliveryList.size()>0){
-			deliveryMap.put("userId", userId);
-			deliveryMap.put("userName", userName);
-			deliveryMap.put("checkId", checkId);
-			deliveryMap.put("dangerId", dangerId);
-			deliveryMap.put("traceId", traceId);
-			deliveryMap.put("statusId", "0");//0待阅，1已阅
-			deliveryMap.put("deliveryList", deliveryList);
-			deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-		}*/
+		Map<String, Object> deliveryMap = new HashMap<String, Object>();
+		deliveryMap.put("userId", userId);
+		deliveryMap.put("userName", userName);
+		deliveryMap.put("checkId", checkId);
+		deliveryMap.put("dangerId", dangerId);
+		deliveryMap.put("traceId", traceId);
+		deliveryMap.put("statusId", "0");//0待阅，1已阅
+		deliveryMap.put("deliveryList", deliveryList);
+		int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
 		//更新实例表
 		int updateInstance=flowInstanceService.updateInstance(instanceId);
-		if (updateInstance==0||updateResult==0) {
+		if (updateInstance==0||updateResult==0||deliveryNum==0) {
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");
 			return ResultUtil.result("-9999", resultMap, null);
@@ -459,8 +461,16 @@ public class CheckListController {
 		
 		list.add(resultMap);
 		//上传图片
-		result.put("imgName", map.get("imgName").toString());  //图片名称
-		result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		if (map.get("imgName").toString().equals("")) {
+			result.put("imgName","");  //图片名称
+		}else {
+			result.put("imgName", map.get("imgName").toString());  //图片名称
+		}
+		if (map.get("imgAddress").toString().equals("")) {
+			result.put("imgAddress", "");   //图片地址
+		}else {
+			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		}
 		imgList.add(result);
 		paramsMap.put("attachment", imgList);
 		paramsMap.put("HseHiddenDangers", list);
@@ -472,10 +482,15 @@ public class CheckListController {
 		
 		//调用返回的结果
 		String returnResult=webServiceController.createModifyHseSiteRecord(params);
-		JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
-		
-		String recordNo=json.get("record_no").toString();
-		String lineNo=json.get("line_no0").toString();
+		JSONObject json=JSONObject.fromObject(returnResult);
+		if (json.getString("status").equals("0")) {
+			logger.info("[调用用友接口返回参数成功]==="+json.getJSONObject("object"));
+		}else {
+			logger.info("[调用用友接口返回参数失败]==="+json.getJSONObject("object"));
+			logger.info("[调用用友接口返回错误信息]==="+json.getString("errmsg"));
+		}
+		String recordNo=json.getJSONObject("object").get("record_no").toString();
+		String lineNo=json.getJSONObject("object").get("line_no0").toString();
 		logger.info("[获取到的用友检查单编号]==="+recordNo);
 		logger.info("[获取到的用友隐患单序号]==="+lineNo);
 		String  array[]= {recordNo,lineNo};
