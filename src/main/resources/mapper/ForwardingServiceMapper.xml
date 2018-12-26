@@ -13,7 +13,8 @@
 			submitUserDesc = #{userDec},
 			actionId = #{actionId},
 			actionCode = #{actionCode},
-			actionName = #{actionName}
+			actionName = #{actionName},
+			arriveTime = now()
 		</set>
 		where id = #{actionTraceId}
 	</update>	
