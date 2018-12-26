@@ -23,6 +23,8 @@ import cn.hse.service.FlowInstanceService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.ResultUtil;
+import net.sf.json.JSONArray;
+//github.com/1594377224/NUCLEAR.git
 import net.sf.json.JSONObject;
 /**
  * 整改验证通过，不通过
@@ -131,19 +133,43 @@ public class SumbitController {
 			String userId=map.get("userId").toString();   //用户ID
 			String userName=map.get("userName").toString();   //用户ID
 			Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
+			Integer checkId=Integer.parseInt(map.get("checkId").toString()); //检查单ID
 			//封装隐患单对象
 			String responsiblePerson=map.get("responsiblePerson").toString();  //整改单责任 人
 			String responsiblePersonId=map.get("responsiblePersonId").toString();  //整改责任人的ID
-			String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
-			String completeDate=map.get("completeDate").toString();  //整改完成日期
-			String copyPerson=map.get("copyPerson").toString();   //抄送
+//			String copyPerson=map.get("copyPerson").toString();   //抄送
 			String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+			String unit = map.get("unit").toString();  //适用机组
+			String area = map.get("area").toString();  //区域
+			String unitID = map.get("unitID").toString();  //被检查单位
+			String hseHiddenLevel = map.get("hseHiddenLevel").toString();  //隐患级别
+			String hiddenCategory = map.get("hiddenCategory").toString();  //隐患属性
+			String nonconformity = map.get("nonconformity").toString();  // 隐患类型
+			String hiddenDescription = map.get("hiddenDescription").toString();  //隐患描述
+			//插入信息到抄送人delivery表
+			Map<String, Object> deliveryMap = new HashMap<String, Object>();
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson")); //抄送
+			deliveryMap.put("userId", map.get("userId").toString());
+			deliveryMap.put("userName", map.get("userName").toString());
+			deliveryMap.put("checkId", checkId);
+			deliveryMap.put("dangerId", dangerId);
+			deliveryMap.put("traceId", traceId);
+			deliveryMap.put("statusId", "0");//0待阅，1已阅
+			deliveryMap.put("deliveryList", deliveryList);
+			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+			
 			DangerList dangerList=new DangerList();
 			dangerList.setId(dangerId);
+			dangerList.setArea(area);
+			dangerList.setUnit(unit);
+			dangerList.setUnitid(unitID);
 			dangerList.setResponsibleperson(responsiblePerson);
-			dangerList.setCompletedate(DateUtil.string2Date(completeDate));
-			dangerList.setCopyPerson(copyPerson);
-			dangerList.setRectificationsituation(rectificationSituation);
+			dangerList.setHsehiddenlevel(hseHiddenLevel);  //隐患级别
+			dangerList.setHiddencategory(hiddenCategory);  //隐患属性
+			dangerList.setNonconformity(nonconformity);  // 隐患类型
+			dangerList.setHiddendescription(hiddenDescription);  //隐患描述
+			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+			dangerList.setCopyPerson(deliveryList.toString()); //抄送
 			dangerList.setHiddendoc(hiddenDoc);
 			int b=dangerListServie.updateDanger(dangerList);
 			//更新流转表
@@ -153,7 +179,7 @@ public class SumbitController {
 			flowActionTrace.setSubmitusername(userName);
 			flowActionTrace.setSubmituserdesc("再次发起流程");
 			int c=flowActionTraceService.updateRetResubmit(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
-			if (b!=0&&c!=0) {
+			if (b!=0&&c!=0&&deliveryNum!=0) {
 				resultMap.put("resultCode", "0");
 				resultMap.put("resultMsg", "操作成功！");
 				return ResultUtil.result("0", resultMap, null);
