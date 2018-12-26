@@ -371,4 +371,30 @@ public class WebServiceController {
 		}
 		return null;
 	}
+	/**
+	 * 整改单接口
+	 * @return
+	 */
+	public String modifyHseSiteCorrectionLine(JSONObject params) {
+		logger.info("modifyHseSiteCorrectionLine入参==="+params);
+		try {
+			JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+			org.apache.cxf.endpoint.Client client = dcf.createClient(url);
+			logger.info("===================");
+			// getUser 为接口中定义的方法名称 张三为传递的参数 返回一个Object数组
+			Object[] objects = client.invoke("modifyHseSiteCorrectionLine", params.toString());
+			
+			logger.info("===调用用友接口返回的数组="+objects);
+			// 输出调用结果
+			logger.info("===调用用友接口请求结束");
+			String result=objects[0].toString();
+			logger.info("===调用用友接口请求返回参数="+result);
+			logger.info("用户信息返回前台信息="+result);
+			return result;
+		} catch (Exception e) {
+			logger.info("接口请求异常error==>"+e.toString());
+		}
+		return null;
+	}
+	
 }
