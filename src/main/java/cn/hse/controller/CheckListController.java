@@ -72,7 +72,7 @@ public class CheckListController {
 		logger.info("=======进入新建检查单========接收参数="+map);
 		//将检查隐患单数据传入用友数据库
 
-		//String array[]=dataProcess(map);
+		String array[]=dataProcess(map);
 		
 		Result result=new Result();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -83,8 +83,8 @@ public class CheckListController {
 		checkList.setUserId(map.get("userId").toString());
 		checkList.setProjno(map.get("projNo").toString());   //项目编号
 		checkList.setState(Integer.valueOf(map.get("state").toString()));  //状态
-		//checkList.setRecordno(array[0]);  //检查编号
-		checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
+		checkList.setRecordno(array[0]);  //检查编号
+		//checkList.setRecordno(String.valueOf((int)((Math.random()*9+1)*100000)));
 		checkList.setCheckdate(DateUtil.string2Date(map.get("checkDate").toString()));//检查日期
 		checkList.setCheckform(Integer.valueOf(map.get("checkForm").toString())); //检查形式
 		checkList.setRecordtype(Integer.valueOf(map.get("recordType").toString()));  //检查单类型
@@ -103,10 +103,10 @@ public class CheckListController {
 		logger.info("====检查单插入完毕"+checkId);
 		//封装隐患单对象
 		DangerList dangerList=new DangerList();
-		//dangerList.setLineno(array[1]);   //序号
-		//dangerList.setNoticeno(array[0]);//整改单编号
-        dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
-		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
+		dangerList.setLineno(array[1]);   //序号
+		dangerList.setNoticeno(array[0]);//整改单编号
+        //dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -284,6 +284,8 @@ public class CheckListController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//JSONObject inputJson = JSONObject.fromObject(map);
 		logger.info("[流程状态-查询入参]"+map);
+		String str=dataChangeProcess(map);
+		logger.info("整改提交同步用友接口数据结果==="+str);
 		Integer traceId=Integer.parseInt(map.get("traceId").toString());   //流转表的ID
 		Integer instanceId=Integer.parseInt(map.get("instanceId").toString());  //流转表中的实例ID
 		String userId=map.get("userId").toString();   //用户ID
@@ -297,14 +299,14 @@ public class CheckListController {
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
 		String copyPerson=map.get("copyPerson").toString();   //抄送
-		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+		String returndoc=map.get("returndoc").toString();   //隐患附件
 		DangerList dangerList=new DangerList();
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
 		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
 		dangerList.setCopyPerson(copyPerson);
 		dangerList.setRectificationsituation(rectificationSituation);
-		dangerList.setHiddendoc(hiddenDoc);
+		dangerList.setReturndoc(returndoc);
 		int updateResult=dangerListServie.updateDanger(dangerList);
 		logger.info("==========整改情况更新结果"+updateResult);
 		//更新流转表
@@ -353,6 +355,7 @@ public class CheckListController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> result = new HashMap<String, Object>();
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
 		paramsMap.put("record_no","");  //检查编号
@@ -417,9 +420,11 @@ public class CheckListController {
 		resultMap.put("verify_content","");
 		
 		list.add(resultMap);
-		result.put("imgName", "");
-		result.put("imgAddress", "");
-		paramsMap.put("attachment", result);
+		//上传图片
+		result.put("imgName", map.get("imgName").toString());  //图片名称
+		result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		imgList.add(result);
+		paramsMap.put("attachment", imgList);
 		paramsMap.put("HseHiddenDangers", list);
 		logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
 		
@@ -449,10 +454,11 @@ public class CheckListController {
 		String responsiblePersonId=map.get("responsiblePersonId").toString();  //下一步整改责任人的ID
 		//更新隐患表
 		DangerList dangerList=new DangerList();
-//		dangerList.setLineno(array[1]);   //序号
-//		dangerList.setNoticeno(array[0]);//整改单编号
-		dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
-		dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
+		dangerList.setId(dangerId);
+		//dangerList.setLineno(array[1]);   //序号
+		//dangerList.setNoticeno(array[0]);//整改单编号
+		//dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
+		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
 		dangerList.setDistributdate(new Date());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
@@ -494,6 +500,68 @@ public class CheckListController {
 		resultMap.put("resultCode", "0");
 		resultMap.put("resultMsg", "操作成功！");
 		return ResultUtil.result("0", resultMap, null);
+		
+	}
+	
+	/**
+	 * 对整改数据进行处理	
+	 * @param map
+	 * @return
+	 */
+	public String dataChangeProcess(Map<String, Object> map) {
+		logger.info("[传用友处理新建数据入参]"+map);
+		
+		Map<String, Object> paramsMap = new HashMap<String, Object>();
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<String, Object>();
+		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
+		//检查单信息封装
+		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
+		paramsMap.put("record_no",map.get("record_no"));  //检查编号
+		paramsMap.put("no", "1");  //隐患明细编号
+		//paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
+		//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
+		int check=Integer.valueOf(map.get("checkForm").toString());
+		String checkForm="";
+		if (check==0) {
+			checkForm="DAILY";   //日常检查
+		}else if (check==1) {
+			checkForm="CONPLEX";  //专项检查
+		}else {
+			checkForm="SPECIALLY";  //专项检查
+		}
+		paramsMap.put("hse_check_form", checkForm);   //检查形式
+		paramsMap.put("login_user_id", map.get("userId").toString());   //用户id
+		paramsMap.put("step_id", "200");
+	
+		//隐患单信息封装
+		resultMap.put("corrective_content",map.get("correctiveRequest").toString());  //整改措施要求
+		resultMap.put("complete_date",map.get("completeDate").toString());
+		list.add(resultMap);
+		//上传图片
+		result.put("imgName", map.get("imgName").toString());  //图片名称
+		result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		imgList.add(result);
+		paramsMap.put("attachment", imgList);
+		paramsMap.put("HseSiteCorrectionline", list);
+		logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
+		
+		JSONObject params = JSONObject.fromObject(paramsMap);
+		
+		WebServiceController webServiceController=new WebServiceController();
+		
+		//调用返回的结果
+		String returnResult=webServiceController.modifyHseSiteCorrectionLine(params);
+		JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
+		String str="";
+		if (json.get("status").equals("0")) {
+			logger.info("[同步用友整改接口返回结果]==="+json.get("status"));
+			str="整改数据同步失败！";
+			return str;
+		}
+		str="整改数据同步成功！";
+		return str;
 		
 	}
 	

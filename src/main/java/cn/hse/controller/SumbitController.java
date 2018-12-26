@@ -1,7 +1,9 @@
 package cn.hse.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +23,7 @@ import cn.hse.service.FlowInstanceService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.ResultUtil;
+import net.sf.json.JSONObject;
 /**
  * 整改验证通过，不通过
  * @author T440P
@@ -42,6 +45,8 @@ public class SumbitController {
 		public String verification(@RequestBody Map<String, Object> map) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
 			logger.info("整改验证入参==="+map);
+			String str=dataProcess(map);
+			logger.info("整改验证同步用友接口数据结果==="+str);
 			//首先判断整改验证是否通过  0通过1不通过
 			String hsePassContent=map.get("isPass").toString(); //是否通过
 			String comfirmContent=map.get("comfirmContent").toString(); //确认情况
@@ -158,4 +163,66 @@ public class SumbitController {
 			return ResultUtil.result("-9999", resultMap, null);
 		}
 		
+		
+		/**
+		 * 对整改数据进行处理	
+		 * @param map
+		 * @return
+		 */
+		public String dataProcess(Map<String, Object> map) {
+			logger.info("[传用友处理新建数据入参]"+map);
+			
+			Map<String, Object> paramsMap = new HashMap<String, Object>();
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			Map<String, Object> result = new HashMap<String, Object>();
+			List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
+			List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
+			//检查单信息封装
+			paramsMap.put("proj_no", map.get("projNo"));   //项目编号
+			paramsMap.put("record_no",map.get("record_no"));  //检查编号
+			paramsMap.put("no", "1");  //隐患明细编号
+			//paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
+			//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
+			int check=Integer.valueOf(map.get("checkForm").toString());
+			String checkForm="";
+			if (check==0) {
+				checkForm="DAILY";   //日常检查
+			}else if (check==1) {
+				checkForm="CONPLEX";  //专项检查
+			}else {
+				checkForm="SPECIALLY";  //专项检查
+			}
+			paramsMap.put("hse_check_form", checkForm);   //检查形式
+			paramsMap.put("login_user_id", map.get("userId").toString());   //用户id
+			paramsMap.put("step_id", "200");
+		
+			//隐患单信息封装
+			resultMap.put("corrective_content",map.get("correctiveRequest").toString());  //整改措施要求
+			resultMap.put("complete_date",map.get("completeDate").toString());
+			list.add(resultMap);
+			//上传图片
+			result.put("imgName", map.get("imgName").toString());  //图片名称
+			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+			imgList.add(result);
+			paramsMap.put("attachment", imgList);
+			paramsMap.put("HseSiteCorrectionline", list);
+			logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
+			
+			JSONObject params = JSONObject.fromObject(paramsMap);
+			
+			WebServiceController webServiceController=new WebServiceController();
+			
+			//调用返回的结果
+			String returnResult=webServiceController.modifyHseSiteCorrectionLine(params);
+			JSONObject json=JSONObject.fromObject(returnResult).getJSONObject("object");
+			String str="";
+			if (json.get("status").equals("0")) {
+				logger.info("[同步用友整改接口返回结果]==="+json.get("status"));
+				str="整改数据同步失败！";
+				return str;
+			}
+			str="整改数据同步成功！";
+			return str;
+			
+		}
 }
