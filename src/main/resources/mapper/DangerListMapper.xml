@@ -498,7 +498,7 @@ AND c.dangerId = d.id
   </update>
   <!--  updateDelayNum 更新延期申请审批标识-->
   <update id = "updateDelayNum" parameterType = "Map">
-		update checkAndDanger
+		update delayToApplyFor
 		<set>
 			isDelay = #{isDelay}
 		</set>
