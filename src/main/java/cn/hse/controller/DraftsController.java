@@ -238,6 +238,7 @@ public class DraftsController {
 	  public String checkPass(@RequestBody Map<String, Object> map) {
 		logger.info("【延期申请操作】");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		//0通过 1不通过
 		String pass=map.get("pass").toString();
 		String delayToApplyForDate=map.get("delayToApplyForDate").toString();   //延期日期
@@ -245,7 +246,14 @@ public class DraftsController {
 		String traceId=map.get("traceId").toString();   //流转id
 		String userId=map.get("userId").toString();   //用户id
 		String userName=map.get("userName").toString();
+		String delayToApplyIds = map.get("delayToApplyId").toString();//延期申请单id
+		int delayToApplyId = Integer.parseInt(delayToApplyIds);
 		if ("0".equals(pass)) {   //当延期申请通过
+			int isDelay = 1;
+			paramMap.put("delayToApplyId", delayToApplyId);
+			paramMap.put("isDelay", isDelay);
+			//更新延期申请表中isDelay 延期申请审批标识（0未审批，1审批通过，2审批不通过，3发起审批）
+			int passNum = dangerListServie.updateDelayNum(paramMap);
 			//更新隐患表日期
 			DangerList dangerList=new DangerList();
 			dangerList.setId(Integer.parseInt(dangerId));
@@ -262,7 +270,7 @@ public class DraftsController {
 			flowActionTrace.setSubmitusername(userName);
 			flowActionTrace.setSubmituserdesc(Constant.QUE_REN_REN);
 			int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);
-			if (a==0 ||b==0) {
+			if (a==0 ||b==0 ||passNum==0) {
 				resultMap.put("resultCode", "-1");
 				resultMap.put("resultMsg", "操作失败！");
 				return ResultUtil.result("-9999", resultMap, null);
@@ -271,6 +279,11 @@ public class DraftsController {
 			resultMap.put("resultMsg", "操作成功！");
 			return ResultUtil.result("0", resultMap, null);
 		}else {//延期申请不通过
+			int isDelay = 2;
+			paramMap.put("delayToApplyId", delayToApplyId);
+			paramMap.put("isDelay", isDelay);
+			//更新延期申请表中isDelay 延期申请审批标识（0未审批，1审批通过，2审批不通过，3发起审批）
+			int passNum = dangerListServie.updateDelayNum(paramMap);
 			//更新流程表
 			FlowAction flowAction=flowActionService.selectFlowAction(11);
 			FlowActionTrace flowActionTrace=new FlowActionTrace();
@@ -282,7 +295,7 @@ public class DraftsController {
 			flowActionTrace.setSubmitusername(userName);
 			flowActionTrace.setSubmituserdesc(Constant.QUE_REN_REN);
 			int b=flowActionTraceService.updateFlowActionTrace(flowActionTrace);
-			if (b==0) {
+			if (b==0&& passNum==0) {
 				resultMap.put("resultCode", "-1");
 				resultMap.put("resultMsg", "操作失败！");
 				return ResultUtil.result("-9999", resultMap, null);

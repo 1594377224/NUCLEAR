@@ -9,6 +9,14 @@ public class DelayToApplyFor {
 	private String userId;
 	private String userName;
 	private Integer delayNum;
+	private Integer isDelay;
+	
+	public Integer getIsDelay() {
+		return isDelay;
+	}
+	public void setIsDelay(Integer isDelay) {
+		this.isDelay = isDelay;
+	}
 	public Integer getDelayNum() {
 		return delayNum;
 	}

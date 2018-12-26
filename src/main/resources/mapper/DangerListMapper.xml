@@ -496,4 +496,12 @@ AND c.dangerId = d.id
   <update id="delDangerId">
   	update dangerList set isDel=1 where id=#{dangerId,jdbcType=INTEGER}
   </update>
+  <!--  updateDelayNum 更新延期申请审批标识-->
+  <update id = "updateDelayNum" parameterType = "Map">
+		update checkAndDanger
+		<set>
+			isDelay = #{isDelay}
+		</set>
+		where id = #{delayToApplyId}
+	</update>	
 </mapper>

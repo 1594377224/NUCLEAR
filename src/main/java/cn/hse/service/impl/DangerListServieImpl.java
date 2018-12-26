@@ -1,5 +1,7 @@
 package cn.hse.service.impl;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,11 @@ public class DangerListServieImpl implements DangerListServie{
 	@Override
 	public int updateDanger(DangerList dangerList) {
 		return dangerListMapper.updateByPrimaryKeySelective(dangerList);
+	}
+	//更新延期申请表中isDelay 延期申请审批标识（0未审批，1审批通过，2审批不通过，3发起审批）
+	@Override
+	public int updateDelayNum(Map<String, Object> paramMap) {
+		return dangerListMapper.updateDelayNum(paramMap);
 	}
 
 }

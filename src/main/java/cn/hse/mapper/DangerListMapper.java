@@ -1,5 +1,7 @@
 package cn.hse.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import cn.hse.beans.DangerList;
@@ -21,4 +23,6 @@ public interface DangerListMapper {
 	DangerList selectDangerByCheckId(int checkId);
 
 	int delDangerId(int dangerId);
+
+	int updateDelayNum(Map<String, Object> paramMap);
 }

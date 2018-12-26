@@ -7,10 +7,10 @@
 	<!-- 存延期申请数据入库 -->
 	<insert id = "addDelayToApplyFor" parameterType="cn.hse.beans.DelayToApplyFor" keyProperty="id" useGeneratedKeys="true">
 		INSERT INTO delayToApplyFor (
-			reqCompleteDate,delayToApplyForDec,delayToApplyForDate,delayToApplyForNo,userId,userName,delayNum
+			reqCompleteDate,delayToApplyForDec,delayToApplyForDate,delayToApplyForNo,userId,userName,delayNum,isDelay
 		)
 		VALUES
-			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate},#{delayToApplyForNo},#{userId},#{userName},#{delayNum})
+			(#{reqCompleteDate},#{delayToApplyForDec},#{delayToApplyForDate},#{delayToApplyForNo},#{userId},#{userName},#{delayNum},'0')
 		<selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -135,7 +135,8 @@
 	<!--  findDelayNum 查询延期申请次数-->
 	<select id="findDelayNum"  parameterType="Map" resultType = "Map">
 		SELECT
-			d.delayNum
+			d.delayNum,
+			d.isDelay
 		FROM
 			checkAndDanger c
 		RIGHT JOIN delayToApplyFor d ON c.delayToApplyForId = d.id

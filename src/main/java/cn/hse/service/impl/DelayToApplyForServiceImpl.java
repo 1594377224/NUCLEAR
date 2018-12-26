@@ -174,13 +174,16 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		if(count>0){
 			Map<String,Object> numMap = delayToApplyForMapper.findDelayNum(inputJson);
 			String num = numMap.get("delayNum").toString();
+			String isDelay = numMap.get("isDelay").toString();
 			resultMap.put("resultCode", "0");
 			resultMap.put("resultMsg", "操作成功！");
 			resultMap.put("num", num);
+			resultMap.put("isDelay", isDelay);
 		} else {
 			resultMap.put("resultCode", "0");
 			resultMap.put("resultMsg", "操作成功");
 			resultMap.put("num", "0");
+			resultMap.put("isDelay", "3");
 		}
 		return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	}
