@@ -43,6 +43,7 @@
 			instanceId = #{instanceId}
 			AND actionId = '101'
 		</where>
+		 ORDER BY  arriveTime asc LIMIT 1
 	</select>
 	<!-- 查询模板-flow模板-查询模板为延期申请发起节点 -->
 	<select id="findFlowMap"  parameterType="Map" resultType = "Map">
