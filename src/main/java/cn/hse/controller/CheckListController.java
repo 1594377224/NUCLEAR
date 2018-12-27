@@ -221,7 +221,7 @@ public class CheckListController {
 			nodeResult.put("ownerUserDesc", flowActionTrace.getOwneruserdesc());   //当前用户描述
 			nodeResult.put("submitUserId", responsiblePersonId);  //提交人id
 			nodeResult.put("submitUserName",responsiblePerson);   //提交人名称
-			nodeResult.put("submitUserDesc", flowActionTrace.getSubmituserdesc());  //提交人描述
+			nodeResult.put("submitUserDesc", Constant.FA_QI_REN);  //提交人描述
 			NodeSyn nodeSyn=new NodeSyn();
 			String aString=nodeSyn.synNodeData(nodeResult);
 			logger.info("[调用用友接口同步节点数据]="+aString);
@@ -357,7 +357,7 @@ public class CheckListController {
 		nodeResult.put("ownerUserDesc", "整改提交 ");   //当前用户描述
 		nodeResult.put("submitUserId", responsiblePersonId);  //提交人id
 		nodeResult.put("submitUserName",responsiblePerson);   //提交人名称
-		nodeResult.put("submitUserDesc", flowActionTrace.getSubmituserdesc());  //提交人描述
+		nodeResult.put("submitUserDesc", Constant.ZHENG_GAI_REN);  //提交人描述
 		NodeSyn nodeSyn=new NodeSyn();
 		String aString=nodeSyn.synNodeData(nodeResult);
 		logger.info("[调用用友接口同步节点数据]="+aString);
@@ -600,8 +600,16 @@ public class CheckListController {
 		resultMap.put("complete_date",map.get("completeDate").toString());
 		list.add(resultMap);
 		//上传图片
-		result.put("imgName", map.get("imgName").toString());  //图片名称
-		result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		if (map.get("imgName").toString().equals("")) {
+			result.put("imgName","");  //图片名称
+		}else {
+			result.put("imgName", map.get("imgName").toString());  //图片名称
+		}
+		if (map.get("imgAddress").toString().equals("")) {
+			result.put("imgAddress", "");   //图片地址
+		}else {
+			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+		}
 		imgList.add(result);
 		paramsMap.put("attachment", imgList);
 		paramsMap.put("HseSiteCorrectionline", list);

@@ -47,7 +47,7 @@ public class NodeSyn {
 		String returnResult=webServiceController.createFlowActionTrace(params);
 		JSONObject json=JSONObject.fromObject(returnResult);
 		String str="";
-		if (json.get("status").toString().equals("0")) {
+		if (!json.get("status").toString().equals("0")) {
 			logger.info("[同步用友整改接口返回结果]==="+json.get("status"));
 			str="流程节点数据同步失败！";
 			return str;
