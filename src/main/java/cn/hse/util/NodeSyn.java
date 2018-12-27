@@ -30,7 +30,7 @@ public class NodeSyn {
 		resultMap.put("stepName", map.get("stepName").toString());  //节点名称
 		resultMap.put("stepCode", map.get("stepCode").toString());  //节点编码
 		resultMap.put("ownerUserId", map.get("ownerUserId").toString());  //当前用户id
-		resultMap.put("Own0erUserName", map.get("Own0erUserName").toString());  //当前用户名称
+		resultMap.put("ownerUserName", map.get("ownerUserName").toString());  //当前用户名称
 		resultMap.put("ownerUserDesc", map.get("ownerUserDesc").toString());   //当前用户描述
 		resultMap.put("submitUserId", map.get("submitUserId").toString());  //提交人id
 		resultMap.put("submitUserName", map.get("submitUserName").toString());   //提交人名称
