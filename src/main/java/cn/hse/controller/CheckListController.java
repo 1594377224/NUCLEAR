@@ -35,6 +35,7 @@ import cn.hse.service.FlowStepService;
 import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
+import cn.hse.util.NodeSyn;
 import cn.hse.util.Result;
 import cn.hse.util.ResultUtil;
 import net.sf.json.JSONArray;
@@ -207,7 +208,7 @@ public class CheckListController {
 			int traceId=flowActionTraceService.insertFlowActionTrace(flowActionTrace,responsiblePerson,responsiblePersonId);
 			logger.info("----==流转表插入成功"+traceId);
 			
-			/*//同步节点数据到用友
+			//同步节点数据到用友
 			Map<String, Object> nodeResult=new HashMap<String, Object>();
 			nodeResult.put("projNo", checkList.getProjno());  //项目编号
 			nodeResult.put("recordNo", checkList.getRecordno());  //检查编号
@@ -223,7 +224,7 @@ public class CheckListController {
 			nodeResult.put("submitUserDesc", flowActionTrace.getSubmituserdesc());  //提交人描述
 			NodeSyn nodeSyn=new NodeSyn();
 			String aString=nodeSyn.synNodeData(nodeResult);
-			logger.info("[调用用友接口同步节点数据]="+aString);*/
+			logger.info("[调用用友接口同步节点数据]="+aString);
 			//流转表id
 			//插入信息到抄送人delivery表
 			Map<String, Object> deliveryMap = new HashMap<String, Object>();
@@ -305,8 +306,8 @@ public class CheckListController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//JSONObject inputJson = JSONObject.fromObject(map);
 		logger.info("[流程状态-查询入参]"+map);
-		//String str=dataChangeProcess(map);
-		//logger.info("整改提交同步用友接口数据结果==="+str);
+		String str=dataChangeProcess(map);
+		logger.info("整改提交同步用友接口数据结果==="+str);
 		Integer traceId=Integer.parseInt(map.get("traceId").toString());   //流转表的ID
 		Integer instanceId=Integer.parseInt(map.get("instanceId").toString());  //流转表中的实例ID
 		String userId=map.get("userId").toString();   //用户ID
@@ -340,27 +341,26 @@ public class CheckListController {
 		flowActionTrace.setSubmituserid(userId);
 		flowActionTrace.setSubmitusername(userName);
 		flowActionTrace.setSubmituserdesc("整改提交");
-		flowActionTrace.setArrivetime(new Date());
 		int c=flowActionTraceService.updateChangeInfo(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
 		logger.info("==========更新流转表结果"+c);
 		
 		//整改提交同步节点数据到用友
-		/*Map<String, Object> nodeResult=new HashMap<String, Object>();
+		Map<String, Object> nodeResult=new HashMap<String, Object>();
 		nodeResult.put("projNo", map.get("projNo").toString());  //项目编号
 		nodeResult.put("recordNo", map.get("recordNo").toString());  //检查编号
 		nodeResult.put("lineNo", map.get("lineNo").toString());  //序号
-		nodeResult.put("stepId", flowActionTrace.getStepid());   //节点id
-		nodeResult.put("stepName", flowActionTrace.getStepname());  //节点名称
-		nodeResult.put("stepCode", flowActionTrace.getStepcode());  //节点编码
-		nodeResult.put("ownerUserId", flowActionTrace.getOwneruserid());  //当前用户id
-		nodeResult.put("Own0erUserName", flowActionTrace.getOwnerusername());  //当前用户名称
-		nodeResult.put("ownerUserDesc", flowActionTrace.getOwneruserdesc());   //当前用户描述
+		nodeResult.put("stepId", map.get("stepId").toString());   //节点id
+		nodeResult.put("stepName", map.get("stepName").toString());  //节点名称
+		nodeResult.put("stepCode", map.get("stepCode").toString());  //节点编码
+		nodeResult.put("ownerUserId", userId);  //当前用户id
+		nodeResult.put("own0erUserName", userName);  //当前用户名称
+		nodeResult.put("ownerUserDesc", "整改提交 ");   //当前用户描述
 		nodeResult.put("submitUserId", responsiblePersonId);  //提交人id
 		nodeResult.put("submitUserName",responsiblePerson);   //提交人名称
 		nodeResult.put("submitUserDesc", flowActionTrace.getSubmituserdesc());  //提交人描述
 		NodeSyn nodeSyn=new NodeSyn();
 		String aString=nodeSyn.synNodeData(nodeResult);
-		logger.info("[调用用友接口同步节点数据]="+aString);*/
+		logger.info("[调用用友接口同步节点数据]="+aString);
 		
 		//插入信息到抄送人delivery表
 		Map<String, Object> deliveryMap = new HashMap<String, Object>();

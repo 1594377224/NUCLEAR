@@ -99,7 +99,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		record.setOwneruserid(responsiblePersonId);
 		record.setOwnerusername(responsiblePerson);
 		record.setOwneruserdesc(Constant.QUE_REN_REN);
-		//record.setArrivetime(new Date());
+		record.setArrivetime(new Date());
 		int insertResult=flowActionTraceMapper.insertSelective(record);
 		logger.info("插入数据"+insertResult);
 		if (insertResult==0||updateResult==0) {
@@ -183,7 +183,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		/*trace.setSubmituserid(flowActionTrace.getSubmituserid());
 		trace.setSubmitusername(flowActionTrace.getSubmitusername());
 		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());*/
-		//trace.setArrivetime(new Date());
+		trace.setArrivetime(new Date());
 		int c=flowActionTraceMapper.insertSelective(trace);
 		if (updateResult==0||c==0) {
 			return 0;
@@ -224,7 +224,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		record.setOwneruserid(responsiblePersonId);
 		record.setOwnerusername(responsiblePerson);
 		record.setOwneruserdesc(Constant.ZHENG_GAI_REN);
-		//record.setArrivetime(new Date());
+		record.setArrivetime(new Date());
 		int insertResult=flowActionTraceMapper.insertSelective(record);
 		logger.info("插入数据"+insertResult);
 		if (insertResult==0||updateResult==0) {

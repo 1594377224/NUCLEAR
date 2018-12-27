@@ -22,12 +22,13 @@ import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
+import cn.hse.util.NodeSyn;
 import cn.hse.util.ResultUtil;
 import net.sf.json.JSONArray;
 //github.com/1594377224/NUCLEAR.git
 import net.sf.json.JSONObject;
 /**
- * 整改验证通过，不通过
+ * 整改单验证通过，不通过
  * @author T440P
  *
  */
@@ -47,8 +48,8 @@ public class SumbitController {
 		public String verification(@RequestBody Map<String, Object> map) {
 			Map<String, Object> resultMap = new HashMap<String, Object>();
 			logger.info("整改验证入参==="+map);
-			//String str=dataProcess(map);
-			//logger.info("整改验证同步用友接口数据结果==="+str);
+			String str=dataProcess(map);
+			logger.info("整改验证同步用友接口数据结果==="+str);
 			//首先判断整改验证是否通过  0通过1不通过
 			String hsePassContent=map.get("isPass").toString(); //是否通过
 			String comfirmContent=map.get("comfirmContent").toString(); //确认情况
@@ -89,6 +90,24 @@ public class SumbitController {
 				int b=flowActionTraceService.updateChange(flowActionTrace,instanceId);
 				//更新实例表
 				int c=flowInstanceService.updateInstanceEnd(instanceId);
+				
+				//整改提交同步节点数据到用友
+				Map<String, Object> nodeResult=new HashMap<String, Object>();
+				nodeResult.put("projNo", map.get("projNo").toString());  //项目编号
+				nodeResult.put("recordNo", map.get("recordNo").toString());  //检查编号
+				nodeResult.put("lineNo", map.get("lineNo").toString());  //序号
+				nodeResult.put("stepId", map.get("stepId").toString());   //节点id
+				nodeResult.put("stepName", map.get("stepName").toString());  //节点名称
+				nodeResult.put("stepCode", map.get("stepCode").toString());  //节点编码
+				nodeResult.put("ownerUserId", userId);  //当前用户id
+				nodeResult.put("own0erUserName", userName);  //当前用户名称
+				nodeResult.put("ownerUserDesc", Constant.QUE_REN_REN);   //当前用户描述
+				nodeResult.put("submitUserId", userId);  //提交人id
+				nodeResult.put("submitUserName",userName);   //提交人名称
+				nodeResult.put("submitUserDesc", "结束流程");  //提交人描述
+				NodeSyn nodeSyn=new NodeSyn();
+				String aString=nodeSyn.synNodeData(nodeResult);
+				logger.info("[调用用友接口同步节点数据]="+aString);
 				if (b!=0 && c!=0) {
 					resultMap.put("resultCode", "0");
 					resultMap.put("resultMsg", "操作成功！");
@@ -196,7 +215,7 @@ public class SumbitController {
 		 * @return
 		 */
 		public String dataProcess(Map<String, Object> map) {
-			logger.info("[传用友处理新建数据入参]"+map);
+			logger.info("[整改单验证接口入参]"+map);
 			
 			Map<String, Object> paramsMap = new HashMap<String, Object>();
 			Map<String, Object> resultMap = new HashMap<String, Object>();
