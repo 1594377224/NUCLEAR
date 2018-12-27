@@ -99,7 +99,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		record.setOwneruserid(responsiblePersonId);
 		record.setOwnerusername(responsiblePerson);
 		record.setOwneruserdesc(Constant.QUE_REN_REN);
-		//record.setArrivetime(new Date());
+		record.setArrivetime(new Date());
 		int insertResult=flowActionTraceMapper.insertSelective(record);
 		logger.info("插入数据"+insertResult);
 		if (insertResult==0||updateResult==0) {
