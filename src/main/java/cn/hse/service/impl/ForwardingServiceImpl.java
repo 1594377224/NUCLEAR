@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import cn.hse.mapper.ForwardingServiceMapper;
 import cn.hse.service.ForwardingService;
+import cn.hse.util.NodeSyn;
 import cn.hse.util.ResultUtil;
 import net.sf.json.JSONObject;
 /**
@@ -82,6 +83,23 @@ public class ForwardingServiceImpl implements ForwardingService{
 				} else {
 					resultMap.put("resultCode", "0");
 					resultMap.put("resultMsg", "操作成功！");
+					//转发信息同步数据给用友接口
+					Map<String,Object> paramsMap = new HashMap<String, Object>();
+					paramsMap.put("projNo", inputJson.getString("projNo"));//项目编号
+					paramsMap.put("recordNo", inputJson.getString("recordNo")); //检查编号
+					paramsMap.put("lineNo", inputJson.getString("lineNo"));  //序号
+					paramsMap.put("stepId", stepId);//节点id
+					paramsMap.put("stepName", stepName);//节点名称
+					paramsMap.put("stepCode", stepCode);//节点编码
+					paramsMap.put("ownerUserId", userId);//当前用户id
+					paramsMap.put("ownerUserName", userName);//当前用户名称
+					paramsMap.put("ownerUserDesc", "发起人"); //当前用户描述
+					paramsMap.put("submitUserId", ownerUserId);//提交人id
+					paramsMap.put("submitUserName", ownerUserName);//提交人名称
+					paramsMap.put("submitUserDesc", "整改责任人");//提交人描述
+					NodeSyn nodeSyn=new NodeSyn();
+					String returnObj = nodeSyn.synNodeData(paramsMap);
+					logger.info("[转发--调用用友接口同步节点数据--结果]"+returnObj);
 				}
 			}
 		}
@@ -157,6 +175,24 @@ public class ForwardingServiceImpl implements ForwardingService{
 					} else {
 						resultMap.put("resultCode", "0");
 						resultMap.put("resultMsg", "操作成功！");
+						//退回信息同步数据给用友接口
+						Map<String,Object> paramsMap = new HashMap<String, Object>();
+						paramsMap.put("projNo", inputJson.getString("projNo"));//项目编号
+						paramsMap.put("recordNo", inputJson.getString("recordNo")); //检查编号
+						paramsMap.put("lineNo", inputJson.getString("lineNo"));  //序号
+						paramsMap.put("stepId", stepId);//节点id
+						paramsMap.put("stepName", stepName);//节点名称
+						paramsMap.put("stepCode", stepCode);//节点编码
+						paramsMap.put("ownerUserId", userId);//当前用户id
+						paramsMap.put("ownerUserName", userName);//当前用户名称
+						paramsMap.put("ownerUserDesc", "发起人"); //当前用户描述
+						paramsMap.put("submitUserId", ownerUserId);//提交人id
+						paramsMap.put("submitUserName", ownerUserName);//提交人名称
+						paramsMap.put("submitUserDesc", "整改回复节点-退回-重新发起流程");//提交人描述
+						NodeSyn nodeSyn=new NodeSyn();
+						String returnObj = nodeSyn.synNodeData(paramsMap);
+						logger.info("[退回--调用用友接口同步节点数据--结果]"+returnObj);
+
 					}
 				}
 			}
