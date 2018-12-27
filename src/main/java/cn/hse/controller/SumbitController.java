@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.hse.beans.CheckList;
 import cn.hse.beans.DangerList;
 import cn.hse.beans.FlowActionTrace;
+import cn.hse.service.CheckListService;
 import cn.hse.service.DangerListServie;
 import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
@@ -42,6 +44,8 @@ public class SumbitController {
 		private FlowActionTraceService  flowActionTraceService;
 		@Autowired
 		private FlowInstanceService flowInstanceService;
+		@Autowired
+		private CheckListService checkListService;
 		
 		@Transactional
 		@RequestMapping(value="/verification",method=RequestMethod.POST)
@@ -62,6 +66,7 @@ public class SumbitController {
 			Integer traceId=Integer.parseInt(map.get("traceId").toString());
 			Integer dangerId=Integer.parseInt(map.get("dangerId").toString());
 			Integer instanceId=Integer.parseInt(map.get("instanceId").toString());
+			Integer checkId=Integer.parseInt(map.get("checkId").toString());
 			String userId=map.get("userId").toString();
 			String userName=map.get("userName").toString();
 			logger.info("===traceId="+traceId);
@@ -78,6 +83,12 @@ public class SumbitController {
 			dangerList.setCorapproveperson(corApprovePerson);
 			dangerList.setCorapprovedate(DateUtil.string2Date(corApproveDate));
 			if ("0".equals(hsePassContent)) { //整改验证通过了
+				//更新检查表
+				CheckList checkList=new CheckList();
+				checkList.setId(checkId);
+				checkList.setApprovedate(new Date());
+				checkList.setApproveperson(userName);
+				checkListService.updateCheck(checkList);
 				 //更新隐患表信息
 				int a=dangerListServie.updateDanger(dangerList);
 				//更新流转表信息 1、先更新2、在插入闭合数据
