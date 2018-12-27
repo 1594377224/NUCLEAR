@@ -100,7 +100,7 @@ public class SumbitController {
 				nodeResult.put("stepName", map.get("stepName").toString());  //节点名称
 				nodeResult.put("stepCode", map.get("stepCode").toString());  //节点编码
 				nodeResult.put("ownerUserId", userId);  //当前用户id
-				nodeResult.put("own0erUserName", userName);  //当前用户名称
+				nodeResult.put("ownerUserName", userName);  //当前用户名称
 				nodeResult.put("ownerUserDesc", Constant.QUE_REN_REN);   //当前用户描述
 				nodeResult.put("submitUserId", userId);  //提交人id
 				nodeResult.put("submitUserName",userName);   //提交人名称

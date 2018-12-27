@@ -217,7 +217,7 @@ public class CheckListController {
 			nodeResult.put("stepName", flowActionTrace.getStepname());  //节点名称
 			nodeResult.put("stepCode", flowActionTrace.getStepcode());  //节点编码
 			nodeResult.put("ownerUserId", flowActionTrace.getOwneruserid());  //当前用户id
-			nodeResult.put("Own0erUserName", flowActionTrace.getOwnerusername());  //当前用户名称
+			nodeResult.put("ownerUserName", flowActionTrace.getOwnerusername());  //当前用户名称
 			nodeResult.put("ownerUserDesc", flowActionTrace.getOwneruserdesc());   //当前用户描述
 			nodeResult.put("submitUserId", responsiblePersonId);  //提交人id
 			nodeResult.put("submitUserName",responsiblePerson);   //提交人名称
@@ -353,7 +353,7 @@ public class CheckListController {
 		nodeResult.put("stepName", map.get("stepName").toString());  //节点名称
 		nodeResult.put("stepCode", map.get("stepCode").toString());  //节点编码
 		nodeResult.put("ownerUserId", userId);  //当前用户id
-		nodeResult.put("own0erUserName", userName);  //当前用户名称
+		nodeResult.put("ownerUserName", userName);  //当前用户名称
 		nodeResult.put("ownerUserDesc", "整改提交 ");   //当前用户描述
 		nodeResult.put("submitUserId", responsiblePersonId);  //提交人id
 		nodeResult.put("submitUserName",responsiblePerson);   //提交人名称
