@@ -183,7 +183,7 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		/*trace.setSubmituserid(flowActionTrace.getSubmituserid());
 		trace.setSubmitusername(flowActionTrace.getSubmitusername());
 		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());*/
-		//trace.setArrivetime(new Date());
+		trace.setArrivetime(new Date());
 		int c=flowActionTraceMapper.insertSelective(trace);
 		if (updateResult==0||c==0) {
 			return 0;
