@@ -587,7 +587,7 @@ public class CheckListController {
 		List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		paramsMap.put("record_no",map.get("record_no"));  //检查编号
+		paramsMap.put("record_no",map.get("recordNo"));  //检查编号
 		paramsMap.put("no", "1");  //隐患明细编号
 		//paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
