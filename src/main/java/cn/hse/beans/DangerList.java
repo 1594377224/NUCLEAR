@@ -71,8 +71,25 @@ public class DangerList {
     private String ifsitecorrection;
 
     private Integer isdel;
-
     
+    private String ifModify;  //是否当场整改
+    private String keyHidden;  //'关键隐患（0 管理性关键隐患、1 行为性关键隐患、2 装置性关键隐患）',
+
+	public String getIfModify() {
+		return ifModify;
+	}
+
+	public void setIfModify(String ifModify) {
+		this.ifModify = ifModify;
+	}
+
+	public String getKeyHidden() {
+		return keyHidden;
+	}
+
+	public void setKeyHidden(String keyHidden) {
+		this.keyHidden = keyHidden;
+	}
 
 	public String getResponsiblepersonid() {
 		return responsiblepersonid;

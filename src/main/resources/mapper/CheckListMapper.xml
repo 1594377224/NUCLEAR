@@ -19,10 +19,16 @@
     <result column="approvePerson" jdbcType="VARCHAR" property="approveperson" />
     <result column="approveDate" jdbcType="TIMESTAMP" property="approvedate" />
     <result column="isDel" jdbcType="INTEGER" property="isdel" />
+    
+    <result column="checkPersonId" jdbcType="VARCHAR" property="checkPersonId" />
+    <result column="draftUnitId" jdbcType="VARCHAR" property="draftUnitId" />
+    <result column="draftDeptId" jdbcType="VARCHAR" property="draftDeptId" />
+    <result column="draftPersonId" jdbcType="VARCHAR" property="draftPersonId" />
   </resultMap>
   <sql id="Base_Column_List">
     id,userId, projNo, state, recordNo, checkDate, checkForm, recordType, checkContent, checkPerson, 
-    draftUnit, draftDept, draftPerson, draftDate, approvePerson, approveDate, isDel
+    draftUnit, draftDept, draftPerson, draftDate, approvePerson, approveDate, isDel,checkPersonId,
+    draftUnitId,draftDeptId,draftPersonId
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -40,13 +46,15 @@
       recordType, checkContent, checkPerson, 
       draftUnit, draftDept, draftPerson, 
       draftDate, approvePerson, approveDate, 
-      isDel)
+      isDel,checkPersonId,
+      draftUnitId,draftDeptId,draftPersonId)
     values (#{id,jdbcType=INTEGER},#{userId,jdbcType=VARCHAR}, #{projno,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       #{recordno,jdbcType=VARCHAR}, #{checkdate,jdbcType=TIMESTAMP}, #{checkform,jdbcType=INTEGER}, 
       #{recordtype,jdbcType=INTEGER}, #{checkcontent,jdbcType=VARCHAR}, #{checkperson,jdbcType=VARCHAR}, 
       #{draftunit,jdbcType=VARCHAR}, #{draftdept,jdbcType=VARCHAR}, #{draftperson,jdbcType=VARCHAR}, 
       #{draftdate,jdbcType=TIMESTAMP}, #{approveperson,jdbcType=VARCHAR}, #{approvedate,jdbcType=TIMESTAMP}, 
-      #{isdel,jdbcType=INTEGER})
+      #{isdel,jdbcType=INTEGER}, #{checkPersonId,jdbcType=VARCHAR}, #{draftUnitId,jdbcType=VARCHAR},
+       #{draftDeptId,jdbcType=VARCHAR}, #{draftPersonId,jdbcType=VARCHAR})
       <selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -102,6 +110,19 @@
       <if test="isdel != null">
         isDel,
       </if>
+      
+      <if test="checkPersonId != null">
+        checkPersonId,
+      </if>
+      <if test="draftUnitId != null">
+        draftUnitId,
+      </if>
+      <if test="draftDeptId != null">
+        draftDeptId,
+      </if>
+      <if test="draftPersonId != null">
+        draftPersonId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -151,6 +172,19 @@
       </if>
       <if test="isdel != null">
         #{isdel,jdbcType=INTEGER},
+      </if>
+      
+      <if test="checkPersonId != null">
+      #{checkPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftUnitId != null">
+      #{draftUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftDeptId != null">
+      #{draftDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftPersonId != null">
+      #{draftPersonId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -202,6 +236,19 @@
       <if test="isdel != null">
         isDel = #{isdel,jdbcType=INTEGER},
       </if>
+       <if test="checkPersonId != null">
+      #{checkPersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftUnitId != null">
+      #{draftUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftDeptId != null">
+      #{draftDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="draftPersonId != null">
+      #{draftPersonId,jdbcType=VARCHAR},
+      </if>
+      
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -223,7 +270,11 @@
       draftDate = #{draftdate,jdbcType=TIMESTAMP},
       approvePerson = #{approveperson,jdbcType=VARCHAR},
       approveDate = #{approvedate,jdbcType=TIMESTAMP},
-      isDel = #{isdel,jdbcType=INTEGER}
+      isDel = #{isdel,jdbcType=INTEGER},
+      checkPersonId = #{checkPersonId,jdbcType=VARCHAR},
+      draftUnitId = #{draftUnitId,jdbcType=VARCHAR},
+      draftDeptId = #{draftDeptId,jdbcType=VARCHAR},
+      draftPersonId = #{draftPersonId,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

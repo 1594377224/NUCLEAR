@@ -35,8 +35,45 @@ public class CheckList {
     private Date approvedate;
 
     private Integer isdel;
+    
+    private String checkPersonId;   //检查人id
+    private String draftUnitId;   //编制单位id
+    private String draftDeptId;   //编制部门id
+    private String draftPersonId;  //编制人id
 
-    public Integer getId() {
+    public String getCheckPersonId() {
+		return checkPersonId;
+	}
+
+	public void setCheckPersonId(String checkPersonId) {
+		this.checkPersonId = checkPersonId;
+	}
+
+	public String getDraftUnitId() {
+		return draftUnitId;
+	}
+
+	public void setDraftUnitId(String draftUnitId) {
+		this.draftUnitId = draftUnitId;
+	}
+
+	public String getDraftDeptId() {
+		return draftDeptId;
+	}
+
+	public void setDraftDeptId(String draftDeptId) {
+		this.draftDeptId = draftDeptId;
+	}
+
+	public String getDraftPersonId() {
+		return draftPersonId;
+	}
+
+	public void setDraftPersonId(String draftPersonId) {
+		this.draftPersonId = draftPersonId;
+	}
+
+	public Integer getId() {
         return id;
     }
 
