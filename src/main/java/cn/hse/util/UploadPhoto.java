@@ -80,7 +80,7 @@ public class UploadPhoto {
 	 @Autowired  
 	    private Environment env;
 	/*
-	 * 把图片上传到ftp服务器
+	 * 把图片上传到ftp服务器(创建隐患单上传图片)
 	 */
 	 @RequestMapping(value="/uploadPicture",method=RequestMethod.POST)
 	public String uploadFtp(@RequestParam(value="file",required=false)MultipartFile file) throws IOException, SftpException{
@@ -98,14 +98,13 @@ public class UploadPhoto {
 		String filePath = env.getProperty("address");
 		//新建检查单附件地址
 		String hseRecordFile = env.getProperty("hseRecordFile");
-		//整改完成附件地址
-		String hseRectifyFile = env.getProperty("hseRectifyFile");
 		SftpUtils sf = new SftpUtils();
 		ChannelSftp sftp= sf.connect(host, port,username, pwd);
-		String url = "http://"+host+":"+port+"/"+hseRecordFile+"/";
+//		String url = "http://"+host+":"+port+"/"+hseRecordFile+"/";
+		String url = "RecordFile/";
 		//切换ftp目录
 		try {
-			sftp.cd("/"+hseRecordFile);
+			sftp.cd("/ProdTest/Mobile/"+hseRecordFile);
 		} catch (SftpException e) {
 			e.printStackTrace();
 		}
@@ -125,7 +124,7 @@ public class UploadPhoto {
 				resultMap.put("img",fileName);
 				resultMap.put("resultCode", "0");
 				resultMap.put("resultMsg", "操作成功");
-				System.out.println("------"+resultMap+"-------");
+				logger.info("[上传图片完成返回的路径，图片名称]"+resultMap);
 		}catch(IOException e){
 			logger.error("IOException",  e);
 			resultMap.put("resultCode", "-1");
@@ -136,10 +135,60 @@ public class UploadPhoto {
 		 return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	}
 	
-	
-	
-	
-	
-	
+	 /*
+		 * 把图片上传到ftp服务器(整改完成附件上传图片)
+		 */
+		 @RequestMapping(value="/uploadRectifyFile",method=RequestMethod.POST)
+		public String uploadFtpFile(@RequestParam(value="file",required=false)MultipartFile file) throws IOException, SftpException{
+			 Map<String, Object> resultMap = new HashMap<String, Object>();
+			//上传至服务器
+			//sftp主机
+			String host = env.getProperty("hseHost");
+			//sftp端口
+			int port = Integer.parseInt(env.getProperty("hsePort"));
+			//sftp用户名
+			String username = env.getProperty("hseUserName");
+			//sftp密码
+			String pwd = env.getProperty("hsePwd");
+			//路径
+			String filePath = env.getProperty("address");
+			//整改完成附件地址
+			String hseRectifyFile = env.getProperty("hseRectifyFile");
+			SftpUtils sf = new SftpUtils();
+			ChannelSftp sftp= sf.connect(host, port,username, pwd);
+//			String url = "http://"+host+":"+port+"/"+hseRectifyFile+"/";
+			String url = "RecordFile/";
+			//切换ftp目录
+			try {
+				sftp.cd("/ProdTest/Mobile/"+hseRectifyFile);
+			} catch (SftpException e) {
+				e.printStackTrace();
+			}
+			String fileName = file.getOriginalFilename();
+			 if(fileName!=null&&fileName!=""){   
+				 String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
+		         fileName=new Date().getTime()+"_"+new Random().nextInt(1000)+fileF;//新的文件名
+			 }
+			 // 新图片，写入磁盘
+	         File f = new File(filePath, fileName);
+			 FileInputStream fis=null;
+			 try{
+					file.transferTo(f);
+					fis=new FileInputStream(f);
+					sftp.put(fis, fileName);
+					resultMap.put("url",url);
+					resultMap.put("img",fileName);
+					resultMap.put("resultCode", "0");
+					resultMap.put("resultMsg", "操作成功");
+					logger.info("[上传图片完成返回的路径，图片名称]"+resultMap);
+			}catch(IOException e){
+				logger.error("IOException",  e);
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "上传失败！");
+			}finally{
+				fis.close();
+			}
+			 return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+		}
 	
 }
