@@ -1,9 +1,11 @@
 package cn.hse.SNEOA;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Vector;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -126,14 +128,69 @@ public class SFTPUtil {
 	        }  
 	        sftp.put(input, sftpFileName);  //上传文件
 	    } 
+	    
+	    /** 
+	     * 下载文件。
+	     * @param directory 下载目录  
+	     * @param downloadFile 下载的文件 
+	     * @param saveFile 存在本地的路径 
+	     */    
+	    public void download(String directory, String downloadFile, String saveFile) throws SftpException, FileNotFoundException{  
+	        if (directory != null && !"".equals(directory)) {  
+	            sftp.cd(directory);  
+	        }  
+	        File file = new File(saveFile);  
+	        sftp.get(downloadFile, new FileOutputStream(file));   
+	    }  
+	    
+	    /**  
+	     * 下载文件 
+	     * @param directory 下载目录 
+	     * @param downloadFile 下载的文件名 
+	     * @return 字节数组 
+	     */  
+	    /*public byte[] download(String directory, String downloadFile) throws SftpException, IOException{  
+	        if (directory != null && !"".equals(directory)) {  
+	            sftp.cd(directory);  
+	        }  
+	        InputStream is = sftp.get(downloadFile);  
+	          
+	        byte[] fileData = IOUtils.toByteArray(is);  
+	          
+	        return fileData;  
+	    }  */
+	    
+	    
+	    /** 
+	     * 删除文件 
+	     * @param directory 要删除文件所在目录 
+	     * @param deleteFile 要删除的文件 
+	     */  
+	    public void delete(String directory, String deleteFile) throws SftpException{  
+	        sftp.cd(directory);  
+	        sftp.rm(deleteFile);  
+	    }  
+	    
+	    
+	    /** 
+	     * 列出目录下的文件 
+	     * @param directory 要列出的目录 
+	     * @param sftp 
+	     */  
+	    public Vector<?> listFiles(String directory) throws SftpException {  
+	        return sftp.ls(directory);  
+	    }  
+
 	public static void main(String[] args) throws Exception {
 		 SFTPUtil sftp = new SFTPUtil("root", "xuTONG@2018", "39.105.204.84", 22);  
 	     sftp.login();
-	     
-	     File file = new File("d:\\1.jpg");  
+	     //上传
+	     /*File file = new File("d:\\1.jpg");  
 	     InputStream is = new FileInputStream(file);   
-	     sftp.upload("/","imgUpload", "test_sftp.jpg", is);  
-
+	     sftp.upload("/","imgUpload", "test_sftp.jpg", is);  */
+	     //下载
+	     
+	     sftp.download("/imgUpload", "test_sftp.jpg", "D:\\360\\360.jpg");
 	     sftp.logout();
 	}
 	

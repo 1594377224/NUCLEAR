@@ -421,12 +421,12 @@ public class CheckListController {
 		}
 		paramsMap.put("check_form", checkForm);   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
-		paramsMap.put("check_person", map.get("checkPerson").toString());  //检查人
+		paramsMap.put("check_person", map.get("checkPersonId").toString());  //检查人
 		paramsMap.put("draft_date", map.get("draftDate").toString());    //编制日期
 		paramsMap.put("approve_date", "");  //申请日期
-		paramsMap.put("draft_unit", map.get("draftUnit").toString());  //编制单位
-		paramsMap.put("draft_dept", map.get("draftDept").toString());  //编制部门
-		paramsMap.put("draft_person", map.get("draftPerson").toString());  //编制人
+		paramsMap.put("draft_unit", map.get("draftUnitId").toString());  //编制单位
+		paramsMap.put("draft_dept", map.get("draftDeptId").toString());  //编制部门
+		paramsMap.put("draft_person", map.get("draftPersonId").toString());  //编制人
 		paramsMap.put("approve_person", "");  //申请人
 		String recordType=Integer.valueOf(map.get("recordType").toString())==0?"Company":"Owner";
 		paramsMap.put("record_type", recordType);  //检查单类型

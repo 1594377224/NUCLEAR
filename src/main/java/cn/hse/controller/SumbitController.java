@@ -259,8 +259,16 @@ public class SumbitController {
 			resultMap.put("close_date",map.get("closeDate").toString());  //关闭日期
 			list.add(resultMap);
 			//上传图片
-			result.put("imgName", map.get("imgName").toString());  //图片名称
-			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+			if (map.get("imgName").toString().equals("")) {
+				result.put("imgName","");  //图片名称
+			}else {
+				result.put("imgName", map.get("imgName").toString());  //图片名称
+			}
+			if (map.get("imgAddress").toString().equals("")) {
+				result.put("imgAddress", "");   //图片地址
+			}else {
+				result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+			}
 			imgList.add(result);
 			paramsMap.put("attachment", imgList);
 			paramsMap.put("HseSiteCorrectionline", list);
