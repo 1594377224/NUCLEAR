@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 
 /**
@@ -98,14 +98,19 @@ public class UploadPhoto {
 		String filePath = env.getProperty("address");
 		//新建检查单附件地址
 		String hseRecordFile = env.getProperty("hseRecordFile");
-		SftpUtils sf = new SftpUtils();
-		ChannelSftp sftp= sf.connect(host, port,username, pwd);
+		//SftpUtils sf = new SftpUtils();
+		//ChannelSftp sftp= sf.connect(host, port,username, pwd);
+		FTPClient ftp=FtpUtils.getFTPClient(host, username, pwd, port);
 //		String url = "http://"+host+":"+port+"/"+hseRecordFile+"/";
 		String url = "RecordFile/";
 		//切换ftp目录
 		try {
-			sftp.cd("/ProdTest/Mobile/"+hseRecordFile);
-		} catch (SftpException e) {
+			ftp.setControlEncoding("UTF-8"); // 中文支持
+			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+			ftp.enterLocalPassiveMode();
+			 ftp.changeWorkingDirectory("/ProdTest/Mobile/"+hseRecordFile);
+			//ftp.cd("/ProdTest/Mobile/"+hseRecordFile);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String fileName = file.getOriginalFilename();
@@ -119,7 +124,8 @@ public class UploadPhoto {
 		 try{
 				file.transferTo(f);
 				fis=new FileInputStream(f);
-				sftp.put(fis, fileName);
+	            ftp.storeFile(fileName, fis);
+				//ftp.put(fis, fileName);
 				resultMap.put("url",url);
 				resultMap.put("img",fileName);
 				resultMap.put("resultCode", "0");
@@ -154,20 +160,25 @@ public class UploadPhoto {
 			String filePath = env.getProperty("address");
 			//整改完成附件地址
 			String hseRectifyFile = env.getProperty("hseRectifyFile");
-			SftpUtils sf = new SftpUtils();
-			ChannelSftp sftp= sf.connect(host, port,username, pwd);
+			/*SftpUtils sf = new SftpUtils();
+			ChannelSftp sftp= sf.connect(host, port,username, pwd);*/
 //			String url = "http://"+host+":"+port+"/"+hseRectifyFile+"/";
-			String url = "RecordFile/";
+			FTPClient ftp=FtpUtils.getFTPClient(host, username, pwd, port);
+			String url = "RectifyFile/";
 			//切换ftp目录
 			try {
-				sftp.cd("/ProdTest/Mobile/"+hseRectifyFile);
-			} catch (SftpException e) {
+				ftp.setControlEncoding("UTF-8"); // 中文支持
+				ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+				ftp.enterLocalPassiveMode();
+				ftp.changeWorkingDirectory("/ProdTest/Mobile/"+hseRectifyFile);
+				//sftp.cd("/ProdTest/Mobile/"+hseRectifyFile);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			String fileName = file.getOriginalFilename();
 			 if(fileName!=null&&fileName!=""){   
 				 String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
-		         fileName=new Date().getTime()+"_"+new Random().nextInt(1000)+fileF;//新的文件名
+		         fileName=new Date().getTime()+"_"+new Random().nextInt(1000)+".jpg";//新的文件名
 			 }
 			 // 新图片，写入磁盘
 	         File f = new File(filePath, fileName);
@@ -175,7 +186,8 @@ public class UploadPhoto {
 			 try{
 					file.transferTo(f);
 					fis=new FileInputStream(f);
-					sftp.put(fis, fileName);
+					ftp.storeFile(fileName, fis);
+					//ftp.put(fis, fileName);
 					resultMap.put("url",url);
 					resultMap.put("img",fileName);
 					resultMap.put("resultCode", "0");
