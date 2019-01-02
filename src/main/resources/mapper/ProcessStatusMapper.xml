@@ -7,6 +7,7 @@
 	<!-- 查询待办信息 -->
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			null AS delayToApplyForDec,
 			null AS delayToApplyId,
 			null AS delayToApplyForNo,
 			null AS delayToApplyForDate,
@@ -62,6 +63,7 @@
 		</where>
 		UNION
 			SELECT
+				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
 				daf.delayToApplyForDate,
@@ -151,6 +153,7 @@
 	<!-- 查询已办信息 -->
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			null AS delayToApplyForDec,
 			null AS delayToApplyId,
 			null AS delayToApplyForNo,
 			null AS delayToApplyForDate,
@@ -205,6 +208,7 @@
 		</where>
 		UNION
 		SELECT
+		 	daf.delayToApplyForDec,
 			daf.id AS delayToApplyId,
 			daf.delayToApplyForNo,
 			daf.delayToApplyForDate,
@@ -300,6 +304,7 @@
 	<!-- 查询流转信息 -->
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
+				null AS delayToApplyForDec,
 				null AS delayToApplyId,
 				null AS delayToApplyForNo,
 				null AS delayToApplyForDate,
@@ -355,6 +360,7 @@
 			</where>
 			UNION
 			SELECT
+				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
 				daf.delayToApplyForDate,
