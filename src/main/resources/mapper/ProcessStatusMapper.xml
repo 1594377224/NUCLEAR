@@ -351,10 +351,7 @@
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 			<where>
 				 i.userId = #{ownerUserId}
-				AND (
-					t.submitUserId IS NULL
-					OR t.stepId = '300'
-				)
+				AND t.submitUserId IS NULL
 				AND c.isDel = '0'
 				AND t.flowId = '1'
 			</where>
@@ -431,10 +428,7 @@
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 		<where>
 			 i.userId = #{ownerUserId}
-			AND (
-				t.submitUserId IS NULL
-				OR t.stepId = '300'
-			)
+			AND t.submitUserId IS NULL
 			AND c.isDel = '0'
 			AND t.flowId = '1'
 		</where>
