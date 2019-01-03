@@ -1,5 +1,6 @@
 package cn.hse.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -198,7 +199,7 @@ public class SumbitController {
 			dangerList.setHiddencategory(hiddenCategory);  //隐患属性
 			dangerList.setNonconformity(nonconformity);  // 隐患类型
 			dangerList.setHiddendescription(hiddenDescription);  //隐患描述
-			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+			dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
 			dangerList.setCopyPerson(deliveryList.toString()); //抄送
 			dangerList.setHiddendoc(hiddenDoc);
 			int b=dangerListServie.updateDanger(dangerList);

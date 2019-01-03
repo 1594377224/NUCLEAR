@@ -18,7 +18,7 @@ import net.sf.json.JSONObject;
 public class WebServiceController {
 	private static final Logger logger=LogManager.getLogger(CheckListController.class);
 	//用友接口  生产端口58080  测试59080
-	private static final String url="http://10.4.210.85:59080/b2e/HseMobileServerPort?wsdl";
+	private static final String url="http://10.4.210.85:58080/b2e/HseMobileServerPort?wsdl";
 	//登陆接口
 	private static final String uri="http://10.4.200.77/snpec_portal/services/userGet.service?wsdl";
 	
