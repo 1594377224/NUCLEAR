@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 @RestController
-@RequestMapping("uploadPhoto")
+@RequestMapping("uploadPhotos")
 public class SaveFile {
 	private static final Logger logger=LogManager.getLogger(SaveFile.class);
 	 @Autowired  
@@ -33,19 +33,22 @@ public class SaveFile {
 	 public String filesUpload(@RequestParam("files") MultipartFile[] files) throws IOException {  
 		 List<Map<String,Object>> list = new ArrayList<Map<String, Object>>() ;
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		 logger.info("创建隐患单上传多张图片"+files.toString());
 		  //判断file数组不能为空并且长度大于0  
-	       if(files!=null&&files.length>0){  
+	       if(files!=null&&files.length>0){ 
 	            //循环获取file数组中得文件  
 	            for(int i = 0;i<files.length;i++){  
 	                MultipartFile file = files[i];  
 	                //保存文件  
 	                Map<String,Object> returnParams = uploadPictureFile(file); 
+	                logger.info("上传图片返回的值"+returnParams);
 	                if(G4Utils.isEmpty(returnParams)){
 	                	resultMap.put("resultCode", "-1");
 	     				resultMap.put("resultMsg", "系统异常图片上传失败！");
 	     				return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	                }
 	                list.add(returnParams);
+	                logger.info("上传图片-最终-返回的值"+list.toString());
 	            } 
 	        	resultMap.put("resultCode", "0");
  				resultMap.put("resultMsg", "图片上传成功！");
@@ -59,6 +62,7 @@ public class SaveFile {
 	 public String uploadRectifyFiles(@RequestParam("files") MultipartFile[] files) throws IOException {  
 		 List<Map<String,Object>> list = new ArrayList<Map<String, Object>>() ;
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		 logger.info("整改完成附件上传多张图片"+files.toString());
 		  //判断file数组不能为空并且长度大于0  
 	       if(files!=null&&files.length>0){  
 	            //循环获取file数组中得文件  
@@ -66,12 +70,14 @@ public class SaveFile {
 	                MultipartFile file = files[i];  
 	                //保存文件  
 	                Map<String,Object> returnParams = uploadRectifyFile(file); 
+	                logger.info("上传图片返回的值"+returnParams);
 	                if(G4Utils.isEmpty(returnParams)){
 	                	resultMap.put("resultCode", "-1");
 	     				resultMap.put("resultMsg", "系统异常图片上传失败！");
 	     				return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	                }
 	                list.add(returnParams);
+	                logger.info("上传图片-最终-返回的值"+list.toString());
 	            } 
 	        	resultMap.put("resultCode", "0");
  				resultMap.put("resultMsg", "图片上传成功！");
