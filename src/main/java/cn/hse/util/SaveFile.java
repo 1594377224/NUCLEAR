@@ -89,6 +89,7 @@ public class SaveFile {
 		 */
 	 private Map uploadPictureFile(MultipartFile file) throws IOException {  
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		 logger.info("---调用创建隐患单上传单张图片---");
 		//上传至服务器
 		//sftp主机
 		String host = env.getProperty("hseHost");
@@ -139,6 +140,7 @@ public class SaveFile {
 		 */
 		public Map uploadRectifyFile(MultipartFile file) throws IOException { 
 			 Map<String, Object> resultMap = new HashMap<String, Object>();
+			 logger.info("---调用整改完成附件上传单张图片---");
 			//上传至服务器
 			//sftp主机
 			String host = env.getProperty("hseHost");
