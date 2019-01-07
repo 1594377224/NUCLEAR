@@ -33,7 +33,7 @@ public class SaveFile {
 	 public String filesUpload(@RequestParam("files") MultipartFile[] files) throws IOException {  
 		 List<Map<String,Object>> list = new ArrayList<Map<String, Object>>() ;
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
-		 logger.info("创建隐患单上传多张图片"+files.toString());
+		 logger.info("创建隐患单上传多张图片"+files.length);
 		  //判断file数组不能为空并且长度大于0  
 	       if(files!=null&&files.length>0){ 
 	            //循环获取file数组中得文件  
@@ -62,7 +62,7 @@ public class SaveFile {
 	 public String uploadRectifyFiles(@RequestParam("files") MultipartFile[] files) throws IOException {  
 		 List<Map<String,Object>> list = new ArrayList<Map<String, Object>>() ;
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
-		 logger.info("整改完成附件上传多张图片"+files.toString());
+		 logger.info("整改完成附件上传多张图片"+files.length);
 		  //判断file数组不能为空并且长度大于0  
 	       if(files!=null&&files.length>0){  
 	            //循环获取file数组中得文件  
