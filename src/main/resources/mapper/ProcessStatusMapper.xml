@@ -201,39 +201,38 @@
 		JOIN checkAndDanger cd ON c.id = cd.checkId
 		JOIN dangerList d ON d.id = cd.dangerId
 		RIGHT JOIN (
-			SELECT
-				id,
-				instanceId,
-				flowId,
-				flowName,
-				flowCode,
-				stepId,
-				stepName,
-				stepCode,
-				actionId,
-				actionName,
-				actionCode,
-				ownerUserId,
-				ownerUserName,
-				ownerUserDesc,
-				submitUserId,
-				submitUserName,
-				submitUserDesc,
-				arriveTime
-			FROM
-				flowActionTrace
-			WHERE
-				id IN (
-					SELECT
-						MAX(id)
-					FROM
-						flowActionTrace
-					WHERE
-						submitUserId = #{ownerUserId}
-					GROUP BY
-						instanceId
-				)
-		) t ON t.instanceId = r.instanceId
+				SELECT
+					f1.id,
+					f1.instanceId,
+					f1.flowId,
+					f1.flowName,
+					f1.flowCode,
+					f1.stepId,
+					f1.stepName,
+					f1.stepCode,
+					f1.actionId,
+					f1.actionName,
+					f1.actionCode,
+					f1.ownerUserId,
+					f1.ownerUserName,
+					f1.ownerUserDesc,
+					f1.submitUserId,
+					f1.submitUserName,
+					f1.submitUserDesc,
+					f1.arriveTime
+				FROM
+					flowActionTrace f1
+				WHERE
+					f1.id = (
+						SELECT
+							MAX(f2.id)
+						FROM
+							flowActionTrace f2
+						WHERE
+							f2.submitUserId = #{ownerUserId} 
+						AND f1.instanceId = f2.instanceId
+					)
+			) t  ON t.instanceId = r.instanceId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND c.isDel = '0'
