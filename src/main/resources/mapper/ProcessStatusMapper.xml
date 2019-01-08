@@ -153,10 +153,10 @@
 	<!-- 查询已办信息 -->
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
-			null AS delayToApplyForDec,
-			null AS delayToApplyId,
-			null AS delayToApplyForNo,
-			null AS delayToApplyForDate,
+			NULL AS delayToApplyForDec,
+			NULL AS delayToApplyId,
+			NULL AS delayToApplyForNo,
+			NULL AS delayToApplyForDate,
 			d.ifModify,
 			d.keyHidden,
 			d.lineNo,
@@ -200,7 +200,40 @@
 		RIGHT JOIN instanceRelation r ON c.id = r.checkId
 		JOIN checkAndDanger cd ON c.id = cd.checkId
 		JOIN dangerList d ON d.id = cd.dangerId
-		RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
+		RIGHT JOIN (
+			SELECT
+				id,
+				instanceId,
+				flowId,
+				flowName,
+				flowCode,
+				stepId,
+				stepName,
+				stepCode,
+				actionId,
+				actionName,
+				actionCode,
+				ownerUserId,
+				ownerUserName,
+				ownerUserDesc,
+				submitUserId,
+				submitUserName,
+				submitUserDesc,
+				arriveTime
+			FROM
+				flowActionTrace
+			WHERE
+				id IN (
+					SELECT
+						MAX(id)
+					FROM
+						flowActionTrace
+					WHERE
+						submitUserId = #{ownerUserId}
+					GROUP BY
+						instanceId
+				)
+		) t ON t.instanceId = r.instanceId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND c.isDel = '0'
