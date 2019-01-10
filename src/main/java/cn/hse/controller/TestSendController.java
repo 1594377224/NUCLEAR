@@ -2,6 +2,7 @@ package cn.hse.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +14,98 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mascloud.sdkclient.Client;
+
 import cn.hse.util.HttpClientUtil;
 import cn.hse.util.MD5Utils;
 import cn.hse.util.ResultUtil;
 import cn.hse.util.SendUtil;
 import net.sf.json.JSONObject;
+/**
+ * 环境要求：短信发送服务器具有直连访问互联网的能力。
+ *
+ */
 @RestController
 @RequestMapping("/send")
 public class TestSendController {
+	
+	public static void main(String[] args) {
+		try {
+			final Client client =  Client.getInstance();
+			// 正式环境IP，登录验证URL，用户名，密码，集团客户名称
+//			client.login("http://mas.ecloud.10086.cn/app/sdk/login", "SDK账号名称（不是页面端账号）", "密码","集团客户名称");
+			// 测试环境IP
+			boolean loginResult=client.login("http://112.35.4.197:15000","stlpt9", "passwd@0987",  "政企分公司测试");
+
+			if(!loginResult) {
+				System.out.println("短信企业身份认证失败");
+				return;
+			}
+			
+			int sendResult = client.sendDSMS (new String[] {"13600000000"},
+					"sdk短信发送内容测试", "",  1,"短信签名ID", UUID.randomUUID().toString(),true);
+			System.out.println("推送结果: " + sendResult);
+			
+			//添加黑白名单
+//			client.addMember("18602761993", "9003451262");
+			//查询黑白名单
+//			client.queryMember("9003451262");
+			//删除黑白名单
+//			client.deleteMember("18602761993", "9003451262");
+			
+			// 获取提交报告线程
+//			Thread t1 = new Thread() {
+//				public void run() {
+//					while(true) {
+//						List< SubmitReportModel > list  = client.getSubmitReport();
+//						try {
+//							Thread.sleep(2000);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			};
+//			t1.start();
+
+			// 获取状态报告线程
+//			Thread t2 = new Thread() {
+//				public void run() {
+//					while(true) {
+//						List< StatusReportModel > StatusReportlist = client.getReport();
+//						try {
+//							Thread.sleep(2000);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			};
+//			t2.start();
+
+			// 获取上行线程
+//			Thread t3 = new Thread() {
+//				public void run() {
+//					while(true) {
+//						List< MoModel> lis = client.getMO();
+//						try {
+//							Thread.sleep(2000);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
+//					}
+//				}
+//			};
+//			t3.start();
+//			
+//			for(;;);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 	private static final Logger logger=LogManager.getLogger(TestSendController.class);
 	 @RequestMapping("/sendTest" )
 	    public void t() {
