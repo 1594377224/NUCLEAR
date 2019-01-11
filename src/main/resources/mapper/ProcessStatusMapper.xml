@@ -7,7 +7,7 @@
 	<!-- 查询待办信息 -->
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 			null AS delayToApplyForDec,
 			null AS delayToApplyId,
 			null AS delayToApplyForNo,
@@ -64,7 +64,7 @@
 		</where>
 		UNION
 			SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
@@ -155,7 +155,7 @@
 	<!-- 查询已办信息 -->
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
-		(select data from flowActionTraceData where traceId = t.id) as data,
+		IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 			NULL AS delayToApplyForDec,
 			NULL AS delayToApplyId,
 			NULL AS delayToApplyForNo,
@@ -243,7 +243,7 @@
 		</where>
 		UNION
 		SELECT
-		(select data from flowActionTraceData where traceId = t.id) as data,
+		IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 		 	daf.delayToApplyForDec,
 			daf.id AS delayToApplyId,
 			daf.delayToApplyForNo,
@@ -340,7 +340,7 @@
 	<!-- 查询流转信息 -->
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 				null AS delayToApplyForDec,
 				null AS delayToApplyId,
 				null AS delayToApplyForNo,
@@ -394,7 +394,7 @@
 			</where>
 			UNION
 			SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
@@ -589,7 +589,7 @@
 	<!-- 查询待阅信息 -->
 	<select id="findWaitingRead"  parameterType="Map" resultType = "Map">
 			SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 				dy.id AS deliveryId,
 				d.ifModify,
 				d.keyHidden,
@@ -661,7 +661,7 @@
 	<!-- 查询已阅信息 -->
 	<select id="findHaveRead"  parameterType="Map" resultType = "Map">
 			SELECT
-			(select data from flowActionTraceData where traceId = t.id) as data,
+			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
 				dy.id AS deliveryId,
 				d.ifModify,
 				d.keyHidden,
