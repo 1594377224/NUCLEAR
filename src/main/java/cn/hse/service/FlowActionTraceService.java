@@ -12,7 +12,7 @@ public interface FlowActionTraceService {
 
 	int updateChange(FlowActionTrace flowActionTrace,Integer instanceId);
 
-	int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId);
+	int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId, String data);
 
 	int updateFlowActionTrace(FlowActionTrace flowActionTrace);
 

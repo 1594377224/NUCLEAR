@@ -68,6 +68,8 @@ public class ForwardingController {
 		String stepId =  "" ;
 		//节点名称
 		String stepName =  "" ;
+		//转发意见
+		String data =  "" ;
 		if (inputJson.containsKey("actionTraceId")) {
 			actionTraceId = inputJson.getString("actionTraceId");
 		}
@@ -104,10 +106,13 @@ public class ForwardingController {
 		if (inputJson.containsKey("stepName")) {
 			stepName = inputJson.getString("stepName");
 		}
+		if (inputJson.containsKey("data")) {
+			data = inputJson.getString("data");
+		}
 		boolean[] sArr = { G4Utils.isNotEmpty(actionTraceId),G4Utils.isNotEmpty(ownerUserId),G4Utils.isNotEmpty(ownerUserName)
 				,G4Utils.isNotEmpty(flowName),G4Utils.isNotEmpty(flowCode),G4Utils.isNotEmpty(instanceId),G4Utils.isNotEmpty(flowId)
 				,G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName),G4Utils.isNotEmpty(stepCode)
-				,G4Utils.isNotEmpty(stepId),G4Utils.isNotEmpty(stepName)};
+				,G4Utils.isNotEmpty(stepId),G4Utils.isNotEmpty(stepName),G4Utils.isNotEmpty(data)};
 		boolean flag = BooleanUtils.and(sArr);
 		if (!flag) {
 			return ResultUtil.result("-9999", "接入参数不完整！");
@@ -139,6 +144,8 @@ public class ForwardingController {
 		String actionTraceId = "" ;
 		//实例id
 		String instanceId =  "" ;
+		//退回意见
+		String data =  "" ;
 		if (inputJson.containsKey("userId")) {
 			userId = inputJson.getString("userId");
 		}
@@ -151,8 +158,11 @@ public class ForwardingController {
 		if (inputJson.containsKey("instanceId")) {
 			instanceId = inputJson.getString("instanceId");
 		}
+		if (inputJson.containsKey("data")) {
+			data = inputJson.getString("data");
+		}
 		boolean[] sArr = { G4Utils.isNotEmpty(actionTraceId),G4Utils.isNotEmpty(instanceId)
-				,G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName)};
+				,G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName),G4Utils.isNotEmpty(data)};
 		boolean flag = BooleanUtils.and(sArr);
 		if (!flag) {
 			return ResultUtil.result("-9999", "接入参数不完整！");

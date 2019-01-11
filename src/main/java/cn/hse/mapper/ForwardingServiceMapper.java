@@ -19,4 +19,6 @@ public interface ForwardingServiceMapper {
 
 	int upflowInstance(Map<String, Object> paramMap);
 
+	int addFlowActionTraceData(Map<String, Object> traceDataMap);
+
 }

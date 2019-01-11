@@ -23,4 +23,6 @@ public interface FlowActionTraceMapper {
 //	FlowActionTrace selectByStepIdAndInstanceId(@Param("instanceId")Integer instanceId, @Param("i")String i);
 
 	FlowActionTrace selectByStepIdAndInstanceId(Map<String, Object> flowActionTraceMap);
+
+	int addFlowActionTraceData(Map<String, Object> traceDataMap);
 }

@@ -149,7 +149,8 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 	}
 	//整改验证不通过
 	@Override
-	public int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId) {
+	public int updateChangeLast(FlowActionTrace flowActionTrace, Integer instanceId,String data) {
+		Map<String,Object> traceDataMap = new HashMap<String, Object>();
 		FlowAction flowAction=flowActionMapper.selectByPrimaryKey(7);  //查询操作步骤
 		flowActionTrace.setActionid(flowAction.getActionid());
 		flowActionTrace.setActionname(flowAction.getActionname());
@@ -185,6 +186,17 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());*/
 		trace.setArrivetime(new Date());
 		int c=flowActionTraceMapper.insertSelective(trace);
+		int tranceId = trace.getId();
+		logger.info("获取流程表中的id----"+tranceId+"----");
+		traceDataMap.put("tranceId", tranceId);
+		traceDataMap.put("data", data);
+		//在traceData表中插入意见信息
+		int traceDataNum = flowActionTraceMapper.addFlowActionTraceData(traceDataMap);
+		if(traceDataNum>0){
+			logger.info("----插入验证不通过意见成功！----");
+		} else {
+			logger.info("----插入验证不通过意见失败！----");
+		}
 		if (updateResult==0||c==0) {
 			return 0;
 		}

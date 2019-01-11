@@ -130,13 +130,15 @@ public class SumbitController {
 				return ResultUtil.result("-9999", resultMap, null);
 				
 			}else { //不通过
+				//验证不通过意见
+				String data = map.get("data").toString(); 
 				//更新流转表
 				FlowActionTrace flowActionTrace=new FlowActionTrace();
 				flowActionTrace.setId(traceId);
 				flowActionTrace.setSubmituserid(userId);
 				flowActionTrace.setSubmitusername(userName);
 				flowActionTrace.setSubmituserdesc(Constant.ZHENG_GAI_REN);
-				int b=flowActionTraceService.updateChangeLast(flowActionTrace,instanceId);
+				int b=flowActionTraceService.updateChangeLast(flowActionTrace,instanceId,data);
 				if (b!=0) {
 					resultMap.put("resultCode", "0");
 					resultMap.put("resultMsg", "操作成功！");

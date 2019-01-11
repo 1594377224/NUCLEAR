@@ -33,6 +33,7 @@ public class ForwardingServiceImpl implements ForwardingService{
 		logger.info("[整改节点待办-转发入参]"+inputJson);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String,Object> paramMap = new HashMap<String, Object>();
+		Map<String,Object> traceDataMap = new HashMap<String, Object>();
 		String userId = inputJson.getString("userId");
 		String userName = inputJson.getString("userName");
 		String actionTraceId = inputJson.getString("actionTraceId");
@@ -45,6 +46,7 @@ public class ForwardingServiceImpl implements ForwardingService{
 		String stepId = inputJson.getString("stepId");
 		String stepName = inputJson.getString("stepName");
 		String stepCode = inputJson.getString("stepCode");
+		String data = inputJson.getString("data");
 		paramMap.put("userId", userId);
 		paramMap.put("userName", userName);
 		paramMap.put("userDec", "整改转发");
@@ -59,6 +61,8 @@ public class ForwardingServiceImpl implements ForwardingService{
 		paramMap.put("stepId", stepId);
 		paramMap.put("stepName", stepName);
 		paramMap.put("stepCode", stepCode);
+		paramMap.put("keyId", "0");
+		traceDataMap.put("data", data);
 		//查询模板信息--转发流程
 		Map<String,Object> flowMap = forwardingServiceMapper.findFlow();
 		if(flowMap.isEmpty()){
@@ -77,7 +81,14 @@ public class ForwardingServiceImpl implements ForwardingService{
 				resultMap.put("resultMsg", "操作失败！");
 			} else {
 				int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
-				if(addNum < 0 ){
+				//获取流程表中的id
+				int tranceId = Integer.parseInt(paramMap.get("keyId").toString());
+				traceDataMap.put("tranceId", tranceId);
+				logger.info("获取流程表中的id----"+tranceId+"----");
+				//在traceData表中插入意见信息
+				int traceDataNum = forwardingServiceMapper.addFlowActionTraceData(traceDataMap);
+				
+				if(addNum < 0 && traceDataNum < 0){
 					resultMap.put("resultCode", "-1");
 					resultMap.put("resultMsg", "操作失败！");
 				} else {
@@ -114,15 +125,18 @@ public class ForwardingServiceImpl implements ForwardingService{
 		logger.info("[整改节点待办-退回入参]"+inputJson);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String,Object> paramMap = new HashMap<String, Object>();
+		Map<String,Object> traceDataMap = new HashMap<String, Object>();
 		String userId = inputJson.getString("userId");
 		String userName = inputJson.getString("userName");
 		String actionTraceId = inputJson.getString("actionTraceId");
 		String instanceId = inputJson.getString("instanceId");
+		String data = inputJson.getString("data");
 		paramMap.put("userId", userId);
 		paramMap.put("userName", userName);
 		paramMap.put("userDec", "整改回复节点-退回");
 		paramMap.put("actionTraceId", actionTraceId);
 		paramMap.put("instanceId", instanceId);
+		traceDataMap.put("data", data);
 		//查询模板信息--退回流程
 		Map<String,Object> flowFefundMap = forwardingServiceMapper.findFefund();
 		if(flowFefundMap.isEmpty()){
@@ -166,10 +180,17 @@ public class ForwardingServiceImpl implements ForwardingService{
 					paramMap.put("ownerUserId", ownerUserId);
 					paramMap.put("ownerUserName", ownerUserName);
 					paramMap.put("ownerUserDesc", "整改回复节点-退回-重新发起流程");
+					paramMap.put("keyId", "0");
 					int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
+					//获取流程表中的id
+					int tranceId = Integer.parseInt(paramMap.get("keyId").toString());
+					traceDataMap.put("tranceId", tranceId);
+					logger.info("获取流程表中的id----"+tranceId+"----");
+					//在traceData表中插入意见信息
+					int traceDataNum = forwardingServiceMapper.addFlowActionTraceData(traceDataMap);
 					//更新实例表statusId字段
 					int upflowInstance = forwardingServiceMapper.upflowInstance(paramMap);
-					if(addNum < 0 && upflowInstance < 0){
+					if(addNum < 0 && upflowInstance < 0 && traceDataNum < 0){
 						resultMap.put("resultCode", "-1");
 						resultMap.put("resultMsg", "操作失败！");
 					} else {
