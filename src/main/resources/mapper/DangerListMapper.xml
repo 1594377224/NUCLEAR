@@ -37,6 +37,9 @@
     <result column="corApproveDate" jdbcType="TIMESTAMP" property="corapprovedate" />
     <result column="ifSiteCorrection" jdbcType="VARCHAR" property="ifsitecorrection" />
     <result column="isDel" jdbcType="INTEGER" property="isdel" />
+    
+    <result column="ifModify" jdbcType="VARCHAR" property="ifModify" />
+    <result column="keyHidden" jdbcType="VARCHAR" property="keyHidden" />
   </resultMap>
   <sql id="Base_Column_List">
     id, lineNo, noticeNo, distributDate, unit, area, unitID, hseHiddenLevel, hiddenCategory, 
@@ -44,7 +47,7 @@
     rectificationSituation, returnDoc, contractonPeople, completeDate,responsiblePersonId, responsiblePerson,copyPerson, 
     responsibleDate, contractorApprove, contractorApproveDate, comfirmContent, verifyPerson, 
     verifyDate, hsePassContent, verificationCondition, closePerson, closeDate, corApprovePerson, 
-    corApproveDate, ifSiteCorrection, isDel
+    corApproveDate, ifSiteCorrection, isDel,ifModify,keyHidden
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -68,7 +71,7 @@
       verifyPerson, verifyDate, hsePassContent, 
       verificationCondition, closePerson, closeDate, 
       corApprovePerson, corApproveDate, ifSiteCorrection, 
-      isDel,copyPerson)
+      isDel,copyPerson,ifModify,keyHidden)
     values (#{id,jdbcType=INTEGER}, #{lineno,jdbcType=VARCHAR}, #{noticeno,jdbcType=VARCHAR}, 
       #{distributdate,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
       #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
@@ -80,7 +83,8 @@
       #{verifyperson,jdbcType=VARCHAR}, #{verifydate,jdbcType=TIMESTAMP}, #{hsepasscontent,jdbcType=VARCHAR}, 
       #{verificationcondition,jdbcType=VARCHAR}, #{closeperson,jdbcType=VARCHAR}, #{closedate,jdbcType=TIMESTAMP}, 
       #{corapproveperson,jdbcType=VARCHAR}, #{corapprovedate,jdbcType=TIMESTAMP}, #{ifsitecorrection,jdbcType=VARCHAR}, 
-      #{isdel,jdbcType=INTEGER},#{copyPerson,jdbcType=VARCHAR})
+      #{isdel,jdbcType=INTEGER},#{copyPerson,jdbcType=VARCHAR},#{ifModify,jdbcType=VARCHAR}
+      ,#{keyHidden,jdbcType=VARCHAR})
       <selectKey resultType="int" keyProperty="id" order="AFTER">
         	SELECT LAST_INSERT_ID()
     	</selectKey>
@@ -193,6 +197,13 @@
       <if test="isdel != null">
         isDel,
       </if>
+      
+      <if test="ifModify != null">
+        ifModify,
+      </if>
+      <if test="keyHidden != null">
+        keyHidden,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -299,6 +310,13 @@
       </if>
       <if test="isdel != null">
         #{isdel,jdbcType=INTEGER},
+      </if>
+      
+      <if test="ifModify != null">
+        #{ifModify,jdbcType=VARCHAR},
+      </if>
+      <if test="keyHidden != null">
+        #{keyHidden,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -408,6 +426,12 @@
       <if test="isdel != null">
         isDel = #{isdel,jdbcType=INTEGER},
       </if>
+      <if test="ifModify != null">
+        ifModify = #{ifModify,jdbcType=VARCHAR},
+      </if>
+      <if test="keyHidden != null">
+        keyHidden = #{keyHidden,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -445,7 +469,10 @@
       corApprovePerson = #{corapproveperson,jdbcType=VARCHAR},
       corApproveDate = #{corapprovedate,jdbcType=TIMESTAMP},
       ifSiteCorrection = #{ifsitecorrection,jdbcType=VARCHAR},
-      isDel = #{isdel,jdbcType=INTEGER}
+      isDel = #{isdel,jdbcType=INTEGER},
+      
+      ifModify = #{ifModify,jdbcType=VARCHAR},
+      keyHidden = #{keyHidden,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectDangerByCheckId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -484,7 +511,10 @@
 	corApprovePerson,
 	corApproveDate,
 	ifSiteCorrection,
-	isDel
+	isDel,
+	ifModify,
+	keyHidden
+	
 FROM
 	checkAndDanger c,
 	dangerList d

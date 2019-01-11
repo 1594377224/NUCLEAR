@@ -1,5 +1,6 @@
 package cn.hse.beans;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class DangerList {
@@ -9,7 +10,7 @@ public class DangerList {
 
     private String noticeno;
 
-    private Date distributdate;
+    private Timestamp distributdate;
 
     private String unit;
 
@@ -27,7 +28,7 @@ public class DangerList {
 
     private String hiddendoc;
 
-    private Date reqcompletedate;
+    private Timestamp reqcompletedate;
 
     private String correctiverequest;
 
@@ -71,8 +72,25 @@ public class DangerList {
     private String ifsitecorrection;
 
     private Integer isdel;
-
     
+    private String ifModify;  //是否当场整改
+    private String keyHidden;  //'关键隐患（0 管理性关键隐患、1 行为性关键隐患、2 装置性关键隐患）',
+
+	public String getIfModify() {
+		return ifModify;
+	}
+
+	public void setIfModify(String ifModify) {
+		this.ifModify = ifModify;
+	}
+
+	public String getKeyHidden() {
+		return keyHidden;
+	}
+
+	public void setKeyHidden(String keyHidden) {
+		this.keyHidden = keyHidden;
+	}
 
 	public String getResponsiblepersonid() {
 		return responsiblepersonid;
@@ -110,7 +128,7 @@ public class DangerList {
         return distributdate;
     }
 
-    public void setDistributdate(Date distributdate) {
+    public void setDistributdate(Timestamp distributdate) {
         this.distributdate = distributdate;
     }
 
@@ -182,7 +200,7 @@ public class DangerList {
         return reqcompletedate;
     }
 
-    public void setReqcompletedate(Date reqcompletedate) {
+    public void setReqcompletedate(Timestamp reqcompletedate) {
         this.reqcompletedate = reqcompletedate;
     }
 

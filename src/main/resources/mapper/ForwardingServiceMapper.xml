@@ -74,6 +74,7 @@
 			instanceId = #{instanceId}
 			AND actionId = '101'
 		</where>
+		ORDER BY  arriveTime asc LIMIT 1
 	</select>
 	
 	<!-- 更新实例表statusId字段 -->

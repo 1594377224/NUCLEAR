@@ -1,6 +1,8 @@
 package cn.hse.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,11 +12,19 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.jcraft.jsch.SftpException;
+
 /**
  * 图片上传工具类
  * @author
@@ -23,7 +33,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("uploadPhoto")
 public class UploadPhoto {
-	@RequestMapping(value="/uploadPicture",method=RequestMethod.POST)
+	private static final Logger logger=LogManager.getLogger(UploadPhoto.class);
+	@RequestMapping(value="/uploadFtpPicture",method=RequestMethod.POST)
 	public String uploadPicture(@RequestParam(value="file",required=false)MultipartFile file,HttpServletRequest request,HttpServletResponse response){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
         File targetFile=null;
@@ -66,5 +77,130 @@ public class UploadPhoto {
         }
     	return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
 	}
+	 @Autowired  
+	    private Environment env;
+	/*
+	 * 把图片上传到ftp服务器(创建隐患单上传图片)
+	 */
+	 @RequestMapping(value="/uploadPicture",method=RequestMethod.POST)
+	public String uploadFtp(@RequestParam(value="file",required=false)MultipartFile file) throws IOException, SftpException{
+		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		//上传至服务器
+		//sftp主机
+		String host = env.getProperty("hseHost");
+		//sftp端口
+		int port = Integer.parseInt(env.getProperty("hsePort"));
+		//sftp用户名
+		String username = env.getProperty("hseUserName");
+		//sftp密码
+		String pwd = env.getProperty("hsePwd");
+		//路径
+		String filePath = env.getProperty("address");
+		//新建检查单附件地址
+		String hseRecordFile = env.getProperty("hseRecordFile");
+		//SftpUtils sf = new SftpUtils();
+		//ChannelSftp sftp= sf.connect(host, port,username, pwd);
+		FTPClient ftp=FtpUtils.getFTPClient(host, username, pwd, port);
+//		String url = "http://"+host+":"+port+"/"+hseRecordFile+"/";
+		String url = "RecordFile/";
+		//切换ftp目录
+		try {
+			ftp.setControlEncoding("UTF-8"); // 中文支持
+			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+			ftp.enterLocalPassiveMode();
+			 ftp.changeWorkingDirectory("/ProdTest/Mobile/"+hseRecordFile);
+			//ftp.cd("/ProdTest/Mobile/"+hseRecordFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String fileName = file.getOriginalFilename();
+		 if(fileName!=null&&fileName!=""){   
+			 String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
+	         fileName=new Date().getTime()+"_"+new Random().nextInt(1000)+fileF;//新的文件名
+		 }
+		 // 新图片，写入磁盘
+         File f = new File(filePath, fileName);
+		 FileInputStream fis=null;
+		 try{
+				file.transferTo(f);
+				fis=new FileInputStream(f);
+	            ftp.storeFile(fileName, fis);
+				//ftp.put(fis, fileName);
+				resultMap.put("url",url);
+				resultMap.put("img",fileName);
+				resultMap.put("resultCode", "0");
+				resultMap.put("resultMsg", "操作成功");
+				logger.info("[上传图片完成返回的路径，图片名称]"+resultMap);
+		}catch(IOException e){
+			logger.error("IOException",  e);
+			resultMap.put("resultCode", "-1");
+			resultMap.put("resultMsg", "上传失败！");
+		}finally{
+			fis.close();
+		}
+		 return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+	}
+	
+	 /*
+		 * 把图片上传到ftp服务器(整改完成附件上传图片)
+		 */
+		 @RequestMapping(value="/uploadRectifyFile",method=RequestMethod.POST)
+		public String uploadFtpFile(@RequestParam(value="file",required=false)MultipartFile file) throws IOException, SftpException{
+			 Map<String, Object> resultMap = new HashMap<String, Object>();
+			//上传至服务器
+			//sftp主机
+			String host = env.getProperty("hseHost");
+			//sftp端口
+			int port = Integer.parseInt(env.getProperty("hsePort"));
+			//sftp用户名
+			String username = env.getProperty("hseUserName");
+			//sftp密码
+			String pwd = env.getProperty("hsePwd");
+			//路径
+			String filePath = env.getProperty("address");
+			//整改完成附件地址
+			String hseRectifyFile = env.getProperty("hseRectifyFile");
+			/*SftpUtils sf = new SftpUtils();
+			ChannelSftp sftp= sf.connect(host, port,username, pwd);*/
+//			String url = "http://"+host+":"+port+"/"+hseRectifyFile+"/";
+			FTPClient ftp=FtpUtils.getFTPClient(host, username, pwd, port);
+			String url = "RectifyFile/";
+			//切换ftp目录
+			try {
+				ftp.setControlEncoding("UTF-8"); // 中文支持
+				ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
+				ftp.enterLocalPassiveMode();
+				ftp.changeWorkingDirectory("/ProdTest/Mobile/"+hseRectifyFile);
+				//sftp.cd("/ProdTest/Mobile/"+hseRectifyFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			String fileName = file.getOriginalFilename();
+			 if(fileName!=null&&fileName!=""){   
+				 String fileF = fileName.substring(fileName.lastIndexOf("."), fileName.length());//文件后缀
+		         fileName=new Date().getTime()+"_"+new Random().nextInt(1000)+".jpg";//新的文件名
+			 }
+			 // 新图片，写入磁盘
+	         File f = new File(filePath, fileName);
+			 FileInputStream fis=null;
+			 try{
+					file.transferTo(f);
+					fis=new FileInputStream(f);
+					ftp.storeFile(fileName, fis);
+					//ftp.put(fis, fileName);
+					resultMap.put("url",url);
+					resultMap.put("img",fileName);
+					resultMap.put("resultCode", "0");
+					resultMap.put("resultMsg", "操作成功");
+					logger.info("[上传图片完成返回的路径，图片名称]"+resultMap);
+			}catch(IOException e){
+				logger.error("IOException",  e);
+				resultMap.put("resultCode", "-1");
+				resultMap.put("resultMsg", "上传失败！");
+			}finally{
+				fis.close();
+			}
+			 return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+		}
 	
 }

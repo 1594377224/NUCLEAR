@@ -7,9 +7,12 @@
 	<!-- 查询待办信息 -->
 	<select id="findToDo"  parameterType="Map" resultType = "Map">
 		SELECT
+			null AS delayToApplyForDec,
 			null AS delayToApplyId,
 			null AS delayToApplyForNo,
 			null AS delayToApplyForDate,
+			d.ifModify,
+			d.keyHidden,
 			d.lineNo,
 			d.noticeNo AS recordNo,
 			d.id AS dangerId,
@@ -41,7 +44,11 @@
 			c.draftPerson,
 			c.draftDate,
 			c.id,
-			c.recordNo
+			c.recordNo,
+			c.checkPersonId,
+			c.draftUnitId,
+			c.draftDeptId,
+			c.draftPersonId
 		FROM
 			checkList c
 		RIGHT JOIN instanceRelation r ON c.id = r.checkId
@@ -56,9 +63,12 @@
 		</where>
 		UNION
 			SELECT
+				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
 				daf.delayToApplyForDate,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				d.id AS dangerId,
@@ -90,7 +100,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				flowActionTrace t
 			JOIN instanceAndDelay r ON t.instanceId = r.instanceId
@@ -139,9 +153,12 @@
 	<!-- 查询已办信息 -->
 	<select id="findHaveToDo"  parameterType="Map" resultType = "Map">
 		SELECT
-			null AS delayToApplyId,
-			null AS delayToApplyForNo,
-			null AS delayToApplyForDate,
+			NULL AS delayToApplyForDec,
+			NULL AS delayToApplyId,
+			NULL AS delayToApplyForNo,
+			NULL AS delayToApplyForDate,
+			d.ifModify,
+			d.keyHidden,
 			d.lineNo,
 			d.noticeNo AS recordNo,
 			d.id AS dangerId,
@@ -173,13 +190,49 @@
 			c.draftPerson,
 			c.draftDate,
 			c.id,
-			c.recordNo
+			c.recordNo,
+			c.checkPersonId,
+			c.draftUnitId,
+			c.draftDeptId,
+			c.draftPersonId
 		FROM
 			checkList c
 		RIGHT JOIN instanceRelation r ON c.id = r.checkId
 		JOIN checkAndDanger cd ON c.id = cd.checkId
 		JOIN dangerList d ON d.id = cd.dangerId
-		RIGHT JOIN flowActionTrace t ON t.instanceId = r.instanceId
+		RIGHT JOIN (
+				SELECT
+					f1.id,
+					f1.instanceId,
+					f1.flowId,
+					f1.flowName,
+					f1.flowCode,
+					f1.stepId,
+					f1.stepName,
+					f1.stepCode,
+					f1.actionId,
+					f1.actionName,
+					f1.actionCode,
+					f1.ownerUserId,
+					f1.ownerUserName,
+					f1.ownerUserDesc,
+					f1.submitUserId,
+					f1.submitUserName,
+					f1.submitUserDesc,
+					f1.arriveTime
+				FROM
+					flowActionTrace f1
+				WHERE
+					f1.id = (
+						SELECT
+							MAX(f2.id)
+						FROM
+							flowActionTrace f2
+						WHERE
+							f2.submitUserId = #{ownerUserId} 
+						AND f1.instanceId = f2.instanceId
+					)
+			) t  ON t.instanceId = r.instanceId
 		<where>
 			t.submitUserId = #{ownerUserId} 
 			AND c.isDel = '0'
@@ -187,9 +240,12 @@
 		</where>
 		UNION
 		SELECT
+		 	daf.delayToApplyForDec,
 			daf.id AS delayToApplyId,
 			daf.delayToApplyForNo,
 			daf.delayToApplyForDate,
+			d.ifModify,
+			d.keyHidden,
 			d.lineNo,
 			d.noticeNo AS recordNo,
 			d.id AS dangerId,
@@ -221,7 +277,11 @@
 			c.draftPerson,
 			c.draftDate,
 			c.id,
-			c.recordNo
+			c.recordNo,
+			c.checkPersonId,
+			c.draftUnitId,
+			c.draftDeptId,
+			c.draftPersonId
 		FROM
 			flowInstance i
 		RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
@@ -276,9 +336,12 @@
 	<!-- 查询流转信息 -->
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
+				null AS delayToApplyForDec,
 				null AS delayToApplyId,
 				null AS delayToApplyForNo,
 				null AS delayToApplyForDate,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				d.id AS dangerId,
@@ -306,7 +369,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				flowInstance i
 			RIGHT JOIN instanceRelation cil ON i.id = cil.instanceId
@@ -316,18 +383,18 @@
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 			<where>
 				 i.userId = #{ownerUserId}
-				AND (
-					t.submitUserId IS NULL
-					OR t.stepId = '300'
-				)
+				AND t.submitUserId IS NULL
 				AND c.isDel = '0'
 				AND t.flowId = '1'
 			</where>
 			UNION
 			SELECT
+				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
 				daf.delayToApplyForDate,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				d.id AS dangerId,
@@ -355,7 +422,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				flowInstance i
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
@@ -389,10 +460,7 @@
 			RIGHT JOIN flowActionTrace t ON i.id = t.instanceId
 		<where>
 			 i.userId = #{ownerUserId}
-			AND (
-				t.submitUserId IS NULL
-				OR t.stepId = '300'
-			)
+			AND t.submitUserId IS NULL
 			AND c.isDel = '0'
 			AND t.flowId = '1'
 		</where>
@@ -422,6 +490,8 @@
 	<select id="findDraft"  parameterType="Map" resultType = "Map">
 			SELECT
 				d.id AS dangerId,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				c.projNo,
@@ -436,7 +506,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				checkList c
 			left JOIN instanceRelation ir ON c.id = ir.checkId 
@@ -510,6 +584,8 @@
 	<select id="findWaitingRead"  parameterType="Map" resultType = "Map">
 			SELECT
 				dy.id AS deliveryId,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				d.id AS dangerId,
@@ -536,7 +612,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				delivery dy
 			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id
@@ -575,6 +655,8 @@
 	<select id="findHaveRead"  parameterType="Map" resultType = "Map">
 			SELECT
 				dy.id AS deliveryId,
+				d.ifModify,
+				d.keyHidden,
 				d.lineNo,
 				d.noticeNo AS recordNo,
 				d.id AS dangerId,
@@ -601,7 +683,11 @@
 				c.draftPerson,
 				c.draftDate,
 				c.id,
-				c.recordNo
+				c.recordNo,
+				c.checkPersonId,
+				c.draftUnitId,
+				c.draftDeptId,
+				c.draftPersonId
 			FROM
 				delivery dy
 			RIGHT JOIN flowActionTrace t ON dy.traceId = t.id

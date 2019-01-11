@@ -46,7 +46,7 @@ public class DelayToApplyForServiceImpl implements DelayToApplyForService{
 		String reqCompleteDate = inputJson.getString("reqCompleteDate");
 		String delayToApplyForDec = inputJson.getString("delayToApplyForDec");
 		String delayToApplyForDate = inputJson.getString("delayToApplyForDate");
-		String delayToApplyForNo = String.valueOf((int)((Math.random()*9+1)*100000));
+		String delayToApplyForNo = inputJson.getString("recordNo");
 		String delayNums = inputJson.getString("delayNum");
 		int delayNumA = Integer.parseInt(delayNums);
 		int delayNum = delayNumA+1;

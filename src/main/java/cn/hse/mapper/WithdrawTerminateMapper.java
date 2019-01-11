@@ -14,5 +14,11 @@ public interface WithdrawTerminateMapper {
 
 	int updateFlowActionTrace(Map<String, Object> paramMap);
 
+	Map<String, Object> findAgainFlowMap();
+
+	int addAgainFlowActionTrace(Map<String, Object> paramMap);
+
+	Map<String, Object> findAgainFlowStepMap();
+
 
 }

@@ -60,6 +60,8 @@ public class DelayToApplyForController {
 		String delayToApplyForDate = "" ; 
 		//延期申请次数
 		String delayNum = "" ; 
+		//检查单编号
+		String recordNo = "";
 		if (inputJson.containsKey("userId")) {
 			userId = inputJson.getString("userId");
 		}
@@ -90,9 +92,13 @@ public class DelayToApplyForController {
 		if (inputJson.containsKey("delayNum")) {
 			delayNum = inputJson.getString("delayNum");
 		}
+		if (inputJson.containsKey("recordNo")) {
+			recordNo = inputJson.getString("recordNo");
+		}
 		boolean[] sArr = { G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(userName),G4Utils.isNotEmpty(actionTraceId),
 				G4Utils.isNotEmpty(instanceId),G4Utils.isNotEmpty(dangerId),G4Utils.isNotEmpty(checkId),
-				G4Utils.isNotEmpty(reqCompleteDate),G4Utils.isNotEmpty(delayToApplyForDec),G4Utils.isNotEmpty(delayToApplyForDate),G4Utils.isNotEmpty(delayNum)};
+				G4Utils.isNotEmpty(reqCompleteDate),G4Utils.isNotEmpty(delayToApplyForDec),
+				G4Utils.isNotEmpty(delayToApplyForDate),G4Utils.isNotEmpty(delayNum),G4Utils.isNotEmpty(recordNo)};
 		boolean flag = BooleanUtils.and(sArr);
 		if (!flag) {
 			return ResultUtil.result("-9999", "接入参数不完整！");

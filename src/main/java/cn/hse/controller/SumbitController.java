@@ -1,5 +1,6 @@
 package cn.hse.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.hse.beans.CheckList;
 import cn.hse.beans.DangerList;
 import cn.hse.beans.FlowActionTrace;
+import cn.hse.service.CheckListService;
 import cn.hse.service.DangerListServie;
 import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
@@ -42,6 +45,8 @@ public class SumbitController {
 		private FlowActionTraceService  flowActionTraceService;
 		@Autowired
 		private FlowInstanceService flowInstanceService;
+		@Autowired
+		private CheckListService checkListService;
 		
 		@Transactional
 		@RequestMapping(value="/verification",method=RequestMethod.POST)
@@ -62,6 +67,7 @@ public class SumbitController {
 			Integer traceId=Integer.parseInt(map.get("traceId").toString());
 			Integer dangerId=Integer.parseInt(map.get("dangerId").toString());
 			Integer instanceId=Integer.parseInt(map.get("instanceId").toString());
+			Integer checkId=Integer.parseInt(map.get("checkId").toString());
 			String userId=map.get("userId").toString();
 			String userName=map.get("userName").toString();
 			logger.info("===traceId="+traceId);
@@ -78,6 +84,12 @@ public class SumbitController {
 			dangerList.setCorapproveperson(corApprovePerson);
 			dangerList.setCorapprovedate(DateUtil.string2Date(corApproveDate));
 			if ("0".equals(hsePassContent)) { //整改验证通过了
+				//更新检查表
+				CheckList checkList=new CheckList();
+				checkList.setId(checkId);
+				checkList.setApprovedate(new Date());
+				checkList.setApproveperson(userName);
+				checkListService.updateCheck(checkList);
 				 //更新隐患表信息
 				int a=dangerListServie.updateDanger(dangerList);
 				//更新流转表信息 1、先更新2、在插入闭合数据
@@ -187,7 +199,7 @@ public class SumbitController {
 			dangerList.setHiddencategory(hiddenCategory);  //隐患属性
 			dangerList.setNonconformity(nonconformity);  // 隐患类型
 			dangerList.setHiddendescription(hiddenDescription);  //隐患描述
-			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+			dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
 			dangerList.setCopyPerson(deliveryList.toString()); //抄送
 			dangerList.setHiddendoc(hiddenDoc);
 			int b=dangerListServie.updateDanger(dangerList);
@@ -224,7 +236,7 @@ public class SumbitController {
 			List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
 			//检查单信息封装
 			paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-			paramsMap.put("record_no",map.get("record_no"));  //检查编号
+			paramsMap.put("record_no",map.get("recordNo"));  //检查编号
 			paramsMap.put("no", "1");  //隐患明细编号
 			//paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 			//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
@@ -248,8 +260,8 @@ public class SumbitController {
 			resultMap.put("close_date",map.get("closeDate").toString());  //关闭日期
 			list.add(resultMap);
 			//上传图片
-			result.put("imgName", map.get("imgName").toString());  //图片名称
-			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
+			result.put("imgName", "");  //图片名称
+			result.put("imgAddress", "");   //图片地址
 			imgList.add(result);
 			paramsMap.put("attachment", imgList);
 			paramsMap.put("HseSiteCorrectionline", list);

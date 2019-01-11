@@ -1,5 +1,6 @@
 package cn.hse.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -96,6 +97,10 @@ public class CheckListController {
 		checkList.setDraftperson(map.get("draftPerson").toString());   //编制人
 		checkList.setDraftdate(DateUtil.string2Date(map.get("draftDate").toString()));  //编制日期
 		checkList.setApproveperson("");  //批准人
+		checkList.setCheckPersonId(map.get("checkPersonId").toString());  //检查人id
+		checkList.setDraftDeptId(map.get("draftDeptId").toString());   //编制部门id
+		checkList.setDraftUnitId(map.get("draftUnitId").toString()); //编制单位id
+		checkList.setDraftPersonId(map.get("draftPersonId").toString());  //编制人id
 		//checkList.setApprovedate(DateUtil.string2Date(map.get("approveDate").toString()));  //批准日期
 		checkList.setIsdel(0);
 		int a=checkListService.insertCheck(checkList);
@@ -108,7 +113,7 @@ public class CheckListController {
 		dangerList.setNoticeno(array[0]);//整改单编号
         //dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
-		dangerList.setDistributdate(new Date());  //分发日期
+		dangerList.setDistributdate(new Timestamp(new Date().getTime()));  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
@@ -119,17 +124,21 @@ public class CheckListController {
 		if (!map.get("hiddenDoc").toString().equals("")) {
 			dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
 		}
-		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+		dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
+		dangerList.setIfModify(map.get("ifModify").toString());  //是否当场整改
 		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		dangerList.setIsdel(0);
+		
+		
+		dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
 		logger.info("====隐患单插入完毕"+dangerId);
@@ -329,6 +338,7 @@ public class CheckListController {
 		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
 		dangerList.setCopyPerson(deliveryList.toString());
 		dangerList.setRectificationsituation(rectificationSituation);
+		
 		String returndoc=map.get("returndoc").toString();   //整改隐患附件
 		if (!returndoc.equals("") && returndoc !=null) {
 			dangerList.setReturndoc(returndoc);
@@ -413,12 +423,12 @@ public class CheckListController {
 		}
 		paramsMap.put("check_form", checkForm);   //检查形式
 		paramsMap.put("check_content", "1");   //检查名称
-		paramsMap.put("check_person", map.get("checkPerson").toString());  //检查人
+		paramsMap.put("check_person", map.get("checkPersonId").toString());  //检查人
 		paramsMap.put("draft_date", map.get("draftDate").toString());    //编制日期
 		paramsMap.put("approve_date", "");  //申请日期
-		paramsMap.put("draft_unit", map.get("draftUnit").toString());  //编制单位
-		paramsMap.put("draft_dept", map.get("draftDept").toString());  //编制部门
-		paramsMap.put("draft_person", map.get("draftPerson").toString());  //编制人
+		paramsMap.put("draft_unit", map.get("draftUnitId").toString());  //编制单位
+		paramsMap.put("draft_dept", map.get("draftDeptId").toString());  //编制部门
+		paramsMap.put("draft_person", map.get("draftPersonId").toString());  //编制人
 		paramsMap.put("approve_person", "");  //申请人
 		String recordType=Integer.valueOf(map.get("recordType").toString())==0?"Company":"Owner";
 		paramsMap.put("record_type", recordType);  //检查单类型
@@ -518,7 +528,7 @@ public class CheckListController {
 		//dangerList.setNoticeno(array[0]);//整改单编号
 		//dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
-		dangerList.setDistributdate(new Date());  //分发日期
+		dangerList.setDistributdate(new Timestamp(new Date().getTime()));  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
@@ -527,7 +537,7 @@ public class CheckListController {
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
 		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
-		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()));   //要求完成时间
+		dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人
@@ -578,7 +588,7 @@ public class CheckListController {
 		List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
 		paramsMap.put("proj_no", map.get("projNo"));   //项目编号
-		paramsMap.put("record_no",map.get("record_no"));  //检查编号
+		paramsMap.put("record_no",map.get("recordNo"));  //检查编号
 		paramsMap.put("no", "1");  //隐患明细编号
 		//paramsMap.put("check_date", map.get("checkDate").toString());  //检查日期
 		//检查形式 ：日常检查（0）、专项检查（1）、综合检查（2）
