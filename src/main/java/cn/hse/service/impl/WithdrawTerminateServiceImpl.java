@@ -26,12 +26,13 @@ public class WithdrawTerminateServiceImpl implements WithdrawTerminateService{
 	private WithdrawTerminateMapper withdrawTerminateMapper;
 	@Override
 	public String findWithdrawTerminate(JSONObject inputJson) {
-		logger.info("[撤办终止--入参]"+inputJson);
+		logger.info("[撤办流程--入参]"+inputJson);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String,Object> map = inputJson.fromObject(inputJson);
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		String userId = inputJson.getString("userId");
 		String checkId = inputJson.getString("checkId");
+		String instanceId = inputJson.getString("instanceId");
 		map.put("userId", userId);
 		map.put("checkId", checkId);
 		//查询用户创建的发起申请整改流程别人还未办理
@@ -48,7 +49,10 @@ public class WithdrawTerminateServiceImpl implements WithdrawTerminateService{
 				paramMap.put("id", id);
 				paramMap.put("submitUserId", submitUserId);
 				paramMap.put("submitUserName", submitUserName);
-				paramMap.put("submitUserDesc", "撤办终止流程");
+				paramMap.put("submitUserDesc", "撤办流程");
+				paramMap.put("ownerUserId", submitUserId);
+				paramMap.put("ownerUserName", submitUserName);
+				paramMap.put("ownerUserDesc", "发起人");
 			}
 			
 			//查询模板信息--撤办终止流程
@@ -69,8 +73,31 @@ public class WithdrawTerminateServiceImpl implements WithdrawTerminateService{
 					resultMap.put("resultCode", "-1");
 					resultMap.put("resultMsg", "操作失败！");
 				} else {
-					resultMap.put("resultCode", "0");
-					resultMap.put("resultMsg", "操作成功！");
+					//查询模板信息--重新发起流程信息 flow flowStep
+					Map<String,Object> againFlowMap = withdrawTerminateMapper.findAgainFlowMap();
+					String flowId = againFlowMap.get("id").toString();
+					String flowName = againFlowMap.get("flowName").toString();
+					String flowCode = againFlowMap.get("flowCode").toString();
+					paramMap.put("flowName", flowName);
+					paramMap.put("flowCode", flowCode);
+					paramMap.put("flowId", flowId);
+					paramMap.put("instanceId", instanceId);
+					Map<String,Object> againFlowStepMap = withdrawTerminateMapper.findAgainFlowStepMap();
+					String stepId = againFlowStepMap.get("stepId").toString();
+					String stepName = againFlowStepMap.get("stepName").toString();
+					String stepCode = againFlowStepMap.get("stepCode").toString();
+					paramMap.put("stepId", stepId);
+					paramMap.put("stepName", stepName);
+					paramMap.put("stepCode", stepCode);
+					//撤办-到重新发起流程 插入一条重新发起流程
+					int numAgain = withdrawTerminateMapper.addAgainFlowActionTrace(paramMap);
+					if(numAgain>0){
+						resultMap.put("resultCode", "0");
+						resultMap.put("resultMsg", "操作成功！");
+					} else {
+						resultMap.put("resultCode", "-1");
+						resultMap.put("resultMsg", "操作失败！");
+					}
 				}
 			}
 		}

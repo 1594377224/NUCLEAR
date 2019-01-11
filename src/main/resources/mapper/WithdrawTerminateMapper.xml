@@ -38,6 +38,34 @@
 			AND enableFlag = '0'
 		</where>
 	</select>
+	
+	<!-- 查询模板-重新发起流程信息 -->
+	<select id="findAgainFlowMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			id,
+			flowName,
+			flowCode
+		FROM
+			flow
+		<where>
+			id = '1'
+			AND enableFlag = '0'
+		</where>
+	</select>
+	
+	<select id="findAgainFlowStepMap"  parameterType="Map" resultType = "Map">
+		SELECT
+			stepId,
+			stepName,
+			stepCode
+		FROM
+			flowStep
+		<where>
+			id = '1'
+			AND enableFlag = '0'
+		</where>
+	</select>
+	
 	<!-- 更新flowActionTrace表 -->
 	<update id = "updateFlowActionTrace" parameterType = "Map">
 		update flowActionTrace
@@ -51,5 +79,19 @@
 			arriveTime = now()
 		</set>
 		where id = #{id}
-	</update>	
+	</update>
+	
+	<!-- 重新发起流程 -->
+	<insert id = "addAgainFlowActionTrace" parameterType="Map">
+		INSERT INTO flowActionTrace (
+			instanceId,flowId,flowName,flowCode,
+			stepId,stepName,stepCode,ownerUserId,
+			ownerUserName,ownerUserDesc,arriveTime
+		)
+		VALUES
+			(#{instanceId},#{flowId},#{flowName},#{flowCode},
+			#{stepId},#{stepName},#{stepCode},#{ownerUserId},
+			#{ownerUserName},#{ownerUserDesc},now())
+	</insert>
+		
 </mapper>
