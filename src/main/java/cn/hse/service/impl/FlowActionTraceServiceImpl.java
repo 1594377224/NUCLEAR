@@ -21,6 +21,7 @@ import cn.hse.mapper.FlowMapper;
 import cn.hse.mapper.FlowStepMapper;
 import cn.hse.service.FlowActionTraceService;
 import cn.hse.util.Constant;
+import cn.hse.util.G4Utils;
 @Service
 public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 	private static final Logger logger=LogManager.getLogger(FlowActionTraceServiceImpl.class);
@@ -188,14 +189,16 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		int c=flowActionTraceMapper.insertSelective(trace);
 		int tranceId = trace.getId();
 		logger.info("获取流程表中的id----"+tranceId+"----");
-		traceDataMap.put("tranceId", tranceId);
-		traceDataMap.put("data", data);
-		//在traceData表中插入意见信息
-		int traceDataNum = flowActionTraceMapper.addFlowActionTraceData(traceDataMap);
-		if(traceDataNum>0){
-			logger.info("----插入验证不通过意见成功！----");
-		} else {
-			logger.info("----插入验证不通过意见失败！----");
+		if(G4Utils.isNotEmpty(data)){
+			traceDataMap.put("tranceId", tranceId);
+			traceDataMap.put("data", data);
+			//在traceData表中插入意见信息
+			int traceDataNum = flowActionTraceMapper.addFlowActionTraceData(traceDataMap);
+			if(traceDataNum>0){
+				logger.info("----插入验证不通过意见成功！----");
+			} else {
+				logger.info("----插入验证不通过意见失败！----");
+			}
 		}
 		if (updateResult==0||c==0) {
 			return 0;
