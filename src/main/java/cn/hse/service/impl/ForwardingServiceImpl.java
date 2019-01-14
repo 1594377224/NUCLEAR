@@ -83,10 +83,10 @@ public class ForwardingServiceImpl implements ForwardingService{
 			} else {
 				int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
 				//获取流程表中的id
-				int tranceId = Integer.parseInt(paramMap.get("keyId").toString());
-				logger.info("获取流程表中的id----"+tranceId+"----");
+				int traceId = Integer.parseInt(paramMap.get("keyId").toString());
+				logger.info("获取流程表中的id----"+traceId+"----");
 				if(G4Utils.isNotEmpty(data)){
-					traceDataMap.put("tranceId", tranceId);
+					traceDataMap.put("traceId", traceId);
 					traceDataMap.put("data", data);
 					//在traceData表中插入意见信息
 					int traceDataNum = forwardingServiceMapper.addFlowActionTraceData(traceDataMap);
@@ -191,10 +191,10 @@ public class ForwardingServiceImpl implements ForwardingService{
 					paramMap.put("keyId", "0");
 					int addNum = forwardingServiceMapper.addFlowActionTrace(paramMap);
 					//获取流程表中的id
-					int tranceId = Integer.parseInt(paramMap.get("keyId").toString());
-					logger.info("获取流程表中的id----"+tranceId+"----");
+					int traceId = Integer.parseInt(paramMap.get("keyId").toString());
+					logger.info("获取流程表中的id----"+traceId+"----");
 					if(G4Utils.isNotEmpty(data)){
-						traceDataMap.put("tranceId", tranceId);
+						traceDataMap.put("traceId", traceId);
 						traceDataMap.put("data", data);
 						//在traceData表中插入意见信息
 						int traceDataNum = forwardingServiceMapper.addFlowActionTraceData(traceDataMap);

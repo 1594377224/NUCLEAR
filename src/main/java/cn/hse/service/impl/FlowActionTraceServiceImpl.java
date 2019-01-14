@@ -187,10 +187,10 @@ public class FlowActionTraceServiceImpl implements FlowActionTraceService {
 		trace.setSubmituserdesc(flowActionTrace.getSubmituserdesc());*/
 		trace.setArrivetime(new Date());
 		int c=flowActionTraceMapper.insertSelective(trace);
-		int tranceId = trace.getId();
-		logger.info("获取流程表中的id----"+tranceId+"----");
+		int traceId = trace.getId();
+		logger.info("获取流程表中的id----"+traceId+"----");
 		if(G4Utils.isNotEmpty(data)){
-			traceDataMap.put("tranceId", tranceId);
+			traceDataMap.put("traceId", traceId);
 			traceDataMap.put("data", data);
 			//在traceData表中插入意见信息
 			int traceDataNum = flowActionTraceMapper.addFlowActionTraceData(traceDataMap);
