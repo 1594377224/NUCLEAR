@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="lineNo" jdbcType="VARCHAR" property="lineno" />
     <result column="noticeNo" jdbcType="VARCHAR" property="noticeno" />
-    <result column="distributDate" jdbcType="TIMESTAMP" property="distributdate" />
+    <result column="distributDate" jdbcType="BIGINT" property="distributdate" />
     <result column="unit" jdbcType="VARCHAR" property="unit" />
     <result column="area" jdbcType="VARCHAR" property="area" />
     <result column="unitID" jdbcType="VARCHAR" property="unitid" />
@@ -14,7 +14,7 @@
     <result column="nonconformity" jdbcType="VARCHAR" property="nonconformity" />
     <result column="hiddenDescription" jdbcType="VARCHAR" property="hiddendescription" />
     <result column="hiddenDoc" jdbcType="VARCHAR" property="hiddendoc" />
-    <result column="reqCompleteDate" jdbcType="TIMESTAMP" property="reqcompletedate" />
+    <result column="reqCompleteDate" jdbcType="BIGINT" property="reqcompletedate" />
     <result column="correctiveRequest" jdbcType="VARCHAR" property="correctiverequest" />
     <result column="rectificationSituation" jdbcType="VARCHAR" property="rectificationsituation" />
     <result column="returnDoc" jdbcType="VARCHAR" property="returndoc" />
@@ -73,10 +73,10 @@
       corApprovePerson, corApproveDate, ifSiteCorrection, 
       isDel,copyPerson,ifModify,keyHidden)
     values (#{id,jdbcType=INTEGER}, #{lineno,jdbcType=VARCHAR}, #{noticeno,jdbcType=VARCHAR}, 
-      #{distributdate,jdbcType=TIMESTAMP}, #{unit,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{distributdate,jdbcType=BIGINT}, #{unit,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
       #{unitid,jdbcType=VARCHAR}, #{hsehiddenlevel,jdbcType=VARCHAR}, #{hiddencategory,jdbcType=VARCHAR}, 
       #{nonconformity,jdbcType=VARCHAR}, #{hiddendescription,jdbcType=VARCHAR}, #{hiddendoc,jdbcType=VARCHAR}, 
-      #{reqcompletedate,jdbcType=TIMESTAMP}, #{correctiverequest,jdbcType=VARCHAR}, #{rectificationsituation,jdbcType=VARCHAR}, 
+      #{reqcompletedate,jdbcType=BIGINT}, #{correctiverequest,jdbcType=VARCHAR}, #{rectificationsituation,jdbcType=VARCHAR}, 
       #{returndoc,jdbcType=VARCHAR}, #{contractonpeople,jdbcType=VARCHAR}, #{completedate,jdbcType=TIMESTAMP}, #{responsiblepersonid,jdbcType=VARCHAR},
       #{responsibleperson,jdbcType=VARCHAR}, #{responsibledate,jdbcType=TIMESTAMP}, #{contractorapprove,jdbcType=VARCHAR}, 
       #{contractorapprovedate,jdbcType=TIMESTAMP}, #{comfirmcontent,jdbcType=VARCHAR}, 
@@ -216,7 +216,7 @@
         #{noticeno,jdbcType=VARCHAR},
       </if>
       <if test="distributdate != null">
-        #{distributdate,jdbcType=TIMESTAMP},
+        #{distributdate,jdbcType=BIGINT},
       </if>
       <if test="unit != null">
         #{unit,jdbcType=VARCHAR},
@@ -243,7 +243,7 @@
         #{hiddendoc,jdbcType=VARCHAR},
       </if>
       <if test="reqcompletedate != null">
-        #{reqcompletedate,jdbcType=TIMESTAMP},
+        #{reqcompletedate,jdbcType=BIGINT},
       </if>
       <if test="correctiverequest != null">
         #{correctiverequest,jdbcType=VARCHAR},
@@ -330,7 +330,7 @@
         noticeNo = #{noticeno,jdbcType=VARCHAR},
       </if>
       <if test="distributdate != null">
-        distributDate = #{distributdate,jdbcType=TIMESTAMP},
+        distributDate = #{distributdate,jdbcType=BIGINT},
       </if>
       <if test="unit != null">
         unit = #{unit,jdbcType=VARCHAR},
@@ -357,7 +357,7 @@
         hiddenDoc = #{hiddendoc,jdbcType=VARCHAR},
       </if>
       <if test="reqcompletedate != null">
-        reqCompleteDate = #{reqcompletedate,jdbcType=TIMESTAMP},
+        reqCompleteDate = #{reqcompletedate,jdbcType=BIGINT},
       </if>
       <if test="correctiverequest != null">
         correctiveRequest = #{correctiverequest,jdbcType=VARCHAR},
@@ -439,7 +439,7 @@
     update dangerList
     set lineNo = #{lineno,jdbcType=VARCHAR},
       noticeNo = #{noticeno,jdbcType=VARCHAR},
-      distributDate = #{distributdate,jdbcType=TIMESTAMP},
+      distributDate = #{distributdate,jdbcType=BIGINT},
       unit = #{unit,jdbcType=VARCHAR},
       area = #{area,jdbcType=VARCHAR},
       unitID = #{unitid,jdbcType=VARCHAR},
@@ -448,7 +448,7 @@
       nonconformity = #{nonconformity,jdbcType=VARCHAR},
       hiddenDescription = #{hiddendescription,jdbcType=VARCHAR},
       hiddenDoc = #{hiddendoc,jdbcType=VARCHAR},
-      reqCompleteDate = #{reqcompletedate,jdbcType=TIMESTAMP},
+      reqCompleteDate = #{reqcompletedate,jdbcType=BIGINT},
       correctiveRequest = #{correctiverequest,jdbcType=VARCHAR},
       rectificationSituation = #{rectificationsituation,jdbcType=VARCHAR},
       returnDoc = #{returndoc,jdbcType=VARCHAR},

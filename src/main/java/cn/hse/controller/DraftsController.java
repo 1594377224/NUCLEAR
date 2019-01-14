@@ -1,6 +1,5 @@
 package cn.hse.controller;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -64,10 +63,10 @@ public class DraftsController {
 	@RequestMapping(value="/draftsSave",method=RequestMethod.POST)
 	public String draftsSave(@RequestBody Map<String, Object> map) {
 		logger.info("【草稿箱保存操作】");
-		/*logger.info("【草稿箱保存操作====开始调用用友接口保存】");
+		logger.info("【草稿箱保存操作====开始调用用友接口保存】");
 		CheckListController checkListController=new CheckListController();
 		String array[]=checkListController.dataProcess(map);
-		logger.info("【草稿箱保存操作====调用用友接口保存结束】");*/
+		logger.info("【草稿箱保存操作====调用用友接口保存结束】");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		//封装检查单对象
 	    CheckList checkList=new CheckList();
@@ -96,7 +95,7 @@ public class DraftsController {
 		dangerList.setId(Integer.parseInt(map.get("dangerId").toString()));
 		dangerList.setLineno("");   //序号
 		dangerList.setNoticeno("");//整改单编号
-		dangerList.setDistributdate(new Timestamp(new Date().getTime()));  //分发日期
+		dangerList.setDistributdate(new Date().getTime());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
@@ -105,7 +104,7 @@ public class DraftsController {
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
 		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
-		dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
+		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
 		dangerList.setResponsibledate(new Date());  //接收日期
@@ -132,6 +131,9 @@ public class DraftsController {
 	public String draftsSubmit(@RequestBody Map<String, Object> map) {
 		logger.info("【草稿箱提交操作】");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		/*logger.info("【草稿箱提交操作====开始调用用友接口提交】");
+		CheckListController checkListController=new CheckListController();
+		String array[]=checkListController.dataProcess(map);*/
 		//更新隐患表
 		//整改需要的字段，更新隐患表
 		Integer dangerId=Integer.parseInt(map.get("dangerId").toString()); //隐患ID
@@ -258,7 +260,7 @@ public class DraftsController {
 			//更新隐患表日期
 			DangerList dangerList=new DangerList();
 			dangerList.setId(Integer.parseInt(dangerId));
-			dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(delayToApplyForDate).getTime()));
+			dangerList.setReqcompletedate(DateUtil.string2Date(delayToApplyForDate).getTime());
 			int a=dangerListServie.updateDanger(dangerList);
 			//更新流程表
 			FlowAction flowAction=flowActionService.selectFlowAction(10);

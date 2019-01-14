@@ -1,6 +1,5 @@
 package cn.hse.controller;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -113,7 +112,7 @@ public class CheckListController {
 		dangerList.setNoticeno(array[0]);//整改单编号
         //dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
-		dangerList.setDistributdate(new Timestamp(new Date().getTime()));  //分发日期
+		dangerList.setDistributdate(new Date().getTime());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
@@ -124,7 +123,7 @@ public class CheckListController {
 		if (!map.get("hiddenDoc").toString().equals("")) {
 			dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
 		}
-		dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
+		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		//dangerList.setArea(map.get("rectificationSituation").toString()); //整改情况描述
 		dangerList.setResponsibledate(new Date());  //接收日期
@@ -404,7 +403,6 @@ public class CheckListController {
 		
 		Map<String, Object> paramsMap = new HashMap<String, Object>();
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> result = new HashMap<String, Object>();
 		List<Map<String, Object>> list=new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> imgList=new ArrayList<Map<String, Object>>();
 		//检查单信息封装
@@ -472,17 +470,29 @@ public class CheckListController {
 		
 		list.add(resultMap);
 		//上传图片
-		if (map.get("imgName").toString().equals("")) {
-			result.put("imgName","");  //图片名称
-		}else {
-			result.put("imgName", map.get("imgName").toString());  //图片名称
-		}
-		if (map.get("imgAddress").toString().equals("")) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if (map.get("imgName").toString().equals("")||map.get("imgAddress").toString().equals("")) {
+			result.put("imgName","");  		//图片名称
 			result.put("imgAddress", "");   //图片地址
+			imgList.add(result);
 		}else {
+			//获取图片名称和图片地址
+			String name=map.get("imgName").toString();
+			String address=map.get("imgAddress").toString();
+			String nameArr[]=name.split(",");
+			logger.info("[传用友的图片名称数组]==nameArr="+nameArr);
+			String addressArr[]=address.split(",");
+			logger.info("[传用友的图片名称数组]==addressArr="+addressArr);
+			for (int i = 0; i < nameArr.length; i++) {
+				Map<String, Object> res = new HashMap<String, Object>();
+				res.put("imgName", nameArr[i]);
+				res.put("imgName", addressArr[i]);
+				imgList.add(res);
+			}
+			result.put("imgName", map.get("imgName").toString());  //图片名称
 			result.put("imgAddress", map.get("imgAddress").toString());   //图片地址
 		}
-		imgList.add(result);
+		logger.info("[传用友处理后的多张图片]==imgList="+imgList);
 		paramsMap.put("attachment", imgList);
 		paramsMap.put("HseHiddenDangers", list);
 		logger.info("[传用友处理新建数据封装完成参数]==="+paramsMap);
@@ -528,7 +538,7 @@ public class CheckListController {
 		//dangerList.setNoticeno(array[0]);//整改单编号
 		//dangerList.setLineno(String.valueOf((int)((Math.random()*9+1)*100000)));   //序号
 		//dangerList.setNoticeno(String.valueOf((int)((Math.random()*9+1)*100000)));//整改单编号
-		dangerList.setDistributdate(new Timestamp(new Date().getTime()));  //分发日期
+		dangerList.setDistributdate(new Date().getTime());  //分发日期
 		dangerList.setUnit(map.get("unit").toString());  //适用机组
 		dangerList.setArea(map.get("area").toString());  //区域
 		dangerList.setUnitid(map.get("unitID").toString());  //被检查单位
@@ -537,7 +547,7 @@ public class CheckListController {
 		dangerList.setNonconformity(map.get("nonconformity").toString());  // 隐患类型
 		dangerList.setHiddendescription(map.get("hiddenDescription").toString());  //隐患描述
 		dangerList.setHiddendoc(map.get("hiddenDoc").toString());   //隐患附件
-		dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
+		dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
 		dangerList.setCorrectiverequest(map.get("correctiveRequest").toString());  //整改措施要求
 		dangerList.setResponsibledate(new Date());  //接收日期
 		dangerList.setContractonpeople(map.get("contractonPeople").toString());  //整改单编制人

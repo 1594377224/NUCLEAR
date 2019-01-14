@@ -254,7 +254,16 @@
   	  <include refid="Base_Column_List" />
     from flowActionTrace
     where instanceId = #{instanceId} AND stepId = #{stepId}
-    ORDER BY  arriveTime asc LIMIT 1
+    ORDER BY  arriveTime dse LIMIT 1
+    ORDER BY  arriveTime desc LIMIT 1
   </select>
-  
+ 	<!-- 插入验证不通过意见信息内容 -->
+	<insert id = "addFlowActionTraceData" parameterType="Map" >
+		INSERT INTO flowActionTraceData (
+			traceId,data
+		)
+		VALUES
+			(#{traceId},#{data})
+	</insert>
+	
 </mapper>

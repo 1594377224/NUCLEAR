@@ -1,6 +1,5 @@
 package cn.hse.beans;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 public class DangerList {
@@ -10,7 +9,7 @@ public class DangerList {
 
     private String noticeno;
 
-    private Timestamp distributdate;
+    private Long distributdate;
 
     private String unit;
 
@@ -28,7 +27,7 @@ public class DangerList {
 
     private String hiddendoc;
 
-    private Timestamp reqcompletedate;
+    private Long reqcompletedate;
 
     private String correctiverequest;
 
@@ -124,11 +123,11 @@ public class DangerList {
         this.noticeno = noticeno;
     }
 
-    public Date getDistributdate() {
+    public Long getDistributdate() {
         return distributdate;
     }
 
-    public void setDistributdate(Timestamp distributdate) {
+    public void setDistributdate(Long distributdate) {
         this.distributdate = distributdate;
     }
 
@@ -196,11 +195,11 @@ public class DangerList {
         this.hiddendoc = hiddendoc;
     }
 
-    public Date getReqcompletedate() {
+    public Long getReqcompletedate() {
         return reqcompletedate;
     }
 
-    public void setReqcompletedate(Timestamp reqcompletedate) {
+    public void setReqcompletedate(Long reqcompletedate) {
         this.reqcompletedate = reqcompletedate;
     }
 

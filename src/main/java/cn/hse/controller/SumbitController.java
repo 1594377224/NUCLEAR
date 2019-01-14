@@ -1,6 +1,5 @@
 package cn.hse.controller;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -130,13 +129,15 @@ public class SumbitController {
 				return ResultUtil.result("-9999", resultMap, null);
 				
 			}else { //不通过
+				//验证不通过意见
+				String data = map.get("data").toString(); 
 				//更新流转表
 				FlowActionTrace flowActionTrace=new FlowActionTrace();
 				flowActionTrace.setId(traceId);
 				flowActionTrace.setSubmituserid(userId);
 				flowActionTrace.setSubmitusername(userName);
 				flowActionTrace.setSubmituserdesc(Constant.ZHENG_GAI_REN);
-				int b=flowActionTraceService.updateChangeLast(flowActionTrace,instanceId);
+				int b=flowActionTraceService.updateChangeLast(flowActionTrace,instanceId,data);
 				if (b!=0) {
 					resultMap.put("resultCode", "0");
 					resultMap.put("resultMsg", "操作成功！");
@@ -199,7 +200,7 @@ public class SumbitController {
 			dangerList.setHiddencategory(hiddenCategory);  //隐患属性
 			dangerList.setNonconformity(nonconformity);  // 隐患类型
 			dangerList.setHiddendescription(hiddenDescription);  //隐患描述
-			dangerList.setReqcompletedate(new Timestamp(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime()));   //要求完成时间
+			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
 			dangerList.setCopyPerson(deliveryList.toString()); //抄送
 			dangerList.setHiddendoc(hiddenDoc);
 			int b=dangerListServie.updateDanger(dangerList);
