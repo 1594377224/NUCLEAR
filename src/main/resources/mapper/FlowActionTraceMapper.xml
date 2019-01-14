@@ -254,11 +254,7 @@
   	  <include refid="Base_Column_List" />
     from flowActionTrace
     where instanceId = #{instanceId} AND stepId = #{stepId}
-<<<<<<< HEAD
     ORDER BY  arriveTime dse LIMIT 1
-=======
->>>>>>> branch 'featuer' of https://github.com/1594377224/NUCLEAR.git
-    ORDER BY  arriveTime desc LIMIT 1
   </select>
  	<!-- 插入验证不通过意见信息内容 -->
 	<insert id = "addFlowActionTraceData" parameterType="Map" >
