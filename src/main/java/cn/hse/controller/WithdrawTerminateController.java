@@ -33,7 +33,7 @@ public class WithdrawTerminateController {
 	public String findWithdrawTerminate(@RequestBody Map<String, Object> map){
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		JSONObject inputJson = JSONObject.fromObject(map);
-		logger.info("[撤办终止-入参]"+inputJson);
+		logger.info("[撤办流程-入参]"+inputJson);
 		// 参数校验
 		if(inputJson.isEmpty()){
 			resultMap.put("resultCode", "-1");
@@ -44,13 +44,19 @@ public class WithdrawTerminateController {
 		String userId = "" ;
 		//检查单id
 		String checkId = "";
+		//实例id
+		String instanceId = "";
+		
 		if (inputJson.containsKey("userId")) {
 			userId = inputJson.getString("userId");
 		}
 		if (inputJson.containsKey("checkId")) {
 			checkId = inputJson.getString("checkId");
 		}
-		boolean[] sArr = { G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(checkId)};
+		if (inputJson.containsKey("instanceId")) {
+			instanceId = inputJson.getString("instanceId");
+		}
+		boolean[] sArr = { G4Utils.isNotEmpty(userId),G4Utils.isNotEmpty(checkId),G4Utils.isNotEmpty(instanceId)};
 		boolean flag = BooleanUtils.and(sArr);
 		if (!flag) {
 			return ResultUtil.result("-9999", "接入参数不完整！");
