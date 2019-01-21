@@ -136,8 +136,10 @@ public class CheckListController {
 		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		dangerList.setIsdel(0);
 		
+		if (!("").equals(map.get("keyHidden").toString())) {
+			dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+		}
 		
-		dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
 		logger.info("====隐患单插入完毕"+dangerId);

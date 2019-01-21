@@ -203,6 +203,9 @@ public class SumbitController {
 			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
 			dangerList.setCopyPerson(deliveryList.toString()); //抄送
 			dangerList.setHiddendoc(hiddenDoc);
+			if (!("").equals(map.get("keyHidden").toString())) {
+				dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+			}
 			int b=dangerListServie.updateDanger(dangerList);
 			//更新流转表
 			FlowActionTrace flowActionTrace=new FlowActionTrace();

@@ -112,6 +112,9 @@ public class DraftsController {
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
+		if (!("").equals(map.get("keyHidden").toString())) {
+			dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+		}
 //		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
 		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
