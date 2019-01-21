@@ -33,6 +33,7 @@ import cn.hse.service.FlowStepService;
 import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
+import cn.hse.util.G4Utils;
 import cn.hse.util.ResultUtil;
 import net.sf.json.JSONArray;
 
@@ -112,9 +113,18 @@ public class DraftsController {
 		String responsiblePerson=map.get("responsiblePerson").toString();
 		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
+		if (!("").equals(map.get("keyHidden").toString())) {
+			dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+		}
 //		dangerList.setCopyPerson(map.get("copyPerson").toString());   //抄送人
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
+		/*
+		 * 抄送人可为空
+		 */
+		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
+		if(G4Utils.isNotEmpty(copyPersonString)){
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			dangerList.setCopyPerson(deliveryList.toString());   //抄送人
+		}
 		int b=dangerListServie.updateDanger(dangerList);
 		if (a==0 || b==0) {
 			resultMap.put("resultCode", "-1");
@@ -142,13 +152,22 @@ public class DraftsController {
 		//String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		//String completeDate=map.get("completeDate").toString();  //整改完成日期
 		//String copyPerson=map.get("copyPerson").toString();   //抄送
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
 		DangerList dangerList=new DangerList();
+		/*
+		 * 抄送人可为空
+		 */
+		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
+		if(G4Utils.isNotEmpty(copyPersonString)){
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			dangerList.setCopyPerson(deliveryList.toString());
+		}
+		
+		String hiddenDoc=map.get("hiddenDoc").toString();   //隐患附件
+		
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
 		//dangerList.setCompletedate(DateUtil.string2Date(completeDate));
-		dangerList.setCopyPerson(deliveryList.toString());
+		
 		//dangerList.setRectificationsituation(rectificationSituation);
 		dangerList.setHiddendoc(hiddenDoc);
 		int updateResult=dangerListServie.updateDanger(dangerList);
@@ -206,13 +225,10 @@ public class DraftsController {
 		//插入信息到抄送人delivery表
 		Map<String, Object> deliveryMap = new HashMap<String, Object>();
 		deliveryMap.put("dangerId", dangerId);
-//		Map<String,Object> copyPerson = flowInstanceService.findCopyPerson(deliveryMap);
-		//List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		if(deliveryList.isEmpty()){
-			resultMap.put("resultCode", "-1");
-			resultMap.put("resultMsg", "操作失败！");
-			return ResultUtil.result("-9999", resultMap, null);
-		} else {
+		
+		if(G4Utils.isNotEmpty(copyPersonString)){
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			dangerList.setCopyPerson(deliveryList.toString());
 			deliveryMap.put("userId", map.get("userId").toString());
 			deliveryMap.put("userName", map.get("userName").toString());
 			deliveryMap.put("checkId", checkId);
@@ -220,15 +236,23 @@ public class DraftsController {
 			deliveryMap.put("statusId", "0");//0待阅，1已阅
 			deliveryMap.put("deliveryList", deliveryList);
 			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-			if(traceId<0 && deliveryNum<0 && d<0 && e<0 && f<0){
+			if(deliveryNum>0){
+				logger.info("==========插入信息到抄送人delivery表=====成功=======");
+			} else {
+				logger.info("==========插入信息到抄送人delivery表=====失败=======");
+			}
+		}
+	
+		if(traceId<0 && d<0 && e<0 && f<0){
 				resultMap.put("resultCode", "-1");
 				resultMap.put("resultMsg", "操作失败！");
 				return ResultUtil.result("-9999", resultMap, null);
-			}
+		}else {
+			resultMap.put("resultCode", "0");
+			resultMap.put("resultMsg", "操作成功！");
+			return ResultUtil.result("0", resultMap, null);
 		}
-		resultMap.put("resultCode", "0");
-		resultMap.put("resultMsg", "操作成功！");
-		return ResultUtil.result("0", resultMap, null);
+		
 	}
 	
 	/**

@@ -24,6 +24,7 @@ import cn.hse.service.FlowActionTraceService;
 import cn.hse.service.FlowInstanceService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
+import cn.hse.util.G4Utils;
 import cn.hse.util.NodeSyn;
 import cn.hse.util.ResultUtil;
 import net.sf.json.JSONArray;
@@ -178,19 +179,31 @@ public class SumbitController {
 			String hiddenCategory = map.get("hiddenCategory").toString();  //隐患属性
 			String nonconformity = map.get("nonconformity").toString();  // 隐患类型
 			String hiddenDescription = map.get("hiddenDescription").toString();  //隐患描述
-			//插入信息到抄送人delivery表
-			Map<String, Object> deliveryMap = new HashMap<String, Object>();
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson")); //抄送
-			deliveryMap.put("userId", map.get("userId").toString());
-			deliveryMap.put("userName", map.get("userName").toString());
-			deliveryMap.put("checkId", checkId);
-			deliveryMap.put("dangerId", dangerId);
-			deliveryMap.put("traceId", traceId);
-			deliveryMap.put("statusId", "0");//0待阅，1已阅
-			deliveryMap.put("deliveryList", deliveryList);
-			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-			
 			DangerList dangerList=new DangerList();
+			/*
+			 * 抄送人可为空
+			 */
+			String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
+			if(G4Utils.isNotEmpty(copyPersonString)){
+				//插入信息到抄送人delivery表
+				Map<String, Object> deliveryMap = new HashMap<String, Object>();
+				List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString); //抄送
+				deliveryMap.put("userId", map.get("userId").toString());
+				deliveryMap.put("userName", map.get("userName").toString());
+				deliveryMap.put("checkId", checkId);
+				deliveryMap.put("dangerId", dangerId);
+				deliveryMap.put("traceId", traceId);
+				deliveryMap.put("statusId", "0");//0待阅，1已阅
+				deliveryMap.put("deliveryList", deliveryList);
+				int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+				if(deliveryNum>0){
+					logger.info("==========插入信息到抄送人delivery表=====成功=======");
+				} else {
+					logger.info("==========插入信息到抄送人delivery表=====失败=======");
+				}
+				dangerList.setCopyPerson(deliveryList.toString()); //抄送
+				
+			}
 			dangerList.setId(dangerId);
 			dangerList.setArea(area);
 			dangerList.setUnit(unit);
@@ -201,8 +214,11 @@ public class SumbitController {
 			dangerList.setNonconformity(nonconformity);  // 隐患类型
 			dangerList.setHiddendescription(hiddenDescription);  //隐患描述
 			dangerList.setReqcompletedate(DateUtil.string2Date(map.get("reqCompleteDate").toString()).getTime());   //要求完成时间
-			dangerList.setCopyPerson(deliveryList.toString()); //抄送
+		
 			dangerList.setHiddendoc(hiddenDoc);
+			if (!("").equals(map.get("keyHidden").toString())) {
+				dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+			}
 			int b=dangerListServie.updateDanger(dangerList);
 			//更新流转表
 			FlowActionTrace flowActionTrace=new FlowActionTrace();
@@ -211,7 +227,7 @@ public class SumbitController {
 			flowActionTrace.setSubmitusername(userName);
 			flowActionTrace.setSubmituserdesc("再次发起流程");
 			int c=flowActionTraceService.updateRetResubmit(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
-			if (b!=0&&c!=0&&deliveryNum!=0) {
+			if (b!=0&&c!=0) {
 				resultMap.put("resultCode", "0");
 				resultMap.put("resultMsg", "操作成功！");
 				return ResultUtil.result("0", resultMap, null);

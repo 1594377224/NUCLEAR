@@ -35,6 +35,7 @@ import cn.hse.service.FlowStepService;
 import cn.hse.service.InstanceRelationService;
 import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
+import cn.hse.util.G4Utils;
 import cn.hse.util.NodeSyn;
 import cn.hse.util.Result;
 import cn.hse.util.ResultUtil;
@@ -132,12 +133,21 @@ public class CheckListController {
 		dangerList.setResponsibleperson(responsiblePerson);  //整改责任人
 		dangerList.setIfModify(map.get("ifModify").toString());  //是否当场整改
 		dangerList.setResponsiblepersonid(map.get("responsiblePersonId").toString());
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		dangerList.setCopyPerson(deliveryList.toString());   //抄送人
+		/*
+		 * 抄送人可为空
+		 */
+		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
+		if(G4Utils.isNotEmpty(copyPersonString)){
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			dangerList.setCopyPerson(deliveryList.toString());   //抄送人
+		}
+		
 		dangerList.setIsdel(0);
 		
+		if (!("").equals(map.get("keyHidden").toString())) {
+			dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
+		}
 		
-		dangerList.setKeyHidden(map.get("keyHidden").toString());  //关键隐患
 		int b=dangerListServie.insertDanger(dangerList);
 		int dangerId=dangerList.getId();
 		logger.info("====隐患单插入完毕"+dangerId);
@@ -234,19 +244,25 @@ public class CheckListController {
 			String aString=nodeSyn.synNodeData(nodeResult);
 			logger.info("[调用用友接口同步节点数据]="+aString);
 			//流转表id
-			//插入信息到抄送人delivery表
-			Map<String, Object> deliveryMap = new HashMap<String, Object>();
-//			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-			deliveryMap.put("userId", map.get("userId").toString());
-			deliveryMap.put("userName", map.get("userName").toString());
-			deliveryMap.put("checkId", checkId);
-			deliveryMap.put("dangerId", dangerId);
-			deliveryMap.put("traceId", traceId);
-			deliveryMap.put("statusId", "0");//0待阅，1已阅
-			deliveryMap.put("deliveryList", deliveryList);
-			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
-			
-			if (d==1&&f==1 && e==1 && deliveryNum>0) {
+			if(G4Utils.isNotEmpty(copyPersonString)){
+				List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+				//插入信息到抄送人delivery表
+				Map<String, Object> deliveryMap = new HashMap<String, Object>();
+				deliveryMap.put("userId", map.get("userId").toString());
+				deliveryMap.put("userName", map.get("userName").toString());
+				deliveryMap.put("checkId", checkId);
+				deliveryMap.put("dangerId", dangerId);
+				deliveryMap.put("traceId", traceId);
+				deliveryMap.put("statusId", "0");//0待阅，1已阅
+				deliveryMap.put("deliveryList", deliveryList);
+				int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+				if(deliveryNum>0){
+					logger.info("==========插入信息到抄送人delivery表=====成功=======");
+				} else {
+					logger.info("==========插入信息到抄送人delivery表=====失败=======");
+				}
+			}
+			if (d==1&&f==1 && e==1) {
 				result.setRtnCode("0");
 				result.setRtnMsg("提交成功！");
 				resultMap.put("resultCode", "0");
@@ -329,13 +345,34 @@ public class CheckListController {
 		String rectificationSituation=map.get("rectificationSituation").toString();  //整改情况
 		String completeDate=map.get("completeDate").toString();  //整改完成日期
 //		String copyPerson=map.get("copyPerson").toString();   //抄送
-		List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
-		
+		/*
+		 * 抄送人可为空
+		 */
+		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
 		DangerList dangerList=new DangerList();
+		if(G4Utils.isNotEmpty(copyPersonString)){
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
+			dangerList.setCopyPerson(deliveryList.toString());
+			//插入信息到抄送人delivery表
+			Map<String, Object> deliveryMap = new HashMap<String, Object>();
+			deliveryMap.put("userId", userId);
+			deliveryMap.put("userName", userName);
+			deliveryMap.put("checkId", checkId);
+			deliveryMap.put("dangerId", dangerId);
+			deliveryMap.put("traceId", traceId);
+			deliveryMap.put("statusId", "0");//0待阅，1已阅
+			deliveryMap.put("deliveryList", deliveryList);
+			int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+			if(deliveryNum>0){
+				logger.info("==========插入信息到抄送人delivery表=====成功=======");
+			} else {
+				logger.info("==========插入信息到抄送人delivery表=====失败=======");
+			}
+		}
 		dangerList.setId(dangerId);
 		dangerList.setResponsibleperson(responsiblePerson);
 		dangerList.setCompletedate(DateUtil.string2Date(completeDate));
-		dangerList.setCopyPerson(deliveryList.toString());
+		
 		dangerList.setRectificationsituation(rectificationSituation);
 		
 		String returndoc=map.get("returndoc").toString();   //整改隐患附件
@@ -351,8 +388,7 @@ public class CheckListController {
 		flowActionTrace.setSubmitusername(userName);
 		flowActionTrace.setSubmituserdesc("整改提交");
 		int c=flowActionTraceService.updateChangeInfo(flowActionTrace,instanceId,responsiblePersonId,responsiblePerson);
-		logger.info("==========更新流转表结果"+c);
-		
+		logger.info("==========更新流转表结果"+c);		
 		//整改提交同步节点数据到用友
 		Map<String, Object> nodeResult=new HashMap<String, Object>();
 		nodeResult.put("projNo", map.get("projNo").toString());  //项目编号
@@ -371,19 +407,10 @@ public class CheckListController {
 		String aString=nodeSyn.synNodeData(nodeResult);
 		logger.info("[调用用友接口同步节点数据]="+aString);
 		
-		//插入信息到抄送人delivery表
-		Map<String, Object> deliveryMap = new HashMap<String, Object>();
-		deliveryMap.put("userId", userId);
-		deliveryMap.put("userName", userName);
-		deliveryMap.put("checkId", checkId);
-		deliveryMap.put("dangerId", dangerId);
-		deliveryMap.put("traceId", traceId);
-		deliveryMap.put("statusId", "0");//0待阅，1已阅
-		deliveryMap.put("deliveryList", deliveryList);
-		int deliveryNum = flowInstanceService.addDelivery(deliveryMap);
+		
 		//更新实例表
 		int updateInstance=flowInstanceService.updateInstance(instanceId);
-		if (updateInstance==0||updateResult==0||deliveryNum==0) {
+		if (updateInstance==0||updateResult==0) {
 			resultMap.put("resultCode", "-1");
 			resultMap.put("resultMsg", "操作失败！");
 			return ResultUtil.result("-9999", resultMap, null);
