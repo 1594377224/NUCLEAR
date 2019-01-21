@@ -1,10 +1,10 @@
 package cn.hse.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.http.HttpResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mascloud.sdkclient.Client;
 
+import cn.hse.util.G4Utils;
 import cn.hse.util.HttpClientUtil;
 import cn.hse.util.MD5Utils;
 import cn.hse.util.ResultUtil;
-import cn.hse.util.SendUtil;
 import net.sf.json.JSONObject;
 /**
  * 环境要求：短信发送服务器具有直连访问互联网的能力。
@@ -29,21 +29,21 @@ import net.sf.json.JSONObject;
 @RequestMapping("/send")
 public class TestSendController {
 	
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		try {
 			final Client client =  Client.getInstance();
 			// 正式环境IP，登录验证URL，用户名，密码，集团客户名称
 //			client.login("http://mas.ecloud.10086.cn/app/sdk/login", "SDK账号名称（不是页面端账号）", "密码","集团客户名称");
 			// 测试环境IP
-			boolean loginResult=client.login("http://112.35.4.197:15000","stlpt9", "passwd@0987",  "政企分公司测试");
+			boolean loginResult=client.login("http://112.35.4.197:15000","SMSEND","SMSSend","国核工程有限公司");
 
 			if(!loginResult) {
 				System.out.println("短信企业身份认证失败");
 				return;
 			}
 			
-			int sendResult = client.sendDSMS (new String[] {"13600000000"},
-					"sdk短信发送内容测试", "",  1,"短信签名ID", UUID.randomUUID().toString(),true);
+			int sendResult = client.sendDSMS (new String[] {"17610121021"},
+					"sdk短信发送内容测试", "",  1,"0SvLq0nJc", UUID.randomUUID().toString(),true);
 			System.out.println("推送结果: " + sendResult);
 			
 			//添加黑白名单
@@ -104,42 +104,64 @@ public class TestSendController {
 		}
 	}
 	
-	
+	*/
 	
 	private static final Logger logger=LogManager.getLogger(TestSendController.class);
-	 @RequestMapping("/sendTest" )
-	    public void t() {
-	         String host = "http://112.35.1.155:1992";
-	            String path = "/sms/tmpsubmit";
-	            String method = "POST";
-	            String appcode = "这里填写你的验证码";
-	            Map<String, String> headers = new HashMap<String, String>();
-	            //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
-	            headers.put("Authorization", "APPCODE " + appcode);
-	            Map<String, String> querys = new HashMap<String, String>();
-	            querys.put("mobile", "这里填写你要发送的手机号码");
-	            //querys.put("param", "code:1234");
-	            //querys.put("param", "这里填写你和商家定义的变量名称和变量值填写格式看上一行代码");
-	            querys.put("tpl_id", "这里填写你和商家商议的模板");
-	            Map<String, String> bodys = new HashMap<String, String>();
-	            try {
-	                HttpResponse response = SendUtil.doPost(host, path, method, headers, querys, bodys);
-	                System.out.println(response.toString());
-	                //获取response的body
-	                //System.out.println(EntityUtils.toString(response.getEntity()));
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	    }
-	 
-	 
-	 
+	  
 	  /* 
 	   * 流程节点变动，发送短息通知
 	   */
 	 @ResponseBody
 	 @RequestMapping(value="/smsSend",method=RequestMethod.POST)
 	 public String SmsSend(@RequestBody Map<String, Object> map){
+		 Map<String, Object> resultMap = new HashMap<String, Object>();
+		 JSONObject inputJson = JSONObject.fromObject(map);
+		 logger.info("[验证是否登录成功，发送短息--入参]"+inputJson);
+		 try {
+			 final Client client =  Client.getInstance();
+			// 测试环境IP
+			 boolean loginResult=client.login("http://112.35.4.197:15000","SMSEND","SMSSend","国核工程有限公司");
+	
+			 if(!loginResult) {
+				 resultMap.put("resultCode", "-1");
+				 resultMap.put("resultMsg", "短信企业身份认证失败!");
+				}
+			 //检查单编号
+			 String checkContent = inputJson.getString("checkContent");
+			 //检查人
+			 String checkPerson = inputJson.getString("checkPerson");
+			 //手机号
+			 String  mobiles = G4Utils.getMapValue2String(inputJson, "mobiles");
+			 String[] mobilesArr = mobiles.split(",");
+			
+//			 List<Map<String,Object>> mobilesList = JSONArray.fromObject(inputJson.get("mobiles"));
+//			 String[] mobilesArr = mobilesList.toArray(new String[mobilesList.size()]);
+			 //短息发送内容
+			 String content = "您好，编号为"+checkContent+"的检查单已发送至您处，请及时整改回复，检查人("+checkPerson+")";
+			 
+			 int sendResult = client.sendDSMS (mobilesArr,
+					 content, "",  1,"0SvLq0nJc", UUID.randomUUID().toString(),true);
+			 logger.info("推送结果: " + sendResult); 
+			 if(sendResult>0){
+				 resultMap.put("resultCode", "0");
+				 resultMap.put("resultMsg", "短信发送成功"+sendResult+"条");
+			 } else {
+				 resultMap.put("resultCode", "-1");
+				 resultMap.put("resultMsg", "短信发送成功"+sendResult+"条");
+			 }
+			 
+	 	 } catch (Exception e) {
+			e.printStackTrace();
+		 }
+		 
+		 return ResultUtil.result("0", resultMap, new ArrayList<Map<String, Object>>());
+	
+	 }
+	 
+	 
+	 
+	 
+	 public String test(@RequestBody Map<String, Object> map){
 		 Map<String, Object> resultMap = new HashMap<String, Object>();
 		 Map<String, Object> paramMap = new HashMap<String, Object>();
 		 JSONObject inputJson = JSONObject.fromObject(map);
@@ -213,5 +235,6 @@ public class TestSendController {
 				resultMap.put("resultMsg", rspcod);
 			}
 		return ResultUtil.result("0", resultMap, null);
+		 
 	 }
 }
