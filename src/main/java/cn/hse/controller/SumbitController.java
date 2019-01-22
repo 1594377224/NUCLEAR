@@ -187,7 +187,7 @@ public class SumbitController {
 			if(G4Utils.isNotEmpty(copyPersonString)){
 				//插入信息到抄送人delivery表
 				Map<String, Object> deliveryMap = new HashMap<String, Object>();
-				List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString); //抄送
+				List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson")); //抄送
 				deliveryMap.put("userId", map.get("userId").toString());
 				deliveryMap.put("userName", map.get("userName").toString());
 				deliveryMap.put("checkId", checkId);

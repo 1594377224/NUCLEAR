@@ -137,8 +137,9 @@ public class CheckListController {
 		 * 抄送人可为空
 		 */
 		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
+		logger.info("=======抄送人转为string======140==="+copyPersonString);
 		if(G4Utils.isNotEmpty(copyPersonString)){
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 			dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		}
 		
@@ -245,7 +246,7 @@ public class CheckListController {
 			logger.info("[调用用友接口同步节点数据]="+aString);
 			//流转表id
 			if(G4Utils.isNotEmpty(copyPersonString)){
-				List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+				List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 				//插入信息到抄送人delivery表
 				Map<String, Object> deliveryMap = new HashMap<String, Object>();
 				deliveryMap.put("userId", map.get("userId").toString());

@@ -122,7 +122,7 @@ public class DraftsController {
 		 */
 		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
 		if(G4Utils.isNotEmpty(copyPersonString)){
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 			dangerList.setCopyPerson(deliveryList.toString());   //抄送人
 		}
 		int b=dangerListServie.updateDanger(dangerList);
@@ -158,7 +158,7 @@ public class DraftsController {
 		 */
 		String copyPersonString = G4Utils.getMapValue2String(map, "copyPerson");
 		if(G4Utils.isNotEmpty(copyPersonString)){
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 			dangerList.setCopyPerson(deliveryList.toString());
 		}
 		
@@ -227,7 +227,7 @@ public class DraftsController {
 		deliveryMap.put("dangerId", dangerId);
 		
 		if(G4Utils.isNotEmpty(copyPersonString)){
-			List<Map<String,Object>> deliveryList = JSONArray.fromObject(copyPersonString);
+			List<Map<String,Object>> deliveryList = JSONArray.fromObject(map.get("copyPerson"));
 			dangerList.setCopyPerson(deliveryList.toString());
 			deliveryMap.put("userId", map.get("userId").toString());
 			deliveryMap.put("userName", map.get("userName").toString());

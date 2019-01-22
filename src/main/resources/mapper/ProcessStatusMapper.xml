@@ -341,6 +341,7 @@
 	<select id="findCirculation"  parameterType="Map" resultType = "Map">
 			SELECT
 			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
+			    i.id AS flowInstanceId,
 				null AS delayToApplyForDec,
 				null AS delayToApplyId,
 				null AS delayToApplyForNo,
@@ -395,6 +396,7 @@
 			UNION
 			SELECT
 			IFNULL((select data from flowActionTraceData where traceId = t.id),'') as data,
+				i.id AS flowInstanceId,
 				daf.delayToApplyForDec,
 				daf.id AS delayToApplyId,
 				daf.delayToApplyForNo,
