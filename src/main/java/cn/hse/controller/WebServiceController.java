@@ -32,6 +32,7 @@ public class WebServiceController {
 		// 输出调用结果
 		System.out.println("*****" + objects[0].toString());
 		System.out.println("*****" + objects.length);
+		logger.info("webservice接口测试==="+objects[0].toString());
 	}
 	/**
 	 * 用户信息接口

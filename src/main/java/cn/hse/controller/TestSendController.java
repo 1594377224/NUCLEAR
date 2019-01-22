@@ -41,9 +41,9 @@ public class TestSendController {
 				 resultMap.put("resultMsg", "短信企业身份认证失败!");
 				}
 			 //检查单编号
-			 String checkContent = inputJson.getString("checkContent");
+			 String checkContent = inputJson.getOrDefault("checkContent","XXXXXXX").toString();
 			 //检查人
-			 String checkPerson = inputJson.getString("checkPerson");
+			 String checkPerson = inputJson.getOrDefault("checkPerson","XXX").toString();
 			 //手机号
 			 String  mobiles = G4Utils.getMapValue2String(inputJson, "mobiles");
 			 String[] mobilesArr = mobiles.split(",");
