@@ -144,8 +144,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+				    <includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
+		<resources>  
+	     <resource>  
+	         <directory>lib</directory>  
+	         <targetPath>BOOT-INF/lib/</targetPath>  
+	         <includes>  
+	             <include>**/*.jar</include>  
+	         </includes>  
+	     </resource>
+ </resources>
 	</build>
 
 
