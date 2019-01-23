@@ -35,6 +35,7 @@ import cn.hse.util.Constant;
 import cn.hse.util.DateUtil;
 import cn.hse.util.G4Utils;
 import cn.hse.util.ResultUtil;
+import cn.hse.util.SendSmsUtil;
 import net.sf.json.JSONArray;
 
 @RestController
@@ -248,6 +249,13 @@ public class DraftsController {
 				resultMap.put("resultMsg", "操作失败！");
 				return ResultUtil.result("-9999", resultMap, null);
 		}else {
+			logger.info("----开始发送短信通知整改人-----");
+			String mobiles=map.get("phone").toString();
+			if (!mobiles.equals("")) {
+				String info=SendSmsUtil.SmsSend(map.get("recordNo").toString(), map.get("checkPerson").toString(), mobiles);
+				logger.info("----短信发送结果-----"+info);
+			}
+			logger.info("----用户手机号为空，未发送短信-----");
 			resultMap.put("resultCode", "0");
 			resultMap.put("resultMsg", "操作成功！");
 			return ResultUtil.result("0", resultMap, null);

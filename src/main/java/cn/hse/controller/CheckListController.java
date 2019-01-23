@@ -39,6 +39,7 @@ import cn.hse.util.G4Utils;
 import cn.hse.util.NodeSyn;
 import cn.hse.util.Result;
 import cn.hse.util.ResultUtil;
+import cn.hse.util.SendSmsUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -270,6 +271,13 @@ public class CheckListController {
 				resultMap.put("resultMsg", "操作成功！");
 				result.setObject(resultMap);
 				logger.info("----==提交成功");
+				logger.info("----开始发送短信通知整改人-----");
+				String mobiles=map.get("phone").toString();
+				if (!mobiles.equals("")) {
+					String info=SendSmsUtil.SmsSend(array[0], map.get("checkPerson").toString(), mobiles);
+					logger.info("----短信发送结果-----"+info);
+				}
+				logger.info("----用户手机号为空，未发送短信-----");
 			}else {
 				result.setRtnCode("-9999");
 				result.setRtnMsg("提交失败！");
