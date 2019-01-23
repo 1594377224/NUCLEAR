@@ -3,7 +3,6 @@ package cn.hse.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import cn.hse.beans.CheckList;
-
 @Mapper
 public interface CheckListMapper {
     int deleteByPrimaryKey(String id);
